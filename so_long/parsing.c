@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 23:34:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/12 23:24:19 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/14 02:38:16 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,24 @@ void ft_init_map(t_game *game, char *m_str)
 	game->map[idx] = NULL;
 }
 
+void ft_backup_map(t_game *game)
+{
+	int i;
+	int j;
+	char *tmp;
+
+	game->map_backup = malloc((game->y + 1) * sizeof(char *));
+	if (game->map_backup == NULL)
+		exit(1);
+	i = 0;
+	while (game->map[i] != NULL)
+	{
+		game->map_backup[i] = ft_strdup(game->map[i]);
+		i++;
+	}
+	game->map_backup[i] = NULL;
+}
+
 t_game *ft_set_game(char *m_str)
 {
 	t_game *game;
@@ -263,14 +281,76 @@ t_game *ft_set_game(char *m_str)
 	if (game == NULL)
 		return (NULL);
 	ft_init_map(game, m_str);
+	ft_backup_map(game);
 	return (game);
 }
 
 // start using mlx
 //
 
+void ft_player_animation(t_game *game)
+{
+	int timer;
+
+	timer = game->player_timer;
+	if (timer < 5 || timer > 25)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+			game->tex_player.img, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	else if (timer < 10 || timer > 20)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+			game->tex_player.img_2, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	else
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+			game->tex_player.img_3, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	if (timer > 30)
+		game->player_timer = 0;
+}
+
 void ft_draw_player(t_game *game)
 {
+	game->player_timer++;
+	ft_player_animation(game);
+}
+
+void ft_sprite_animation(t_game *game, int i, int j)
+{
+	int timer;
+
+	timer = game->sprite_timer;
+	if (timer < 5 || timer > 35)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_collect.c_img1, j, i);
+	else if (timer < 10 || timer > 30)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_collect.c_img2, j, i);
+	else if (timer < 15 || timer > 25)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_collect.c_img3, j, i);
+	else
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_collect.c_img4, j, i);
+	if (game->sprite_timer > 40)
+		game->sprite_timer = 0;
+}
+
+void ft_draw_sprite(t_game *game)
+{
+	int i;
+	int j;
+
+	game->sprite_timer++;
+	i = 0;
+	while (game->map[i] != NULL)
+	{
+		j = 0;
+		while (game->map[i][j] != '\0')
+		{
+			if (game->map[i][j] == 'C')
+				ft_sprite_animation(game, i * TILE_SIZE, j * TILE_SIZE); // bonus sprite_ani
+			j++;
+		}
+		i++;
+	}
 }
 
 void ft_draw_screen(t_game *game)
@@ -287,21 +367,65 @@ void ft_draw_screen(t_game *game)
 			if (game->map[i][j] == '1')
 				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
 						game->tex_wall.img, j * TILE_SIZE, i * TILE_SIZE);
-			else if (game->map[i][j] == '0')
+			else if (game->map[i][j] == 'B')
+				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+						game->tex_b_stone.img, j * TILE_SIZE, i * TILE_SIZE);
+			else if (game->map[i][j] == 'E')
+				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+						game->tex_exit.img, j * TILE_SIZE, i * TILE_SIZE);
+			else
 				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
 						game->tex_tile.img, j * TILE_SIZE, i * TILE_SIZE);
-			else if (game->map[i][j] == 'P')
-				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-						game->tex_player.img, j * TILE_SIZE, i * TILE_SIZE);
 			j++;
 		}
 		i++;
 	}
 }
 
+void ft_touch_collect(t_game *game)
+{
+	if (game->map[game->p_y][game->p_x] == 'C')
+		game->number_of_collections--;
+	if (game->map[game->p_y][game->p_x] != 'E')
+		game->map[game->p_y][game->p_x] = 'B';
+}
+
+void ft_game_status(t_game *game)
+{
+	if (game->exit_status == 1)
+	{
+		mlx_string_put(game->mlx_ptr, game->mlx_win,
+				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2,
+				0xFF00FF, "YOU WIN");
+		mlx_string_put(game->mlx_ptr, game->mlx_win,
+				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 10,
+				0xFF00FF, "EXIT : ESC");
+		mlx_string_put(game->mlx_ptr, game->mlx_win,
+				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 20,
+				0xFF00FF, "REPLAY : R");
+	}
+	else
+	{
+		mlx_string_put(game->mlx_ptr, game->mlx_win,
+				1, 10, 0x000000, "MOVE : ");
+		mlx_string_put(game->mlx_ptr, game->mlx_win,
+				1, 20, 0x000000, "EXIT : ESC");
+		mlx_string_put(game->mlx_ptr, game->mlx_win,
+				1, 30, 0x000000, "REPLAY : R");
+	}
+
+}
+
 int ft_game_loop(t_game *game)
 {
-	ft_draw_screen(game);
+	if (game->exit_status == 0)
+	{
+		ft_draw_screen(game);
+		ft_draw_sprite(game);
+		ft_draw_player(game);
+		ft_game_status(game);
+	}
+	ft_game_status(game);
 	return (0);
 }
 
@@ -325,25 +449,109 @@ void ft_save_texture(t_game *game, t_img img)
 
 void ft_player_texture(t_game *game)
 {
-	game->tex_player.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/p_s.xpm",
+	game->tex_player.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/player1.xpm",
 			&(game->tex_player.width), &(game->tex_player.height));
 	game->tex_player.data = (int *)mlx_get_data_addr(game->tex_player.img,
 			&game->tex_player.bpp, &game->tex_player.size_l, &game->tex_player.endian);
+	game->tex_player.img_2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/player2.xpm",
+			&(game->tex_player.width), &(game->tex_player.height));
+	game->tex_player.img_3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/player3.xpm",
+			&(game->tex_player.width), &(game->tex_player.height));
+}
+
+void ft_collect_texture(t_game *game)
+{
+	game->tex_collect.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite1.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.c_img1,
+			&game->tex_collect.bpp, &game->tex_collect.size_l, &game->tex_collect.endian);
+	game->tex_collect.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite2.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite3.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.c_img4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite4.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
 }
 
 void ft_load_texture(t_game *game)
 {
+	// wall : white stone
 	game->tex_wall.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/wall.xpm",
 			&(game->tex_wall.width), &(game->tex_wall.height));
 	game->tex_wall.data = (int *)mlx_get_data_addr(game->tex_wall.img,
 			&game->tex_wall.bpp, &game->tex_wall.size_l, &game->tex_wall.endian);
 //	ft_save_texture(game, game->tex_wall);
+//	tile : go
 	game->tex_tile.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/tile.xpm",
 			&(game->tex_tile.width), &(game->tex_tile.height));
 	game->tex_tile.data = (int *)mlx_get_data_addr(game->tex_tile.img,
 			&game->tex_tile.bpp, &game->tex_tile.size_l, &game->tex_tile.endian);
-//	ft_save_texture(game, game->tex_tile);
+	// collect : gray stone which place a black stone
+	game->tex_collect.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/collect.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.img,
+			&game->tex_collect.bpp, &game->tex_collect.size_l, &game->tex_collect.endian);
+	// b_stone : black_stone, key_space active
+	game->tex_b_stone.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/b_stone.xpm",
+			&(game->tex_b_stone.width), &(game->tex_b_stone.height));
+	game->tex_b_stone.data = (int *)mlx_get_data_addr(game->tex_b_stone.img,
+			&game->tex_b_stone.bpp, &game->tex_b_stone.size_l, &game->tex_b_stone.endian);
+	// exit : gold stone, collections == 0 active
+	game->tex_exit.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_stone.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.data = (int *)mlx_get_data_addr(game->tex_exit.img,
+			&game->tex_exit.bpp, &game->tex_exit.size_l, &game->tex_exit.endian);
+
+	ft_collect_texture(game);
 	ft_player_texture(game);
+}
+
+void ft_init_player_position(t_game *game)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (game->map[i] != NULL)
+	{
+		j = 0;
+		while (game->map[i][j] != '\0')
+		{
+			if (game->map[i][j] == 'P')
+			{
+				game->p_x = j;
+				game->p_y = i;
+				break ;
+			}
+			j++;
+		}
+		i++;
+	}
+	game->move_count = 0;
+	game->player_timer = 0;
+}
+
+void ft_init_collections(t_game *game)
+{
+	int i;
+	int j;
+	int count;
+
+	count = 0;
+	i = 0;
+	while (game->map[i] != NULL)
+	{
+		j = 0;
+		while (game->map[i][j] != '\0')
+		{
+			if (game->map[i][j] == 'C')
+				count++;
+			j++;
+		}
+		i++;
+	}
+	game->sprite_timer = 0;
+	game->number_of_collections = count;
 }
 
 void ft_init_game(t_game *game)
@@ -351,12 +559,16 @@ void ft_init_game(t_game *game)
 	game->mlx_ptr = mlx_init();
 	game->mlx_win = mlx_new_window(game->mlx_ptr, TILE_SIZE * game->x, TILE_SIZE * game->y, "SO_LONG");
 	ft_load_texture(game);
-//	ft_player_position(game);
+	ft_init_player_position(game);
+	ft_init_collections(game);
+	game->exit_status = 0;
 }
 
 void ft_start_game(t_game *game)
 {
 	ft_init_game(game);
+	mlx_hook(game->mlx_win, EVENT_KEY_RELEASE, 0, key_press, game);
+	mlx_hook(game->mlx_win, EVENT_KEY_DESTROY_NOTIFY, 0, ft_game_close, game);
 	mlx_loop_hook(game->mlx_ptr, &ft_game_loop, game);
 	mlx_loop(game->mlx_ptr);
 }

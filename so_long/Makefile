@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/12 21:03:37 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/13 21:42:18 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,11 @@ NAME = so_long
 CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appkit
 
 SRC = parsing.c\
+	  ft_move.c\
 	  mlibft.c
 
 OBJ = parsing.o\
+	  ft_move.o\
 	  mlibft.o
 
 all : $(NAME)
