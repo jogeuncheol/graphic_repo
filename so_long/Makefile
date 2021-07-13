@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/13 21:42:18 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/14 03:04:02 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,12 @@ CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appk
 
 SRC = parsing.c\
 	  ft_move.c\
+	  ft_string.c\
 	  mlibft.c
 
 OBJ = parsing.o\
 	  ft_move.o\
+	  ft_string.o\
 	  mlibft.o
 
 all : $(NAME)

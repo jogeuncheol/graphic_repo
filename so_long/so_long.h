@@ -53,6 +53,7 @@ typedef struct s_game
 	int		p_x;
 	int		p_y;
 	int		move_count;
+	char	*move_str;
 	void	*mlx_ptr;
 	void	*mlx_win;
 
@@ -83,6 +84,8 @@ int key_press(int key_code, t_game *game);
 void ft_touch_collect(t_game *game);
 void ft_init_player_position(t_game * game);
 void ft_init_collections(t_game *game);
+void ft_str_move_count(t_game *game);
+void ft_game_status(t_game *game);
 int ft_game_close(t_game *game);
 
 #endif

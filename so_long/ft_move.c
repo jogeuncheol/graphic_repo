@@ -3,7 +3,10 @@
 void ft_game_end(t_game *game)
 {
 	if (game->number_of_collections == 0)
+	{
 		game->exit_status = 1;
+		ft_game_status(game);
+	}
 }
 
 int ft_game_close(t_game *game)
@@ -24,6 +27,8 @@ int ft_game_close(t_game *game)
 	game->map = NULL;
 	free(game->map_backup);
 	game->map_backup = NULL;
+	free(game->move_str);
+	game->move_str = NULL;
 	mlx_destroy_window(game->mlx_ptr, game->mlx_win);
 	exit(0);
 }
@@ -40,7 +45,10 @@ void ft_move(t_game *game, int move_x, int move_y)
 		game->p_x = x;
 		game->p_y = y;
 		game->move_count++;
-		printf("%d\n", game->move_count); // ft_putnbr
+		ft_str_move_count(game);
+		write(1, game->move_str, ft_strlen(game->move_str));
+		write(1, "\n", 1);
+		// printf("%d\n", game->move_count); // ft_putnbr
 	}
 }
 
@@ -63,6 +71,7 @@ void ft_game_reset(t_game *game)
 	ft_init_player_position(game);
 	ft_init_collections(game);
 	game->exit_status = 0;
+	ft_str_move_count(game);
 }
 
 int key_press(int key_code, t_game *game)

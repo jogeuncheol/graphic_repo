@@ -6,11 +6,24 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 23:34:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/14 02:38:16 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/14 03:46:08 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+int ft_file_name(char *map_file)
+{
+	int i;
+
+	i = 0;
+	while (map_file[i] != '\0')
+		i++;
+	if (map_file[i - 1] == 'r' && map_file[i - 2] == 'e' &&
+			map_file[i - 3] == 'b' && map_file[i - 4] == '.')
+		return (1);
+	return (0);
+}
 
 char *ft_map_str(char *map_file)
 {
@@ -396,24 +409,23 @@ void ft_game_status(t_game *game)
 	{
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
 				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2,
-				0xFF00FF, "YOU WIN");
+				0x0000FF, "YOU WIN");
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
 				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 10,
-				0xFF00FF, "EXIT : ESC");
+				0x0000FF, "EXIT : ESC");
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
 				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 20,
-				0xFF00FF, "REPLAY : R");
+				0x0000FF, "REPLAY : R");
 	}
 	else
 	{
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
-				1, 10, 0x000000, "MOVE : ");
+				1, 10, 0x0000FF, game->move_str);
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
-				1, 20, 0x000000, "EXIT : ESC");
+				1, 20, 0x0000FF, "EXIT : ESC");
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
-				1, 30, 0x000000, "REPLAY : R");
+				1, 30, 0x0000FF, "REPLAY : R");
 	}
-
 }
 
 int ft_game_loop(t_game *game)
@@ -425,7 +437,6 @@ int ft_game_loop(t_game *game)
 		ft_draw_player(game);
 		ft_game_status(game);
 	}
-	ft_game_status(game);
 	return (0);
 }
 
@@ -562,6 +573,8 @@ void ft_init_game(t_game *game)
 	ft_init_player_position(game);
 	ft_init_collections(game);
 	game->exit_status = 0;
+	game->move_str = NULL;
+	ft_str_move_count(game);
 }
 
 void ft_start_game(t_game *game)
@@ -577,6 +590,11 @@ void ft_game(char *map_file)
 {
 	t_map *map;
 	t_game *game;
+	if (ft_file_name(map_file) != 1)
+	{
+		printf("file_name must .ber\n");
+		exit(1);
+	}
 	map = ft_map_validation(map_file);
 	if (map == NULL)
 	{
