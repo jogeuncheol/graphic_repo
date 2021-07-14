@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include "../mlx/mlx.h"
+# include "../../cub3D/mlx/mlx.h"
 
 # define TILE_SIZE					32
 # define KEY_W						13
@@ -77,6 +77,8 @@ typedef struct s_game
 }	t_game;
 
 int ft_strlen(char *str);
+void ft_putchar_fd(char c, int fd);
+void ft_putstr_fd(char *str, int fd);
 char *ft_strdup(char *str);
 char *ft_strjoin(char *s1, char *s2);
 

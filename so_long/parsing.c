@@ -43,7 +43,6 @@ char *ft_map_str(char *map_file)
 		m_str = NULL;
 		m_str = tmp;
 	}
-	printf("%s", m_str);	// m_str print
 	return (m_str);
 }
 
@@ -152,16 +151,16 @@ int ft_map_close_check(t_map *map)
 				if (ft_check_last_line(map->m_str) == 1)
 					return (1);
 				else
-					printf("last line check fail\n");
+					ft_putstr_fd("Error\nlast line check fail\n", 2);
 			}
 			else
-				printf("line length check fail\n");
+				ft_putstr_fd("Error\nline length check fail\n", 2);
 		}
 		else
-			printf("line check fail\n");
+			ft_putstr_fd("Error\nline check fail\n", 2);
 	}
 	else
-		printf("1st line check fail\n");
+		ft_putstr_fd("Error\n1st line check fail\n", 2);
 	return (0);
 }
 
@@ -203,21 +202,17 @@ t_map *ft_map_validation(char *map_file)
 	map->m_str = ft_map_str(map_file);
 	if (map->m_str == NULL)
 	{
-		printf("malloc fail\n");
+		ft_putstr_fd("Error\nmalloc fail\n", 2);
 		exit(1);
 	}
-	if (ft_map_close_check(map) == 1)
-		printf("map valid check pass\n");
-	else
+	if (ft_map_close_check(map) != 1)
 	{
-		printf("map invalid\n");
+		ft_putstr_fd("Error\nmap invalid\n", 2);
 		exit(1);
 	}
-	if (ft_exist_data(map->m_str) == 1)
-		printf("game data valid check pass\n");
-	else
+	if (ft_exist_data(map->m_str) != 1)
 	{
-		printf("game data invalid\n");
+		ft_putstr_fd("Error\ngame data invalid\n", 2);
 		exit(1);
 	}
 	return (map);
@@ -251,7 +246,10 @@ void ft_init_map(t_game *game, char *m_str)
 	ft_init_map_xy(game, m_str);
 	game->map = malloc((game->y + 1) * sizeof(char *));
 	if (game->map == NULL)
+	{
+		ft_putstr_fd("Error\nmalloc fail\n", 2);
 		exit(1);
+	}
 	i = 0;
 	tmp = &m_str[i];
 	while (m_str[i] != '\0')

@@ -12,6 +12,23 @@ int ft_strlen(char *str)
 	return (i);
 }
 
+void ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void ft_putstr_fd(char *str, int fd)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		ft_putchar_fd(str[i], fd);
+		i++;
+	}
+}
+
 char *ft_strdup(char *str)
 {
 	int i;
@@ -22,6 +39,7 @@ char *ft_strdup(char *str)
 	ret = malloc((ft_strlen(str) + 1) * sizeof(char));
 	if (ret == NULL)
 		return (NULL);
+	i = 0;
 	while (i < ft_strlen(str))
 	{
 		ret[i] = str[i];
