@@ -48,4 +48,6 @@ void ft_str_move_count(t_game *game)
 	if (game->move_str != NULL)
 		free(game->move_str);
 	game->move_str = ft_strjoin("move : ", nbr);
+	free(nbr);
+	nbr = NULL;
 }
