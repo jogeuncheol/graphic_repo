@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include "../../cub3D/mlx/mlx.h"
+# include "../mlx/mlx.h"
 
 # define TILE_SIZE					32
 # define KEY_W						13
@@ -22,8 +22,8 @@
 
 typedef struct s_map
 {
-	char *m_str;
-}	t_map;
+	char	*m_str;
+}			t_map;
 
 typedef struct s_img
 {
@@ -41,7 +41,7 @@ typedef struct s_img
 	int		endian;
 	int		width;
 	int		height;
-}	t_img;
+}			t_img;
 
 typedef struct s_game
 {
@@ -74,20 +74,23 @@ typedef struct s_game
 	int sprite_timer;
 	int player_timer;
 	int exit_status;
-}	t_game;
+}		t_game;
 
-int ft_strlen(char *str);
-void ft_putchar_fd(char c, int fd);
-void ft_putstr_fd(char *str, int fd);
-char *ft_strdup(char *str);
-char *ft_strjoin(char *s1, char *s2);
+int		ft_strlen(char *str);
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *str, int fd);
+char	*ft_strdup(char *str);
+char	*ft_strjoin(char *s1, char *s2);
 
-int key_press(int key_code, t_game *game);
-void ft_touch_collect(t_game *game);
-void ft_init_player_position(t_game * game);
-void ft_init_collections(t_game *game);
-void ft_str_move_count(t_game *game);
-void ft_game_status(t_game *game);
-int ft_game_close(t_game *game);
+int		key_press(int key_code, t_game *game);
+void	ft_touch_collect(t_game *game);
+void	ft_init_player_position(t_game * game);
+void	ft_init_collections(t_game *game);
+void	ft_str_move_count(t_game *game);
+void	ft_game_status(t_game *game);
+int		ft_game_close(t_game *game);
+
+void	ft_free_map(char **map);
+void	ft_destroy_mlx(t_game *game);
 
 #endif

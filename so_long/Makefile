@@ -6,23 +6,25 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/14 03:04:02 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/14 15:18:14 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 
-CFLAGS = -g3 -fsanitize=address -L../../cub3D/mlx -lmlx -framework OpenGL -framework Appkit
+CFLAGS = -L../mlx -lmlx -framework OpenGL -framework Appkit
 
 SRC = parsing.c\
 	  ft_move.c\
 	  ft_string.c\
-	  mlibft.c
+	  mlibft.c\
+	  ft_free.c
 
 OBJ = parsing.o\
 	  ft_move.o\
 	  ft_string.o\
-	  mlibft.o
+	  mlibft.o\
+	  ft_free.o
 
 all : $(NAME)
 
