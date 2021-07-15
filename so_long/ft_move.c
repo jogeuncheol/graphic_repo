@@ -57,6 +57,7 @@ void ft_game_reset(t_game *game)
 	ft_init_collections(game);
 	game->exit_status = 0;
 	game->enemy_status = 0;
+	game->p_stone = 0;
 	ft_str_move_count(game);
 	ft_enemy_random_position(game);
 }

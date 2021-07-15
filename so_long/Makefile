@@ -12,7 +12,7 @@
 
 NAME = so_long
 
-CFLAGS = -L../mlx -lmlx -framework OpenGL -framework Appkit
+CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appkit
 
 SRC = parsing.c\
 	  ft_move.c\

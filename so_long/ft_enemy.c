@@ -58,8 +58,10 @@ void	ft_enemy_random_position(t_game *game)
 
 	if (game->e_x == 0 && game->e_y == 0)
 	{
-		enemy_x = (int)game->map % (game->x);
-		enemy_y = (int)game->map_backup % (game->y);
+//		enemy_x = (int)game->map % (game->x);
+//		enemy_y = (int)game->map_backup % (game->y);
+		enemy_x = game->map[game->y / 2][game->x / 2] % game->x;
+		enemy_y = game->map[game->y / 3][game->x / 3] % game->y;
 		if (enemy_x < 0)
 			enemy_x = enemy_x * -1;
 		if (enemy_y < 0)

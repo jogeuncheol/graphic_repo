@@ -18,6 +18,41 @@ void	ft_enemy_collision(t_game *game)
 		game->enemy_status = 1;
 }
 
+void	ft_e_move_y(t_game *game);
+void	ft_e_move_x(t_game *game)
+{
+	if (game->p_x < game->e_x && game->map[game->e_y][game->e_x - 1] != '1'
+			&& game->map[game->e_y][game->e_x - 1] != 'B')
+		game->e_x--;
+	else if (game->map[game->e_y][game->e_x + 1] != '1'
+			&& game->map[game->e_y][game->e_x + 1] != 'B')
+		game->e_x++;
+	else if (game->p_y < game->e_y && game->map[game->e_y - 1][game->e_x] != '1'
+			&& game->map[game->e_y - 1][game->e_x] != 'B')
+		game->e_y--;
+	else if (game->map[game->e_y + 1][game->e_x] != '1'
+			&& game->map[game->e_y + 1][game->e_x] != 'B')
+		game->e_y++;
+
+}
+
+void	ft_e_move_y(t_game *game)
+{
+	if (game->p_y < game->e_y && game->map[game->e_y - 1][game->e_x] != '1'
+			&& game->map[game->e_y - 1][game->e_x] != 'B')
+		game->e_y--;
+	else if (game->map[game->e_y + 1][game->e_x] != '1'
+			&& game->map[game->e_y + 1][game->e_x] != 'B')
+		game->e_y++;
+	else if (game->p_x < game->e_x && game->map[game->e_y][game->e_x - 1] != '1'
+			&& game->map[game->e_y][game->e_x - 1] != 'B')
+		game->e_x--;
+	else if (game->map[game->e_y][game->e_x + 1] != '1'
+			&& game->map[game->e_y][game->e_x + 1] != 'B')
+		game->e_x++;
+
+}
+
 void	ft_enemy_ai2(t_game *game)
 {
 	int		flow_x;
@@ -31,17 +66,11 @@ void	ft_enemy_ai2(t_game *game)
 		flow_y = flow_y * -1;
 	if (flow_x > flow_y)
 	{
-		if (game->p_x < game->e_x)
-			game->e_x--;
-		else
-			game->e_x++;
+		ft_e_move_x(game);
 	}
 	else
 	{
-		if (game->p_y < game->e_y)
-			game->e_y--;
-		else
-			game->e_y++;
+		ft_e_move_y(game);
 	}
 }
 
@@ -120,7 +149,7 @@ void	ft_enemy_ai(t_game *game)
 
 void	ft_move_enemy(t_game *game)
 {
-	if (game->enemy_timer > 24)
+	if (game->enemy_timer > 30)
 	{
 		game->e_px = game->e_x;
 		game->e_py = game->e_y;

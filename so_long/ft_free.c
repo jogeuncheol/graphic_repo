@@ -20,7 +20,7 @@ void ft_destroy_mlx(t_game *game)
 	mlx_destroy_image(game->mlx_ptr, game->tex_wall.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_tile.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_collect.img);
-	mlx_destroy_image(game->mlx_ptr, game->tex_b_stone.img);
+	mlx_destroy_image(game->mlx_ptr, game->tex_stone.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_exit.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_collect.c_img1);
 	mlx_destroy_image(game->mlx_ptr, game->tex_collect.c_img2);

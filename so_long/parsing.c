@@ -305,15 +305,30 @@ void ft_player_animation(t_game *game)
 	int timer;
 
 	timer = game->player_timer;
-	if (timer < 5 || timer > 25)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.img, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
-	else if (timer < 10 || timer > 20)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.img_2, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	if (game->p_stone == 0)
+	{
+		if (timer < 5 || timer > 25)
+			mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_player.img, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		else if (timer < 10 || timer > 20)
+			mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_player.img_2, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		else
+			mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_player.img_3, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	}
 	else
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.img_3, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	{
+		if (timer < 5 || timer > 25)
+			mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_player.c_img1, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		else if (timer < 10 || timer > 20)
+			mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_player.c_img2, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		else
+			mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_player.c_img3, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+	}
 	if (timer > 30)
 		game->player_timer = 0;
 }
@@ -426,7 +441,7 @@ void ft_draw_screen(t_game *game)
 						game->tex_wall.img, j * TILE_SIZE, i * TILE_SIZE);
 			else if (game->map[i][j] == 'B')
 				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-						game->tex_b_stone.img, j * TILE_SIZE, i * TILE_SIZE);
+						game->tex_stone.img, j * TILE_SIZE, i * TILE_SIZE);
 			else if (game->map[i][j] == 'E')
 				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
 						game->tex_exit.img, j * TILE_SIZE, i * TILE_SIZE);
@@ -444,7 +459,18 @@ void ft_touch_collect(t_game *game)
 	if (game->map[game->p_y][game->p_x] == 'C')
 		game->number_of_collections--;
 	if (game->map[game->p_y][game->p_x] != 'E')
-		game->map[game->p_y][game->p_x] = 'B';
+	{
+		if (game->p_stone == 0)
+		{
+			game->map[game->p_y][game->p_x] = 'B';
+			game->p_stone = 1;
+		}
+		else
+		{
+			game->map[game->p_y][game->p_x] = '1';
+			game->p_stone = 0;
+		}
+	}
 }
 
 void	ft_game_message(t_game *game, int color)
@@ -528,6 +554,12 @@ void ft_player_texture(t_game *game)
 			&(game->tex_player.width), &(game->tex_player.height));
 	game->tex_player.img_3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/player3.xpm",
 			&(game->tex_player.width), &(game->tex_player.height));
+	game->tex_player.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/w_player1.xpm",
+			&(game->tex_player.width), &(game->tex_player.height));
+	game->tex_player.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/w_player2.xpm",
+			&(game->tex_player.width), &(game->tex_player.height));
+	game->tex_player.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/w_player3.xpm",
+			&(game->tex_player.width), &(game->tex_player.height));
 }
 
 void ft_collect_texture(t_game *game)
@@ -577,10 +609,10 @@ void ft_load_texture(t_game *game)
 	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.img,
 			&game->tex_collect.bpp, &game->tex_collect.size_l, &game->tex_collect.endian);
 	// b_stone : black_stone, key_space active
-	game->tex_b_stone.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/b_stone.xpm",
-			&(game->tex_b_stone.width), &(game->tex_b_stone.height));
-	game->tex_b_stone.data = (int *)mlx_get_data_addr(game->tex_b_stone.img,
-			&game->tex_b_stone.bpp, &game->tex_b_stone.size_l, &game->tex_b_stone.endian);
+	game->tex_stone.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/b_stone.xpm",
+			&(game->tex_stone.width), &(game->tex_stone.height));
+	game->tex_stone.data = (int *)mlx_get_data_addr(game->tex_stone.img,
+			&game->tex_stone.bpp, &game->tex_stone.size_l, &game->tex_stone.endian);
 	// exit : gold stone, collections == 0 active
 	game->tex_exit.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_stone.xpm",
 			&(game->tex_exit.width), &(game->tex_exit.height));
@@ -648,6 +680,7 @@ void ft_init_game(t_game *game)
 	ft_init_player_position(game);
 	ft_init_collections(game);
 	game->exit_status = 0;
+	game->p_stone = 0;
 	game->move_str = NULL;
 	ft_str_move_count(game);
 	ft_enemy_texture(game);

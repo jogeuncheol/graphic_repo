@@ -51,6 +51,7 @@ typedef struct s_game
 
 	int		p_x;
 	int		p_y;
+	int		p_stone;
 	int		move_count;
 	int		e_x;
 	int		e_y;
@@ -67,7 +68,7 @@ typedef struct s_game
 	t_img	tex_tile;
 	t_img	tex_player;
 	t_img	tex_collect;
-	t_img	tex_b_stone;
+	t_img	tex_stone;
 	t_img	tex_enemy;
 	t_img	tex_exit;
 	int		bg;
