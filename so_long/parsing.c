@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 23:34:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/14 15:26:23 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/15 00:12:55 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,51 @@ void ft_draw_player(t_game *game)
 	ft_player_animation(game);
 }
 
+void ft_draw_enemy(t_game *game)
+{
+	game->enemy_timer++;
+	mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+			game->tex_enemy.img, game->e_x * TILE_SIZE, game->e_y * TILE_SIZE);
+}
+
+void ft_exit_animation(t_game *game, int i, int j)
+{
+	int timer;
+
+	timer = game->sprite_timer;
+	if (timer < 5 || timer > 35)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.c_img1, j, i);
+	else if (timer < 10 || timer > 30)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.c_img2, j, i);
+	else if (timer < 15 || timer > 25)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.c_img3, j, i);
+	else
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.c_img4, j, i);
+}
+
+void ft_draw_exit(t_game *game)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (game->map[i] != NULL)
+	{
+		j = 0;
+		while (game->map[i][j] != '\0')
+		{
+			if (game->map[i][j] == 'E')
+				ft_exit_animation(game, i * TILE_SIZE, j * TILE_SIZE); // bonus sprite_ani
+			j++;
+		}
+		i++;
+	}
+}
+
 void ft_sprite_animation(t_game *game, int i, int j)
 {
 	int timer;
@@ -402,6 +447,16 @@ void ft_touch_collect(t_game *game)
 		game->map[game->p_y][game->p_x] = 'B';
 }
 
+void	ft_game_message(t_game *game, int color)
+{
+	mlx_string_put(game->mlx_ptr, game->mlx_win,
+			game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 10,
+			color, "EXIT : ESC");
+	mlx_string_put(game->mlx_ptr, game->mlx_win,
+			game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 20,
+			color, "REPLAY : R");
+}
+
 void ft_game_status(t_game *game)
 {
 	if (game->exit_status == 1)
@@ -409,12 +464,14 @@ void ft_game_status(t_game *game)
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
 				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2,
 				0x0000FF, "YOU WIN");
+		ft_game_message(game, 0x0000FF);
+	}
+	else if (game->enemy_status == 1)
+	{
 		mlx_string_put(game->mlx_ptr, game->mlx_win,
-				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 10,
-				0x0000FF, "EXIT : ESC");
-		mlx_string_put(game->mlx_ptr, game->mlx_win,
-				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2 + 20,
-				0x0000FF, "REPLAY : R");
+				game->x * TILE_SIZE / 2, game->y * TILE_SIZE / 2,
+				0xFF0000, "YOU LOSE");
+		ft_game_message(game, 0xFF0000);
 	}
 	else
 	{
@@ -429,13 +486,17 @@ void ft_game_status(t_game *game)
 
 int ft_game_loop(t_game *game)
 {
-	if (game->exit_status == 0)
+	if (game->exit_status == 0 && game->enemy_status == 0)
 	{
 		ft_draw_screen(game);
 		ft_draw_sprite(game);
+		ft_draw_exit(game);
 		ft_draw_player(game);
+		ft_move_enemy(game);
+		ft_draw_enemy(game);
 		ft_game_status(game);
 	}
+	ft_enemy_count_manager(game);
 	return (0);
 }
 
@@ -471,16 +532,30 @@ void ft_player_texture(t_game *game)
 
 void ft_collect_texture(t_game *game)
 {
-	game->tex_collect.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite1.xpm",
+	game->tex_collect.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_01.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
 	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.c_img1,
 			&game->tex_collect.bpp, &game->tex_collect.size_l, &game->tex_collect.endian);
-	game->tex_collect.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite2.xpm",
+	game->tex_collect.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_02.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
-	game->tex_collect.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite3.xpm",
+	game->tex_collect.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_03.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
-	game->tex_collect.c_img4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite4.xpm",
+	game->tex_collect.c_img4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_04.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
+}
+
+void ft_exit_texture(t_game *game)
+{
+	game->tex_exit.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite1.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.data = (int *)mlx_get_data_addr(game->tex_exit.c_img1,
+			&game->tex_exit.bpp, &game->tex_exit.size_l, &game->tex_exit.endian);
+	game->tex_exit.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite2.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite3.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.c_img4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite4.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
 }
 
 void ft_load_texture(t_game *game)
@@ -514,6 +589,7 @@ void ft_load_texture(t_game *game)
 
 	ft_collect_texture(game);
 	ft_player_texture(game);
+	ft_exit_texture(game);
 }
 
 void ft_init_player_position(t_game *game)
@@ -574,6 +650,8 @@ void ft_init_game(t_game *game)
 	game->exit_status = 0;
 	game->move_str = NULL;
 	ft_str_move_count(game);
+	ft_enemy_texture(game);
+	ft_init_enemy(game);
 }
 
 void ft_start_game(t_game *game)

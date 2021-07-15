@@ -56,12 +56,14 @@ void ft_game_reset(t_game *game)
 	ft_init_player_position(game);
 	ft_init_collections(game);
 	game->exit_status = 0;
+	game->enemy_status = 0;
 	ft_str_move_count(game);
+	ft_enemy_random_position(game);
 }
 
 int key_press(int key_code, t_game *game)
 {
-	if (game->exit_status == 0)
+	if (game->exit_status == 0 && game->enemy_status == 0)
 	{
 		if (key_code == KEY_W)
 			ft_move(game, 0, -1);

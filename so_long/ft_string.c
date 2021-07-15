@@ -1,10 +1,18 @@
 #include "so_long.h"
 
-char *set_nbr(char *nbr, int n, int len)
+char *set_nbr(char *nbr, int n, int len, int sign)
 {
 	int i;
 
 	i = 0;
+	if (n == -2147483648)
+	{
+		nbr[len - i] = -(n % 10) + '0';
+		n = n / 10;
+		i++;
+	}
+	if (n < 0)
+		n = n * -1;
 	while (n / 10 != 0)
 	{
 		nbr[len - i] = (n % 10) + '0';
@@ -12,7 +20,10 @@ char *set_nbr(char *nbr, int n, int len)
 		i++;
 	}
 	nbr[len - i++] = (n % 10) + '0';
-	nbr[i] = '\0';
+	if (sign == 1)
+		nbr[i] = '\0';
+	else
+		nbr[i + 1] = '\0';
 	return (nbr);
 }
 
@@ -32,10 +43,18 @@ char *ft_itoa(int n)
 		len++;
 	}
 	len++;
+	if (n < 0)
+	{
+		nbr = malloc((len + 2) * sizeof(char));
+		if (nbr == NULL)
+			return (NULL);
+		nbr[0] = '-';
+		return (set_nbr(nbr, n, len, -1));
+	}
 	nbr = malloc((len + 1) * sizeof(char));
 	if (nbr == NULL)
 		return (NULL);
-	return (set_nbr(nbr, n, len - 1));
+	return (set_nbr(nbr, n, len - 1, 1));
 }
 
 void ft_str_move_count(t_game *game)
