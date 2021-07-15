@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 23:34:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/15 20:37:05 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/15 21:38:50 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,18 +351,27 @@ void ft_exit_animation(t_game *game, int i, int j)
 	int timer;
 
 	timer = game->sprite_timer;
-	if (timer < 5 || timer > 35)
+	if (timer < 5 || timer > 70)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.img, j, i);
+	else if (timer < 10 || timer > 65)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.img_2, j, i);
+	else if (timer < 15 || timer > 60)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.img_3, j, i);
+	else if (timer < 20 || timer > 55)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_exit.img_4, j, i);
+	else if (timer < 25 || timer > 50)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
 				game->tex_exit.c_img1, j, i);
-	else if (timer < 10 || timer > 30)
+	else if (timer < 30 || timer > 45)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
 				game->tex_exit.c_img2, j, i);
-	else if (timer < 15 || timer > 25)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_exit.c_img3, j, i);
 	else
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_exit.c_img4, j, i);
+				game->tex_exit.c_img3, j, i);
 }
 
 void ft_draw_exit(t_game *game)
@@ -389,19 +398,28 @@ void ft_sprite_animation(t_game *game, int i, int j)
 	int timer;
 
 	timer = game->sprite_timer;
-	if (timer < 5 || timer > 35)
+	if (timer < 5 || timer > 70)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.c_img1, j, i);
-	else if (timer < 10 || timer > 30)
+				game->tex_collect.img, j, i);
+	else if (timer < 10 || timer > 65)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.c_img2, j, i);
-	else if (timer < 15 || timer > 25)
+				game->tex_collect.img_2, j, i);
+	else if (timer < 15 || timer > 60)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.c_img3, j, i);
+				game->tex_collect.img_3, j, i);
+	else if (timer < 20 || timer > 55)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+				game->tex_collect.img_4, j, i);
+	else if (timer < 25 || timer > 50)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+			game->tex_collect.c_img1, j, i);
+	else if (timer < 30 || timer > 45)
+		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+			game->tex_collect.c_img2, j, i);
 	else
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.c_img4, j, i);
-	if (game->sprite_timer > 40)
+			game->tex_collect.c_img3, j, i);
+	if (game->sprite_timer > 75)
 		game->sprite_timer = 0;
 }
 
@@ -564,29 +582,41 @@ void ft_player_texture(t_game *game)
 
 void ft_collect_texture(t_game *game)
 {
-	game->tex_collect.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_01.xpm",
+	game->tex_collect.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_01.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
-	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.c_img1,
+	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.img,
 			&game->tex_collect.bpp, &game->tex_collect.size_l, &game->tex_collect.endian);
-	game->tex_collect.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_02.xpm",
+	game->tex_collect.img_2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_02.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
-	game->tex_collect.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_03.xpm",
+	game->tex_collect.img_3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_03.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
-	game->tex_collect.c_img4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_04.xpm",
+	game->tex_collect.img_4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_04.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_05.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_06.xpm",
+			&(game->tex_collect.width), &(game->tex_collect.height));
+	game->tex_collect.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_07.xpm",
 			&(game->tex_collect.width), &(game->tex_collect.height));
 }
 
 void ft_exit_texture(t_game *game)
 {
-	game->tex_exit.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite1.xpm",
+	game->tex_exit.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_01.xpm",
 			&(game->tex_exit.width), &(game->tex_exit.height));
-	game->tex_exit.data = (int *)mlx_get_data_addr(game->tex_exit.c_img1,
+	game->tex_exit.data = (int *)mlx_get_data_addr(game->tex_exit.img,
 			&game->tex_exit.bpp, &game->tex_exit.size_l, &game->tex_exit.endian);
-	game->tex_exit.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite2.xpm",
+	game->tex_exit.img_2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_02.xpm",
 			&(game->tex_exit.width), &(game->tex_exit.height));
-	game->tex_exit.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite3.xpm",
+	game->tex_exit.img_3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_03.xpm",
 			&(game->tex_exit.width), &(game->tex_exit.height));
-	game->tex_exit.c_img4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/sprite4.xpm",
+	game->tex_exit.img_4 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_04.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.c_img1 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_05.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.c_img2 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_06.xpm",
+			&(game->tex_exit.width), &(game->tex_exit.height));
+	game->tex_exit.c_img3 = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/exit_07.xpm",
 			&(game->tex_exit.width), &(game->tex_exit.height));
 }
 
@@ -603,21 +633,11 @@ void ft_load_texture(t_game *game)
 			&(game->tex_tile.width), &(game->tex_tile.height));
 	game->tex_tile.data = (int *)mlx_get_data_addr(game->tex_tile.img,
 			&game->tex_tile.bpp, &game->tex_tile.size_l, &game->tex_tile.endian);
-	// collect : gray stone which place a black stone
-	game->tex_collect.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/collect.xpm",
-			&(game->tex_collect.width), &(game->tex_collect.height));
-	game->tex_collect.data = (int *)mlx_get_data_addr(game->tex_collect.img,
-			&game->tex_collect.bpp, &game->tex_collect.size_l, &game->tex_collect.endian);
 	// b_stone : black_stone, key_space active
 	game->tex_stone.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/b_stone.xpm",
 			&(game->tex_stone.width), &(game->tex_stone.height));
 	game->tex_stone.data = (int *)mlx_get_data_addr(game->tex_stone.img,
 			&game->tex_stone.bpp, &game->tex_stone.size_l, &game->tex_stone.endian);
-	// exit : gold stone, collections == 0 active
-	game->tex_exit.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/gold_stone.xpm",
-			&(game->tex_exit.width), &(game->tex_exit.height));
-	game->tex_exit.data = (int *)mlx_get_data_addr(game->tex_exit.img,
-			&game->tex_exit.bpp, &game->tex_exit.size_l, &game->tex_exit.endian);
 
 	ft_collect_texture(game);
 	ft_player_texture(game);

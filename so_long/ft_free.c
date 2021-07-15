@@ -19,13 +19,15 @@ void ft_destroy_mlx(t_game *game)
 {
 	mlx_destroy_image(game->mlx_ptr, game->tex_wall.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_tile.img);
-	mlx_destroy_image(game->mlx_ptr, game->tex_collect.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_stone.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_exit.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_collect.c_img1);
 	mlx_destroy_image(game->mlx_ptr, game->tex_collect.c_img2);
 	mlx_destroy_image(game->mlx_ptr, game->tex_collect.c_img3);
-	mlx_destroy_image(game->mlx_ptr, game->tex_collect.c_img4);
+	mlx_destroy_image(game->mlx_ptr, game->tex_collect.img);
+	mlx_destroy_image(game->mlx_ptr, game->tex_collect.img_2);
+	mlx_destroy_image(game->mlx_ptr, game->tex_collect.img_3);
+	mlx_destroy_image(game->mlx_ptr, game->tex_collect.img_4);
 	mlx_destroy_image(game->mlx_ptr, game->tex_player.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_player.img_2);
 	mlx_destroy_image(game->mlx_ptr, game->tex_player.img_3);
