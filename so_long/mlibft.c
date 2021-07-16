@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-int ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	int i;
+	int		i;
 
 	if (str == NULL)
 		return (0);
@@ -12,14 +12,14 @@ int ft_strlen(char *str)
 	return (i);
 }
 
-void ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-void ft_putstr_fd(char *str, int fd)
+void	ft_putstr_fd(char *str, int fd)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -29,10 +29,10 @@ void ft_putstr_fd(char *str, int fd)
 	}
 }
 
-char *ft_strdup(char *str)
+char	*ft_strdup(char *str)
 {
-	int i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	if (str == NULL)
 		return (NULL);
@@ -49,11 +49,11 @@ char *ft_strdup(char *str)
 	return (ret);
 }
 
-char *ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	int i;
-	int len;
-	char *ret;
+	int		i;
+	int		len;
+	char	*ret;
 
 	if (s1 == NULL && s2 != NULL)
 		return (ft_strdup(s2));

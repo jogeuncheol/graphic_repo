@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-void ft_free_map(char **map)
+void	ft_free_map(char **map)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (map[i] != NULL)
@@ -15,7 +15,7 @@ void ft_free_map(char **map)
 	map = NULL;
 }
 
-void ft_destroy_mlx(t_game *game)
+void	ft_destroy_mlx(t_game *game)
 {
 	mlx_destroy_image(game->mlx_ptr, game->tex_wall.img);
 	mlx_destroy_image(game->mlx_ptr, game->tex_tile.img);

@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-void ft_game_end(t_game *game)
+void	ft_game_end(t_game *game)
 {
 	if (game->number_of_collections == 0)
 	{
@@ -9,7 +9,7 @@ void ft_game_end(t_game *game)
 	}
 }
 
-int ft_game_close(t_game *game)
+int	ft_game_close(t_game *game)
 {
 	ft_free_map(game->map);
 	ft_free_map(game->map_backup);
@@ -19,10 +19,10 @@ int ft_game_close(t_game *game)
 	exit(0);
 }
 
-void ft_move(t_game *game, int move_x, int move_y)
+void	ft_move(t_game *game, int move_x, int move_y)
 {
-	int x;
-	int y;
+	int		x;
+	int		y;
 
 	x = game->p_x + move_x;
 	y = game->p_y + move_y;
@@ -37,10 +37,10 @@ void ft_move(t_game *game, int move_x, int move_y)
 	}
 }
 
-void ft_game_reset(t_game *game)
+void	ft_game_reset(t_game *game)
 {
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (game->map[i] != NULL)
@@ -62,7 +62,7 @@ void ft_game_reset(t_game *game)
 	ft_enemy_random_position(game);
 }
 
-int key_press(int key_code, t_game *game)
+int	key_press(int key_code, t_game *game)
 {
 	if (game->exit_status == 0 && game->enemy_status == 0)
 	{
