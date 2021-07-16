@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/16 16:12:05 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/16 16:32:00 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,15 @@ NAME = so_long
 
 CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appkit
 
-SRC	= ft_main.c\
+INCLUDE = include
+
+SRC_DIR = srcs
+
+SRC_B_DIR = srcs_b
+
+BONUS_HIDE = .bonus
+
+SRC	= $(SRC_DIR)/ft_main.c\
 	  ft_map_validation.c\
 	  ft_map_checker.c\
 	  ft_set_game.c\
@@ -53,6 +61,8 @@ OBJ = ft_main.o\
 	  mlibft.o\
 	  ft_free.o\
 	  ft_error.o
+
+SRC_B
 
 all : $(NAME)
 
