@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:45:47 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:10:53 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 18:48:44 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_check_1st_line(char *m_str)
 
 int	ft_check_map_char(char c)
 {
-	if (c == '0' || c== '1')
+	if (c == '0' || c == '1')
 		return (1);
 	else if (c == 'C' || c == 'P' || c == 'E')
 		return (1);

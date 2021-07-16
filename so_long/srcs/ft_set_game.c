@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:57:29 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:11:02 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 18:46:11 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_backup_map(t_map *map, t_game *game)
 t_game	*ft_set_game(t_map *map)
 {
 	t_game	*game;
-	
+
 	game = malloc(sizeof(t_game));
 	if (game == NULL)
 		return (NULL);

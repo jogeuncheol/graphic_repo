@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:41:02 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:10:56 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 18:47:43 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	ft_file_name(char *map_file)
 	i = 0;
 	while (map_file[i] != '\0')
 		i++;
-	if (map_file[i - 1] == 'r' && map_file[i - 2] == 'e' &&
-			map_file[i - 3] == 'b' && map_file[i - 4] == '.')
+	if (map_file[i - 1] == 'r' && map_file[i - 2] == 'e'
+		&& map_file[i - 3] == 'b' && map_file[i - 4] == '.')
 		return (1);
 	return (0);
 }
@@ -31,7 +31,7 @@ char	*ft_map_str(char *map_file)
 	char	*tmp;
 	char	*m_str;
 	char	buff[2];
-	
+
 	m_str = NULL;
 	tmp = NULL;
 	fd = open(map_file, O_RDONLY);
@@ -59,7 +59,7 @@ char	*ft_map_str(char *map_file)
 int	ft_exist_data(t_map *map)
 {
 	int		i;
-	
+
 	map->p = 0;
 	map->e = 0;
 	map->c = 0;
