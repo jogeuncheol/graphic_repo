@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:56 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:31:01 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:55:16 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_game_reset(t_game *game)
 
 int	key_press(int key_code, t_game *game)
 {
-	if (game->exit_status == 0 && game->enemy_status == 0)
+	if (game->exit_status == 0)
 	{
 		if (key_code == KEY_W)
 			ft_move(game, 0, -1);
