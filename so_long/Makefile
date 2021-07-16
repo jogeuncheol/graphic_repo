@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/16 17:18:52 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/16 17:22:39 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,45 +62,45 @@ OBJ = $(SRC_DIR)/ft_main.o\
 	  $(SRC_DIR)/ft_free.o\
 	  $(SRC_DIR)/ft_error.o
 
-SRC_B = $(SRC__B_DIR)/ft_main_bonus.c\
-	  $(SRC__B_DIR)/ft_map_validation_bonus.c\
-	  $(SRC__B_DIR)/ft_map_checker_bonus.c\
-	  $(SRC__B_DIR)/ft_set_game_bonus.c\
-	  $(SRC__B_DIR)/ft_load_texture_bonus.c\
-	  $(SRC__B_DIR)/ft_init_game_bonus.c\
-	  $(SRC__B_DIR)/ft_draw_screen_bonus.c\
-	  $(SRC__B_DIR)/ft_draw_sprite_bonus.c\
-	  $(SRC__B_DIR)/ft_draw_exit_bonus.c\
-	  $(SRC__B_DIR)/ft_draw_player_bonus.c\
-	  $(SRC__B_DIR)/ft_draw_enemy_bonus.c\
-	  $(SRC__B_DIR)/ft_game_status_bonus.c\
-	  $(SRC__B_DIR)/ft_move_bonus.c\
-	  $(SRC__B_DIR)/ft_string_bonus.c\
-	  $(SRC__B_DIR)/ft_enemy_bonus.c\
-	  $(SRC__B_DIR)/ft_move_enemy_bonus.c\
-	  $(SRC__B_DIR)/mlibft_bonus.c\
-	  $(SRC__B_DIR)/ft_free_bonus.c\
-	  $(SRC__B_DIR)/ft_error_bonus.c
+SRC_B = $(SRC_B_DIR)/ft_main_bonus.c\
+	  $(SRC_B_DIR)/ft_map_validation_bonus.c\
+	  $(SRC_B_DIR)/ft_map_checker_bonus.c\
+	  $(SRC_B_DIR)/ft_set_game_bonus.c\
+	  $(SRC_B_DIR)/ft_load_texture_bonus.c\
+	  $(SRC_B_DIR)/ft_init_game_bonus.c\
+	  $(SRC_B_DIR)/ft_draw_screen_bonus.c\
+	  $(SRC_B_DIR)/ft_draw_sprite_bonus.c\
+	  $(SRC_B_DIR)/ft_draw_exit_bonus.c\
+	  $(SRC_B_DIR)/ft_draw_player_bonus.c\
+	  $(SRC_B_DIR)/ft_draw_enemy_bonus.c\
+	  $(SRC_B_DIR)/ft_game_status_bonus.c\
+	  $(SRC_B_DIR)/ft_move_bonus.c\
+	  $(SRC_B_DIR)/ft_string_bonus.c\
+	  $(SRC_B_DIR)/ft_enemy_bonus.c\
+	  $(SRC_B_DIR)/ft_move_enemy_bonus.c\
+	  $(SRC_B_DIR)/mlibft_bonus.c\
+	  $(SRC_B_DIR)/ft_free_bonus.c\
+	  $(SRC_B_DIR)/ft_error_bonus.c
 
-OBJ_B = $(SRC__B_DIR)/ft_main_bonus.o\
-	  $(SRC__B_DIR)/ft_map_validation_bonus.o\
-	  $(SRC__B_DIR)/ft_map_checker_bonus.o\
-	  $(SRC__B_DIR)/ft_set_game_bonus.o\
-	  $(SRC__B_DIR)/ft_load_texture_bonus.o\
-	  $(SRC__B_DIR)/ft_init_game_bonus.o\
-	  $(SRC__B_DIR)/ft_draw_screen_bonus.o\
-	  $(SRC__B_DIR)/ft_draw_sprite_bonus.o\
-	  $(SRC__B_DIR)/ft_draw_exit_bonus.o\
-	  $(SRC__B_DIR)/ft_draw_player_bonus.o\
-	  $(SRC__B_DIR)/ft_draw_enemy_bonus.o\
-	  $(SRC__B_DIR)/ft_game_status_bonus.o\
-	  $(SRC__B_DIR)/ft_move_bonus.o\
-	  $(SRC__B_DIR)/ft_string_bonus.o\
-	  $(SRC__B_DIR)/ft_enemy_bonus.o\
-	  $(SRC__B_DIR)/ft_move_enemy_bonus.o\
-	  $(SRC__B_DIR)/mlibft_bonus.o\
-	  $(SRC__B_DIR)/ft_free_bonus.o\
-	  $(SRC__B_DIR)/ft_error_bonus.o
+OBJ_B = $(SRC_B_DIR)/ft_main_bonus.o\
+	  $(SRC_B_DIR)/ft_map_validation_bonus.o\
+	  $(SRC_B_DIR)/ft_map_checker_bonus.o\
+	  $(SRC_B_DIR)/ft_set_game_bonus.o\
+	  $(SRC_B_DIR)/ft_load_texture_bonus.o\
+	  $(SRC_B_DIR)/ft_init_game_bonus.o\
+	  $(SRC_B_DIR)/ft_draw_screen_bonus.o\
+	  $(SRC_B_DIR)/ft_draw_sprite_bonus.o\
+	  $(SRC_B_DIR)/ft_draw_exit_bonus.o\
+	  $(SRC_B_DIR)/ft_draw_player_bonus.o\
+	  $(SRC_B_DIR)/ft_draw_enemy_bonus.o\
+	  $(SRC_B_DIR)/ft_game_status_bonus.o\
+	  $(SRC_B_DIR)/ft_move_bonus.o\
+	  $(SRC_B_DIR)/ft_string_bonus.o\
+	  $(SRC_B_DIR)/ft_enemy_bonus.o\
+	  $(SRC_B_DIR)/ft_move_enemy_bonus.o\
+	  $(SRC_B_DIR)/mlibft_bonus.o\
+	  $(SRC_B_DIR)/ft_free_bonus.o\
+	  $(SRC_B_DIR)/ft_error_bonus.o
 
 all : $(NAME)
 
