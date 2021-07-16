@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/16 12:48:11 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/16 16:12:05 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC	= ft_main.c\
 	  ft_draw_sprite.c\
 	  ft_draw_exit.c\
 	  ft_draw_player.c\
+	  ft_draw_enemy.c\
 	  ft_game_status.c\
 	  ft_move.c\
 	  ft_string.c\
@@ -43,6 +44,7 @@ OBJ = ft_main.o\
 	  ft_draw_sprite.o\
 	  ft_draw_exit.o\
 	  ft_draw_player.o\
+	  ft_draw_enemy.o\
 	  ft_game_status.o\
 	  ft_move.o\
 	  ft_string.o\

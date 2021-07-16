@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:11:18 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:30:30 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 16:07:15 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	ft_game_loop(t_game *game)
 		ft_draw_sprite(game);
 		ft_draw_exit(game);
 		ft_draw_player(game);
-//		ft_move_enemy(game);
-//		ft_draw_enemy(game);
+		ft_move_enemy(game);
+		ft_draw_enemy(game);
 		ft_game_status(game);
 	}
-//	ft_enemy_count_manager(game);
+	ft_enemy_count_manager(game);
 	return (0);
 }
 

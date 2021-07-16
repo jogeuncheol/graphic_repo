@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:32 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 12:00:34 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 16:24:26 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	ft_enemy_random_position(t_game *game)
 	{
 //		enemy_x = (int)game->map % (game->x);
 //		enemy_y = (int)game->map_backup % (game->y);
-		enemy_x = game->map[game->y / 2][game->x / 2] % game->x;
-		enemy_y = game->map[game->y / 3][game->x / 3] % game->y;
+		enemy_x = game->map[game->y / 4][game->x / 2] % game->x;
+		enemy_y = game->map[game->y / 2][game->x / 4] % game->y;
 		if (enemy_x < 0)
 			enemy_x = enemy_x * -1;
 		if (enemy_y < 0)
@@ -83,8 +83,12 @@ void	ft_enemy_random_position(t_game *game)
 	}
 	else
 	{
-		enemy_x = (enemy_x + game->enemy_count) % game->x;
-		enemy_y = (enemy_y + game->enemy_count + 42) % game->y;
+		enemy_x = (enemy_x + game->enemy_count * 4) % game->x;
+		enemy_y = (enemy_y + game->enemy_count * 2) % game->y;
 	}
+	if (enemy_x < 0)
+		enemy_x = enemy_x * -1;
+	if (enemy_y < 0)
+		enemy_y = enemy_y * -1;
 	ft_set_enemy_position(game, enemy_x, enemy_y);
 }
