@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:50:28 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 18:39:20 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 18:42:24 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,33 @@
 void	ft_put_black_stone(t_game *game, int timer)
 {
 	if (timer < 5 || timer > 25)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.img,
-				game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		mlx_put_image_to_window(
+			game->mlx_ptr, game->mlx_win, game->tex_player.img,
+			game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 	else if (timer < 10 || timer > 20)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.img_2,
-				game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		mlx_put_image_to_window(
+			game->mlx_ptr, game->mlx_win, game->tex_player.img_2,
+			game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 	else
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.img_3,
-				game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		mlx_put_image_to_window(
+			game->mlx_ptr, game->mlx_win, game->tex_player.img_3,
+			game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 }
 
 void	ft_put_white_stone(t_game *game, int timer)
 {
 	if (timer < 5 || timer > 25)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.c_img1,
-				game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		mlx_put_image_to_window(
+			game->mlx_ptr, game->mlx_win, game->tex_player.c_img1,
+			game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 	else if (timer < 10 || timer > 20)
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.c_img2,
-				game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		mlx_put_image_to_window(
+			game->mlx_ptr, game->mlx_win, game->tex_player.c_img2,
+			game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 	else
-		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_player.c_img3,
-				game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
+		mlx_put_image_to_window(
+			game->mlx_ptr, game->mlx_win, game->tex_player.c_img3,
+			game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 }
 
 void	ft_player_stone_switch(t_game *game, int timer)
