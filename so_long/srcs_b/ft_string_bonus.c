@@ -6,15 +6,15 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:12 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 20:48:05 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 21:48:31 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long_bonus.h"
 
-char *set_nbr(char *nbr, int n, int len, int sign)
+char	*set_nbr(char *nbr, int n, int len, int sign)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (n == -2147483648)
@@ -39,10 +39,10 @@ char *set_nbr(char *nbr, int n, int len, int sign)
 	return (nbr);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
-	int 	tmp;
-	int 	len;
+	int		tmp;
+	int		len;
 	char	*nbr;
 
 	len = 0;
@@ -67,9 +67,9 @@ char *ft_itoa(int n)
 	return (set_nbr(nbr, n, len - 1, 1));
 }
 
-void ft_str_move_count(t_game *game)
+void	ft_str_move_count(t_game *game)
 {
-	char *nbr;
+	char	*nbr;
 
 	nbr = ft_itoa(game->move_count);
 	if (nbr == NULL)

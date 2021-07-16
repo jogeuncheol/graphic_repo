@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 19:44:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:12:06 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 21:45:50 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_enemy_collision(t_game *game)
 		game->enemy_status = 1;
 }
 
-void	ft_e_move_y(t_game *game);
 void	ft_e_move_x(t_game *game)
 {
 	if (game->p_x < game->e_x && game->map[game->e_y][game->e_x - 1] != '1'
@@ -33,7 +32,6 @@ void	ft_e_move_x(t_game *game)
 	else if (game->map[game->e_y + 1][game->e_x] != '1'
 			&& game->map[game->e_y + 1][game->e_x] != 'B')
 		game->e_y++;
-
 }
 
 void	ft_e_move_y(t_game *game)
@@ -50,7 +48,6 @@ void	ft_e_move_y(t_game *game)
 	else if (game->map[game->e_y][game->e_x + 1] != '1'
 			&& game->map[game->e_y][game->e_x + 1] != 'B')
 		game->e_x++;
-
 }
 
 void	ft_enemy_ai2(t_game *game)

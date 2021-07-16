@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:47:13 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 20:38:39 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 21:51:07 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_draw_sprite(t_game *game)
 		while (game->map[i][j] != '\0')
 		{
 			if (game->map[i][j] == 'C')
-				ft_sprite_animation(game, i * TILE_SIZE, j * TILE_SIZE); // bonus sprite_ani
+				ft_sprite_animation(game, i * TILE_SIZE, j * TILE_SIZE);
 			j++;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 16:10:21 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 20:34:43 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 21:52:21 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ void	ft_draw_enemy(t_game *game)
 {
 	game->enemy_timer++;
 	mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-			game->tex_enemy.img, game->e_x * TILE_SIZE, game->e_y * TILE_SIZE);
+		game->tex_enemy.img, game->e_x * TILE_SIZE, game->e_y * TILE_SIZE);
 }

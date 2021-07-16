@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:25:10 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:11:47 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 21:49:21 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	ft_init_collections(t_game *game)
 void	ft_init_game(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
-	game->mlx_win = mlx_new_window(game->mlx_ptr, TILE_SIZE * game->x, TILE_SIZE * game->y, "SO_LONG");
+	game->mlx_win = mlx_new_window(game->mlx_ptr,
+			TILE_SIZE * game->x, TILE_SIZE * game->y, "SO_LONG");
 	ft_load_texture(game);
 	ft_init_player_position(game);
 	ft_init_collections(game);
