@@ -14,11 +14,14 @@ NAME = so_long
 
 CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appkit
 
-SRC = parsing.c\
-	  ft_main.c\
+SRC	= ft_main.c\
 	  ft_map_validation.c\
 	  ft_map_checker.c\
 	  ft_load_texture.c\
+	  ft_draw_screen.c\
+	  ft_draw_sprite.c\
+	  ft_draw_exit.c\
+	  ft_draw_player.c\
 	  ft_move.c\
 	  ft_string.c\
 	  ft_enemy.c\
@@ -27,11 +30,14 @@ SRC = parsing.c\
 	  ft_free.c\
 	  ft_error.c
 
-OBJ = parsing.o\
-	  ft_main.o\
+OBJ = ft_main.o\
 	  ft_map_validation.o\
 	  ft_map_checker.o\
 	  ft_load_texture.o\
+	  ft_draw_screen.o\
+	  ft_draw_sprite.o\
+	  ft_draw_exit.o\
+	  ft_draw_player.o\
 	  ft_move.o\
 	  ft_string.o\
 	  ft_enemy.o\

@@ -106,6 +106,27 @@ void	ft_putstr_fd(char *str, int fd);
 char	*ft_strdup(char *str);
 char	*ft_strjoin(char *s1, char *s2);
 
+int		ft_file_name(char *map_file);
+t_map	*ft_map_validation(char *map_file);
+t_game	*ft_set_game(t_map *map);
+
+int		ft_check_1st_line(char *m_str);
+int		ft_check_map_char(char c);
+int		ft_check_line(char *m_str);
+int		ft_check_length_line(char *m_str);
+int		ft_check_last_line(char *m_str);
+
+void	ft_init_game(t_game *game);
+void	ft_init_player_position(t_game *game);
+void	ft_init_collections(t_game *game);
+
+void	ft_draw_screen(t_game *game);
+void	ft_draw_sprite(t_game *game);
+void	ft_draw_exit(t_game *game);
+void	ft_draw_player(t_game *game);
+void	ft_move_enemy(t_game *game);
+void	ft_draw_enemy(t_game *game);
+
 int		key_press(int key_code, t_game *game);
 void	ft_touch_collect(t_game *game);
 void	ft_init_player_position(t_game * game);
@@ -122,5 +143,7 @@ void	ft_move_enemy(t_game *game);
 
 void	ft_free_map(char **map);
 void	ft_destroy_mlx(t_game *game);
+
+void	ft_error(t_map *map, t_game *game);
 
 #endif

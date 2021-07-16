@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
 void	ft_exit_animation(t_game *game, int i, int j)
 {
 	int		timer;

@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
 int	ft_game_loop(t_game *game)
 {
 	if (game->exit_status == 0 && game->enemy_status == 0)

@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
 void	ft_player_texture(t_game *game)
 {
 	game->tex_player.img =

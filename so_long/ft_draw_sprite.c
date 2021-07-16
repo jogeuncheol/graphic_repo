@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_animation_timer(game)
+#include "so_long.h"
+
+void	ft_animation_timer(t_game *game)
 {
 	if (game->sprite_timer > 75)
 		game->sprite_timer = 0;

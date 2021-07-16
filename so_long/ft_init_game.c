@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
 void	ft_init_player_position(t_game *game)
 {
 	int		i;

@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
 void	ft_player_stone_switch(t_game *game, int timer)
 {
 	if (game->p_stone == 0)
@@ -43,7 +45,7 @@ void	ft_player_animation(t_game *game)
 	int		timer;
 
 	timer = game->player_timer;
-	ft_player_stone_swicth(game, timer);
+	ft_player_stone_switch(game, timer);
 	if (timer > 30)
 		game->player_timer = 0;
 }
