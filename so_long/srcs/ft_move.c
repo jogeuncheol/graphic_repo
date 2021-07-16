@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:56 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:11:00 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:31:01 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	ft_game_reset(t_game *game)
 	game->enemy_status = 0;
 	game->p_stone = 0;
 	ft_str_move_count(game);
-	ft_enemy_random_position(game);
 }
 
 int	key_press(int key_code, t_game *game)

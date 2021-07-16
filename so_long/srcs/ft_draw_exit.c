@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:49:35 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:10:23 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:28:59 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	ft_draw_exit(t_game *game)
 		while (game->map[i][j] != '\0')
 		{
 			if (game->map[i][j] == 'E')
-				ft_exit_animation(game, i * TILE_SIZE, j * TILE_SIZE); // bonus sprite_ani
+				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+					game->tex_exit.img, j * TILE_SIZE, i * TILE_SIZE);
 			j++;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:47:13 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:10:30 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:28:41 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	ft_draw_sprite(t_game *game)
 	int		i;
 	int		j;
 
-	game->sprite_timer++;
 	i = 0;
 	while (game->map[i] != NULL)
 	{
@@ -60,7 +59,8 @@ void	ft_draw_sprite(t_game *game)
 		while (game->map[i][j] != '\0')
 		{
 			if (game->map[i][j] == 'C')
-				ft_sprite_animation(game, i * TILE_SIZE, j * TILE_SIZE); // bonus sprite_ani
+				mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+					game->tex_collect.img, j * TILE_SIZE, i * TILE_SIZE);
 			j++;
 		}
 		i++;

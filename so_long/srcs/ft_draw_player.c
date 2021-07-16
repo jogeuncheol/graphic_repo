@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:50:28 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:10:26 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:28:31 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void	ft_player_animation(t_game *game)
 
 void	ft_draw_player(t_game *game)
 {
-	game->player_timer++;
-	ft_player_animation(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
+		game->tex_player.img, game->p_x * TILE_SIZE, game->p_y * TILE_SIZE);
 }
