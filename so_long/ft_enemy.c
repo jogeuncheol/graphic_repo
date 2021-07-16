@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_enemy.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/16 12:00:32 by gejo              #+#    #+#             */
+/*   Updated: 2021/07/16 12:00:34 by gejo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 void	ft_enemy_count_manager(t_game *game)
@@ -9,10 +21,12 @@ void	ft_enemy_count_manager(t_game *game)
 
 void	ft_enemy_texture(t_game *game)
 {
-	game->tex_enemy.img = mlx_xpm_file_to_image(game->mlx_ptr, "./texture/alphago.xpm",
-			&game->tex_enemy.width, &game->tex_enemy.height);
-	game->tex_enemy.data = (int *)mlx_get_data_addr(game->tex_enemy.img,
-			&game->tex_enemy.bpp, &game->tex_enemy.size_l, &game->tex_enemy.endian);
+	game->tex_enemy.img =
+		mlx_xpm_file_to_image(game->mlx_ptr, "./texture/alphago.xpm",
+		&game->tex_enemy.width, &game->tex_enemy.height);
+	game->tex_enemy.data =
+		(int *)mlx_get_data_addr(game->tex_enemy.img, &game->tex_enemy.bpp,
+		&game->tex_enemy.size_l, &game->tex_enemy.endian);
 }
 
 void	ft_init_enemy(t_game *game)

@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 23:34:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/15 21:38:50 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 13:36:43 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -703,6 +703,7 @@ void ft_init_game(t_game *game)
 	game->p_stone = 0;
 	game->move_str = NULL;
 	ft_str_move_count(game);
+// v--- bonus
 	ft_enemy_texture(game);
 	ft_init_enemy(game);
 }
