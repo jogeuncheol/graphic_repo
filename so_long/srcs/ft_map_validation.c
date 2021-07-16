@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:41:02 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 18:47:43 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 20:31:23 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,37 +23,6 @@ int	ft_file_name(char *map_file)
 		&& map_file[i - 3] == 'b' && map_file[i - 4] == '.')
 		return (1);
 	return (0);
-}
-
-char	*ft_map_str(char *map_file)
-{
-	int		fd;
-	char	*tmp;
-	char	*m_str;
-	char	buff[2];
-
-	m_str = NULL;
-	tmp = NULL;
-	fd = open(map_file, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("Error\nopen fail\n", 2);
-		return (NULL);
-	}
-	while (read(fd, buff, 1) > 0)
-	{
-		buff[1] = '\0';
-		tmp = ft_strjoin(m_str, buff);
-		if (tmp == NULL)
-		{
-			ft_putstr_fd("Error\nopen file malloc fail\n", 2);
-			free(m_str);
-			return (NULL);
-		}
-		free(m_str);
-		m_str = tmp;
-	}
-	return (m_str);
 }
 
 int	ft_exist_data(t_map *map)
@@ -112,7 +81,7 @@ t_map	*ft_map_validation(char *map_file)
 	map = malloc(sizeof(t_map));
 	if (map == NULL)
 		return (NULL);
-	map->m_str = ft_map_str(map_file);
+	map->m_str = ft_open_file(map_file);
 	if (map->m_str == NULL)
 	{
 		ft_putstr_fd("Error\nmalloc fail\n", 2);

@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:57:29 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 18:46:11 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 21:27:42 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,35 @@ void	ft_init_map_xy(t_game *game, char *m_str)
 	game->y = line;
 }
 
+void	ft_get_map_line(t_map *map, t_game *game)
+{
+	int		i;
+	int		idx;
+	char	*tmp;
+
+	i = 0;
+	idx = 0;
+	tmp = &(map->m_str[i]);
+	while (map->m_str[i] != '\0')
+	{
+		if (map->m_str[i] == '\n')
+		{
+			map->m_str[i] = '\0';
+			game->map[idx] = ft_strdup(tmp);
+			map->m_str[i] = '\n';
+			if (game->map[idx] == NULL)
+			{
+				ft_putstr_fd("Error\nmap strdup fail\n", 2);
+				ft_error(map, game);
+			}
+			idx++;
+			tmp = &(map->m_str[i + 1]);
+		}
+		i++;
+	}
+	game->map[idx] = NULL;
+}
+
 void	ft_init_map(t_map *map, t_game *game)
 {
 	int		i;
@@ -44,27 +73,7 @@ void	ft_init_map(t_map *map, t_game *game)
 		ft_putstr_fd("Error\nmap malloc fail\n", 2);
 		ft_error(map, game);
 	}
-	i = 0;
-	idx = 0;
-	tmp = &(map->m_str[i]);
-	while (map->m_str[i] != '\0')
-	{
-		if (map->m_str[i] == '\n')
-		{
-			map->m_str[i] = '\0';
-			game->map[idx] = ft_strdup(tmp);
-			map->m_str[i] = '\n';
-			if (game->map[idx] == NULL)
-			{
-				game->map[idx + 1] = NULL;
-				ft_error(map, game);
-			}
-			idx++;
-			tmp = &(map->m_str[i + 1]);
-		}
-		i++;
-	}
-	game->map[idx] = NULL;
+	ft_get_map_line(map, game);
 }
 
 void	ft_backup_map(t_map *map, t_game *game)

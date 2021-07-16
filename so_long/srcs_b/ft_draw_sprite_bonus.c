@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:47:13 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:11:35 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 20:38:39 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ void	ft_sprite_animation(t_game *game, int i, int j)
 	timer = game->sprite_timer;
 	if (timer < 5 || timer > 70)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.img, j, i);
+			game->tex_collect.img, j, i);
 	else if (timer < 10 || timer > 65)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.img_2, j, i);
+			game->tex_collect.img_2, j, i);
 	else if (timer < 15 || timer > 60)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.img_3, j, i);
+			game->tex_collect.img_3, j, i);
 	else if (timer < 20 || timer > 55)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
-				game->tex_collect.img_4, j, i);
+			game->tex_collect.img_4, j, i);
 	else if (timer < 25 || timer > 50)
 		mlx_put_image_to_window(game->mlx_ptr, game->mlx_win,
 			game->tex_collect.c_img1, j, i);

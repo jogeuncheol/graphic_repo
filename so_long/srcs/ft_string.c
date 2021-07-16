@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:12 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 18:45:04 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 20:47:50 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,10 @@ char	*set_nbr(char *nbr, int n, int len, int sign)
 
 char	*ft_itoa(int n)
 {
-	int		i;
 	int		tmp;
 	int		len;
 	char	*nbr;
 
-	i = 0;
 	len = 0;
 	tmp = n;
 	while (tmp / 10 != 0)

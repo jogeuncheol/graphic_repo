@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:53 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:03:51 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 20:31:46 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ char	*ft_strjoin(char *s1, char *s2);
 
 int		ft_file_name(char *map_file);
 t_map	*ft_map_validation(char *map_file);
+char	*ft_open_file(char *map_file);
 t_game	*ft_set_game(t_map *map);
 
 int		ft_check_1st_line(char *m_str);
