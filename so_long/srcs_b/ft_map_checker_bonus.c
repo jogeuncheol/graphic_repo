@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:45:47 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:00:48 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:00:29 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	ft_check_1st_line(char *m_str)
 {
