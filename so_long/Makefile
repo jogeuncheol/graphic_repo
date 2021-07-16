@@ -6,13 +6,13 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/16 17:34:57 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/16 18:05:41 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 
-CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appkit
+CFLAGS = -g3 -fsanitize=address -L./mlx -lmlx -framework OpenGL -framework Appkit
 
 INCLUDE = include
 
