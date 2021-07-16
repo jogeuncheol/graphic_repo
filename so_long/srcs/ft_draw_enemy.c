@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 16:10:21 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 16:11:29 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:21 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_draw_enemy(t_game *game)
 {

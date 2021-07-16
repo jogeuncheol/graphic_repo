@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:12 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 12:01:15 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:11:05 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 char *set_nbr(char *nbr, int n, int len, int sign)
 {

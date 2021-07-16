@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:49:35 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:50:00 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:23 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_exit_animation(t_game *game, int i, int j)
 {

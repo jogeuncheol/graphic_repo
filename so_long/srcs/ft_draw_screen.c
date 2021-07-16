@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:37:16 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:46:58 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:28 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_draw_screen(t_game *game)
 {

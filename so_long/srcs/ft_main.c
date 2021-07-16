@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:11:18 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 16:07:15 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:50 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 int	ft_game_loop(t_game *game)
 {

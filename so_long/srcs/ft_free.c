@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:25 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 12:00:28 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:37 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_free_map(char **map)
 {

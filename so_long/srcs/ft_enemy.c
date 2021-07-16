@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:32 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 16:24:26 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:32 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_enemy_count_manager(t_game *game)
 {

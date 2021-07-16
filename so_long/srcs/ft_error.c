@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:35:17 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:06:40 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:35 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_error(t_map *map, t_game *game)
 {

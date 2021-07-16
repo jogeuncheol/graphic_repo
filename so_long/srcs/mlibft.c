@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:44 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 12:01:45 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:11:11 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 int	ft_strlen(char *str)
 {

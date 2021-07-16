@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:54:36 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:55:29 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:42 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_touch_collect(t_game *game)
 {

@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:25:10 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 13:33:10 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:44 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_init_player_position(t_game *game)
 {

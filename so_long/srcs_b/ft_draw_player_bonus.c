@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_draw_player.c                                   :+:      :+:    :+:   */
+/*   ft_draw_player_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:50:28 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 16:59:49 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:11:30 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long_bonus.h"
+#include "../include/so_long_bonus.h"
 
 void	ft_player_stone_switch(t_game *game, int timer)
 {

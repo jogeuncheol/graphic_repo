@@ -6,11 +6,11 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 19:44:14 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 12:00:44 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/16 17:10:58 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 void	ft_enemy_collision(t_game *game)
 {
