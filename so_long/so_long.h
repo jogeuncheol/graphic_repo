@@ -119,6 +119,7 @@ int		ft_check_last_line(char *m_str);
 void	ft_init_game(t_game *game);
 void	ft_init_player_position(t_game *game);
 void	ft_init_collections(t_game *game);
+void	ft_load_texture(t_game *game);
 
 void	ft_draw_screen(t_game *game);
 void	ft_draw_sprite(t_game *game);

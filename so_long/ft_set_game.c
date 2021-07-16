@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
 void	ft_init_map_xy(t_game *game, char *m_str)
 {
 	int		i;
@@ -29,7 +31,7 @@ void	ft_init_map_xy(t_game *game, char *m_str)
 	game->y = line;
 }
 
-void	ft_init_map(t_map, *map, t_game *game)
+void	ft_init_map(t_map *map, t_game *game)
 {
 	int		i;
 	int		idx;
@@ -44,7 +46,7 @@ void	ft_init_map(t_map, *map, t_game *game)
 	}
 	i = 0;
 	idx = 0;
-	tmp = &map->m_str[i];
+	tmp = &(map->m_str[i]);
 	while (map->m_str[i] != '\0')
 	{
 		if (map->m_str[i] == '\n')
@@ -54,11 +56,11 @@ void	ft_init_map(t_map, *map, t_game *game)
 			map->m_str[i] = '\n';
 			if (game->map[idx] == NULL)
 			{
-				game->map[idx + 1] = NULL)
+				game->map[idx + 1] = NULL;
 				ft_error(map, game);
 			}
 			idx++;
-			tmp = &map->m_str[i + 1];
+			tmp = &(map->m_str[i + 1]);
 		}
 		i++;
 	}
@@ -100,6 +102,6 @@ t_game	*ft_set_game(t_map *map)
 	if (game == NULL)
 		return (NULL);
 	ft_init_map(map, game);
-	ft_backup_map(game);
+	ft_backup_map(map, game);
 	return (game);
 }

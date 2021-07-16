@@ -17,11 +17,14 @@ CFLAGS = -g3 -fsanitize=address -L../mlx -lmlx -framework OpenGL -framework Appk
 SRC	= ft_main.c\
 	  ft_map_validation.c\
 	  ft_map_checker.c\
+	  ft_set_game.c\
 	  ft_load_texture.c\
+	  ft_init_game.c\
 	  ft_draw_screen.c\
 	  ft_draw_sprite.c\
 	  ft_draw_exit.c\
 	  ft_draw_player.c\
+	  ft_game_status.c\
 	  ft_move.c\
 	  ft_string.c\
 	  ft_enemy.c\
@@ -33,11 +36,14 @@ SRC	= ft_main.c\
 OBJ = ft_main.o\
 	  ft_map_validation.o\
 	  ft_map_checker.o\
+	  ft_set_game.o\
 	  ft_load_texture.o\
+	  ft_init_game.o\
 	  ft_draw_screen.o\
 	  ft_draw_sprite.o\
 	  ft_draw_exit.o\
 	  ft_draw_player.o\
+	  ft_game_status.o\
 	  ft_move.o\
 	  ft_string.o\
 	  ft_enemy.o\
@@ -50,9 +56,6 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	gcc $(CFLAGS) -o $(NAME) $(OBJ)
-
-$(OBJ) : $(SRC)
-	gcc -c $(SRC)
 
 clean :
 	rm -f $(OBJ)

@@ -10,6 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "so_long.h"
+
+void	ft_touch_collect(t_game *game)
+{
+	if (game->map[game->p_y][game->p_x] == 'C')
+		game->number_of_collections--;
+	if (game->map[game->p_y][game->p_x] != 'E')
+	{
+		if (game->p_stone == 0)
+		{
+			game->map[game->p_y][game->p_x] = 'B';
+			game->p_stone = 1;
+		}
+		else
+		{
+			game->map[game->p_y][game->p_x] = '1';
+			game->p_stone = 0;
+		}
+	}
+}
+
 void	ft_game_message(t_game *game, int color)
 {
 	mlx_string_put(game->mlx_ptr, game->mlx_win,
