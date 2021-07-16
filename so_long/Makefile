@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/16 17:22:39 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/16 17:34:57 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,12 +32,9 @@ SRC	= $(SRC_DIR)/ft_main.c\
 	  $(SRC_DIR)/ft_draw_sprite.c\
 	  $(SRC_DIR)/ft_draw_exit.c\
 	  $(SRC_DIR)/ft_draw_player.c\
-	  $(SRC_DIR)/ft_draw_enemy.c\
 	  $(SRC_DIR)/ft_game_status.c\
 	  $(SRC_DIR)/ft_move.c\
 	  $(SRC_DIR)/ft_string.c\
-	  $(SRC_DIR)/ft_enemy.c\
-	  $(SRC_DIR)/ft_move_enemy.c\
 	  $(SRC_DIR)/mlibft.c\
 	  $(SRC_DIR)/ft_free.c\
 	  $(SRC_DIR)/ft_error.c
@@ -52,12 +49,9 @@ OBJ = $(SRC_DIR)/ft_main.o\
 	  $(SRC_DIR)/ft_draw_sprite.o\
 	  $(SRC_DIR)/ft_draw_exit.o\
 	  $(SRC_DIR)/ft_draw_player.o\
-	  $(SRC_DIR)/ft_draw_enemy.o\
 	  $(SRC_DIR)/ft_game_status.o\
 	  $(SRC_DIR)/ft_move.o\
 	  $(SRC_DIR)/ft_string.o\
-	  $(SRC_DIR)/ft_enemy.o\
-	  $(SRC_DIR)/ft_move_enemy.o\
 	  $(SRC_DIR)/mlibft.o\
 	  $(SRC_DIR)/ft_free.o\
 	  $(SRC_DIR)/ft_error.o
