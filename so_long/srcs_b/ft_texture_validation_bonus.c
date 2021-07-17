@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_texture_validation.c                            :+:      :+:    :+:   */
+/*   ft_texture_validation_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/17 19:15:25 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 20:41:25 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 21:37:02 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long_bonus.h"
 
-int		ft_player_tex_valid(t_game *game)
+int	ft_player_tex_valid(t_game *game)
 {
 	int		invalid;
 
 	invalid = 0;
 	if (game->tex_player.img == NULL
-			|| game->tex_player.img_2 == NULL
-			|| game->tex_player.img_3 == NULL
-			|| game->tex_player.c_img1 == NULL
-			|| game->tex_player.c_img2 == NULL
-			|| game->tex_player.c_img3 == NULL)
+		|| game->tex_player.img_2 == NULL
+		|| game->tex_player.img_3 == NULL
+		|| game->tex_player.c_img1 == NULL
+		|| game->tex_player.c_img2 == NULL
+		|| game->tex_player.c_img3 == NULL)
 	{
 		invalid = 1;
 		ft_putstr_fd("Error\nplayer texture load fail\n", 2);
@@ -30,18 +30,18 @@ int		ft_player_tex_valid(t_game *game)
 	return (invalid);
 }
 
-int		ft_collect_tex_valid(t_game *game)
+int	ft_collect_tex_valid(t_game *game)
 {
 	int		invalid;
 
 	invalid = 0;
 	if (game->tex_collect.img == NULL
-			|| game->tex_collect.img_2 == NULL
-			|| game->tex_collect.img_3 == NULL
-			|| game->tex_collect.img_4 == NULL
-			|| game->tex_collect.c_img1 == NULL
-			|| game->tex_collect.c_img2 == NULL
-			|| game->tex_collect.c_img3 == NULL)
+		|| game->tex_collect.img_2 == NULL
+		|| game->tex_collect.img_3 == NULL
+		|| game->tex_collect.img_4 == NULL
+		|| game->tex_collect.c_img1 == NULL
+		|| game->tex_collect.c_img2 == NULL
+		|| game->tex_collect.c_img3 == NULL)
 	{
 		invalid = 1;
 		ft_putstr_fd("Error\ncollect texture load fail\n", 2);
@@ -49,18 +49,18 @@ int		ft_collect_tex_valid(t_game *game)
 	return (invalid);
 }
 
-int		ft_exit_tex_valid(t_game *game)
+int	ft_exit_tex_valid(t_game *game)
 {
 	int		invalid;
 
 	invalid = 0;
 	if (game->tex_exit.img == NULL
-			|| game->tex_exit.img_2 == NULL
-			|| game->tex_exit.img_3 == NULL
-			|| game->tex_exit.img_4 == NULL
-			|| game->tex_exit.c_img1 == NULL
-			|| game->tex_exit.c_img2 == NULL
-			|| game->tex_exit.c_img3 == NULL)
+		|| game->tex_exit.img_2 == NULL
+		|| game->tex_exit.img_3 == NULL
+		|| game->tex_exit.img_4 == NULL
+		|| game->tex_exit.c_img1 == NULL
+		|| game->tex_exit.c_img2 == NULL
+		|| game->tex_exit.c_img3 == NULL)
 	{
 		invalid = 1;
 		ft_putstr_fd("Error\nexit texture load fail\n", 2);
@@ -68,7 +68,7 @@ int		ft_exit_tex_valid(t_game *game)
 	return (invalid);
 }
 
-int		ft_texture_validation(t_game *game)
+int	ft_single_tex_valid(t_game *game)
 {
 	int		invalid;
 
@@ -93,6 +93,16 @@ int		ft_texture_validation(t_game *game)
 		invalid = 1;
 		ft_putstr_fd("Error\nenemy texture load fail\n", 2);
 	}
+	return (invalid);
+}
+
+int	ft_texture_validation(t_game *game)
+{
+	int		invalid;
+
+	invalid = 0;
+	if (ft_single_tex_valid(game) == 1)
+		invalid = 1;
 	if (ft_player_tex_valid(game) == 1)
 		invalid = 1;
 	if (ft_collect_tex_valid(game) == 1)

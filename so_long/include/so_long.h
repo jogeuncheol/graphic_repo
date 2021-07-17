@@ -6,12 +6,18 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:53 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 19:37:40 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 21:43:02 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include "../mlx/mlx.h"
 
 # define TILE_SIZE					32
 # define KEY_W						13
@@ -23,12 +29,6 @@
 # define KEY_ESC					53
 # define EVENT_KEY_RELEASE			3
 # define EVENT_KEY_DESTROY_NOTIFY	17
-
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include "../mlx/mlx.h"
 
 typedef struct s_map
 {
