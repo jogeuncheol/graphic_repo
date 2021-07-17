@@ -6,7 +6,7 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/17 16:48:42 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/17 20:40:33 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC	= $(SRC_DIR)/ft_main.c\
 	  $(SRC_DIR)/ft_map_checker.c\
 	  $(SRC_DIR)/ft_set_game.c\
 	  $(SRC_DIR)/ft_load_texture.c\
+	  $(SRC_DIR)/ft_texture_validation.c\
 	  $(SRC_DIR)/ft_init_game.c\
 	  $(SRC_DIR)/ft_draw_screen.c\
 	  $(SRC_DIR)/ft_draw_sprite.c\
@@ -48,6 +49,7 @@ OBJ = $(SRC_DIR)/ft_main.o\
 	  $(SRC_DIR)/ft_map_checker.o\
 	  $(SRC_DIR)/ft_set_game.o\
 	  $(SRC_DIR)/ft_load_texture.o\
+	  $(SRC_DIR)/ft_texture_validation.o\
 	  $(SRC_DIR)/ft_init_game.o\
 	  $(SRC_DIR)/ft_draw_screen.o\
 	  $(SRC_DIR)/ft_draw_sprite.o\
@@ -66,6 +68,7 @@ SRC_B = $(SRC_B_DIR)/ft_main_bonus.c\
 	  $(SRC_B_DIR)/ft_map_checker_bonus.c\
 	  $(SRC_B_DIR)/ft_set_game_bonus.c\
 	  $(SRC_B_DIR)/ft_load_texture_bonus.c\
+	  $(SRC_B_DIR)/ft_texture_validation_bonus.c\
 	  $(SRC_B_DIR)/ft_init_game_bonus.c\
 	  $(SRC_B_DIR)/ft_draw_screen_bonus.c\
 	  $(SRC_B_DIR)/ft_draw_sprite_bonus.c\
@@ -87,6 +90,7 @@ OBJ_B = $(SRC_B_DIR)/ft_main_bonus.o\
 	  $(SRC_B_DIR)/ft_map_checker_bonus.o\
 	  $(SRC_B_DIR)/ft_set_game_bonus.o\
 	  $(SRC_B_DIR)/ft_load_texture_bonus.o\
+	  $(SRC_B_DIR)/ft_texture_validation_bonus.o\
 	  $(SRC_B_DIR)/ft_init_game_bonus.o\
 	  $(SRC_B_DIR)/ft_draw_screen_bonus.o\
 	  $(SRC_B_DIR)/ft_draw_sprite_bonus.o\

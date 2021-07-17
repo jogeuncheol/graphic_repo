@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:53 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 18:23:47 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 20:39:57 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	ft_init_game(t_game *game);
 void	ft_init_player_position(t_game *game);
 void	ft_init_collections(t_game *game);
 void	ft_load_texture(t_game *game);
+int		ft_texture_validation(t_game *game);
 
 void	ft_draw_screen(t_game *game);
 void	ft_draw_sprite(t_game *game);

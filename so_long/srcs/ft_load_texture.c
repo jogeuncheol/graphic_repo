@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:17:32 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 18:20:38 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 20:37:13 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,6 @@ void	ft_load_texture(t_game *game)
 	ft_collect_texture(game);
 	ft_player_texture(game);
 	ft_exit_texture(game);
+	if (ft_texture_validation(game) == 1)
+		ft_error(NULL, game);
 }
