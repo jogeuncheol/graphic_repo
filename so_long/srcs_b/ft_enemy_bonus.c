@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:32 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 16:27:46 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 17:02:13 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	ft_set_enemy_position(t_game *game, int e_x, int e_y)
 			e_y--;
 		else
 		{
-			
 			if (e_x > (game->x / 2) && e_x < (game->x - 1))
 				e_x--;
 			else

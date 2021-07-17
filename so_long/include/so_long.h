@@ -6,18 +6,12 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:53 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 16:01:20 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 17:20:21 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG
-# define SO_LONG
-
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include "../mlx/mlx.h"
+#ifndef SO_LONG_H
+# define SO_LONG_H
 
 # define TILE_SIZE					32
 # define KEY_W						13
@@ -27,9 +21,14 @@
 # define KEY_R						15
 # define KEY_SPACE					49
 # define KEY_ESC					53
-
 # define EVENT_KEY_RELEASE			3
 # define EVENT_KEY_DESTROY_NOTIFY	17
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include "../mlx/mlx.h"
 
 typedef struct s_map
 {
@@ -37,12 +36,11 @@ typedef struct s_map
 	int		p;
 	int		e;
 	int		c;
-	
 }			t_map;
 
 typedef struct s_img
 {
-	void	*img; // init s
+	void	*img;
 	void	*img_2;
 	void	*img_3;
 	void	*img_4;
@@ -125,7 +123,7 @@ void	ft_draw_enemy(t_game *game);
 
 int		key_press(int key_code, t_game *game);
 void	ft_touch_collect(t_game *game);
-void	ft_init_player_position(t_game * game);
+void	ft_init_player_position(t_game *game);
 void	ft_init_collections(t_game *game);
 void	ft_str_move_count(t_game *game);
 void	ft_game_status(t_game *game);
