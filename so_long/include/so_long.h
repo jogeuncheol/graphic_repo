@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:53 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 20:31:46 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 16:01:20 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,6 @@ typedef struct s_game
 	t_img	tex_stone;
 	t_img	tex_enemy;
 	t_img	tex_exit;
-	int		bg;
-	int		texture_wall[TILE_SIZE][TILE_SIZE];
-	int		texture_tile[TILE_SIZE][TILE_SIZE];
-	int		texture_player[TILE_SIZE][TILE_SIZE];
-	int		texture_collect[TILE_SIZE][TILE_SIZE];
-	int		texture_exit[TILE_SIZE][TILE_SIZE];
 
 	int		number_of_collections;
 	int		sprite_timer;

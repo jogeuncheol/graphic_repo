@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:56 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:12:00 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 15:47:28 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	ft_game_close(t_game *game)
 	ft_free_map(game->map_backup);
 	free(game->move_str);
 	game->move_str = NULL;
+	mlx_destroy_image(game->mlx_ptr, game->tex_enemy.img);
 	ft_destroy_mlx(game);
 	exit(0);
 }

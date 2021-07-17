@@ -6,13 +6,15 @@
 #    By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/10 22:25:57 by gejo              #+#    #+#              #
-#    Updated: 2021/07/16 20:32:48 by gejo             ###   ########.fr        #
+#    Updated: 2021/07/17 16:48:42 by gejo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 
-CFLAGS = -g3 -fsanitize=address -L./mlx -lmlx -framework OpenGL -framework Appkit
+CFLAGS = -Wall -Wextra -Werror
+
+MLX = -L./mlx -lmlx -framework OpenGL -framework Appkit
 
 INCLUDE = include
 
@@ -104,14 +106,14 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	rm -f $(OBJ_B) $(BONUS_HIDE)
-	gcc $(CFLAGS) -L./$(INCLUDE) -o $(NAME) $(OBJ)
+	gcc $(CFLAGS) $(MLX) -L./$(INCLUDE) -o $(NAME) $(OBJ)
 
 bonus : $(BONUS_HIDE)
 
 $(BONUS_HIDE) : $(OBJ_B)
 	touch $(BONUS_HIDE)
 	rm -f $(OBJ)
-	gcc $(CFLAGS) -L./$(INCLUDE) -o $(NAME) $(OBJ_B)
+	gcc $(CFLAGS) $(MLX) -L./$(INCLUDE) -o $(NAME) $(OBJ_B)
 
 clean :
 	rm -f $(OBJ) $(OBJ_B) $(BONUS_HIDE)
