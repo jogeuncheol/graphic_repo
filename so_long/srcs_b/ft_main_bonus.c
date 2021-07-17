@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:11:18 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 17:11:53 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 21:47:09 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	main(int argc, char *argv[])
 		ft_game(argv[1]);
 	else
 	{
-		printf("Error\n");
+		ft_putstr_fd("Error\nusage : ./so_long map_ber/mapfile.ber\n", 2);
 		exit(1);
 	}
 	return (0);

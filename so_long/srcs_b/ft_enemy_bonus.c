@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:00:32 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 20:42:52 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 22:04:13 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_enemy_count_manager(t_game *game)
 void	ft_enemy_texture(t_game *game)
 {
 	game->tex_enemy.img = mlx_xpm_file_to_image(
-			game->mlx_ptr, "./texture/alphago1.xpm",
+			game->mlx_ptr, "./texture/alphago.xpm",
 			&game->tex_enemy.width, &game->tex_enemy.height);
 }
 
