@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 12:01:53 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/17 17:21:06 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 18:23:47 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,6 @@ typedef struct s_img
 	void	*c_img2;
 	void	*c_img3;
 	void	*c_img4;
-	int		*data;
-	int		size_l;
-	int		bpp;
-	int		endian;
 	int		width;
 	int		height;
 }			t_img;
