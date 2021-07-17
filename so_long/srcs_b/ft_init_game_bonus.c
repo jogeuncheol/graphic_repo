@@ -6,7 +6,7 @@
 /*   By: gejo <gejo@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 13:25:10 by gejo              #+#    #+#             */
-/*   Updated: 2021/07/16 21:49:21 by gejo             ###   ########.fr       */
+/*   Updated: 2021/07/17 18:44:42 by gejo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,18 @@ void	ft_init_collections(t_game *game)
 void	ft_init_game(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
+	if (game->mlx_ptr == NULL)
+	{
+		ft_putstr_fd("mlx_ptr malloc fail\n", 2);
+		ft_error(NULL, game);
+	}
 	game->mlx_win = mlx_new_window(game->mlx_ptr,
 			TILE_SIZE * game->x, TILE_SIZE * game->y, "SO_LONG");
+	if (game->mlx_win == NULL)
+	{
+		ft_putstr_fd("mlx_window malloc fail\n", 2);
+		ft_error(NULL, game);
+	}
 	ft_load_texture(game);
 	ft_init_player_position(game);
 	ft_init_collections(game);
