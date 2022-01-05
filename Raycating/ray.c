@@ -3,30 +3,64 @@
 void	horizon_ray(t_data *g_data)
 {
 	float rad = M_PI / 180 * g_data->player->angle;
-	//if (rad < 0)
-	//	rad *= -1;
-
+	float angle = g_data->player->angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
-	float x2 = x1 + (100 * cos(rad));
-	float y2 = y1 + (100 * sin(rad));
-	
 	float px;
 	float py;
+
 	// 3, 4 분면 :: 아래 바라봄
 	if ((rad < M_PI && rad > 0) || (rad > M_PI * -2 && rad < M_PI * -1))
 	{
 		px = ceil(x1 / TILE_SIZE) * TILE_SIZE;
-		py = floor(y1 / TILE_SIZE) * TILE_SIZE;
+		py = ceil(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->next_hx = (py - y1) / (float)tan(rad) + x1;
+		g_data->player->next_hy = py;
 	}
-
 	// 1, 2 분면 :: 위 바라봄
 	if ((rad < M_PI * 2 && rad > M_PI) || (rad > M_PI * -1 && rad < 0))
 	{
 		px = floor(x1 / TILE_SIZE) * TILE_SIZE;
 		py = floor(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->next_x = (float)tan(rad) * (y1 - py) + x1;
-		g_data->player->next_y = py;
+		g_data->player->next_hx = (py - y1) / (float)tan(rad) + x1;
+		g_data->player->next_hy = py;
+	}
+	if (abs(angle) == 0 || abs(angle) == 180)
+	{
+		g_data->player->next_hx = x1;
+		g_data->player->next_hy = y1;
+	}
+}
+
+void	vertical_ray(t_data* g_data)
+{
+	float rad = M_PI / 180 * g_data->player->angle;
+	float angle = g_data->player->angle;
+	float x1 = g_data->player->p_rect.x;
+	float y1 = g_data->player->p_rect.y;
+	float px;
+	float py;
+
+	// 1, 4 분면 :: 오른쪽 바라봄
+	if ((rad < (M_PI / 2) && rad > -(M_PI / 2)) || (rad > (M_PI * 3) / 2 || rad < (M_PI * -3) / 2))
+	{
+		px = ceil(x1 / TILE_SIZE) * TILE_SIZE;
+		py = ceil(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->next_vx = px;
+		g_data->player->next_vy = (float)tan(rad) * (px - x1) + y1;
+	}
+	// 2, 3 분면 :: 왼쪽 바라봄
+	if ((rad > M_PI / 2 && rad < (M_PI * 3) / 2) || (rad < -(M_PI / 2) && rad > (M_PI * -3) / 2))
+	{
+		px = floor(x1 / TILE_SIZE) * TILE_SIZE;
+		py = floor(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->next_vx = px;
+		g_data->player->next_vy = (float)tan(rad) * (px - x1) + y1;
+	}
+	if (abs(angle) == 90 || abs(angle) == 270)
+	{
+		g_data->player->next_vx = x1;
+		g_data->player->next_vy = y1;
 	}
 }
 

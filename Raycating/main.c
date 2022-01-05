@@ -42,8 +42,10 @@ void	draw_line(t_data *game_data)
 	float y2 = y1 + (100 * sin(M_PI / 180 * game_data->player->angle));
 
 	horizon_ray(game_data);
+	vertical_ray(game_data);
 	// SDL_RenderDrawLine(game_data->renderer, x1, y1, x2, y2);
-	SDL_RenderDrawLine(game_data->renderer, x1, y1, game_data->player->next_x, game_data->player->next_y);
+	//SDL_RenderDrawLine(game_data->renderer, x1, y1, game_data->player->next_hx, game_data->player->next_hy);
+	//SDL_RenderDrawLine(game_data->renderer, x1, y1, game_data->player->next_vx, game_data->player->next_vy);
 }
 
 void	Rendering(t_data *game_data)
@@ -67,6 +69,12 @@ void	Rendering(t_data *game_data)
 	// 렌더러의 그리기 색상을 파랑색으로 설정
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
 	draw_line(game_data);
+	// 수평 격자
+	SDL_RenderDrawLine(game_data->renderer, player->p_rect.x, player->p_rect.y, game_data->player->next_hx, game_data->player->next_hy);
+
+	// 수직 격자
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+	SDL_RenderDrawLine(game_data->renderer, player->p_rect.x, player->p_rect.y, game_data->player->next_vx, game_data->player->next_vy);
 	// 렌더러에 플레이어 화살표 좌표에 사각형 연결
 
 	// 숨겨진 대상을 그린다. <--(?) 모든 것을 가져와 렌더러에 연결된 창에 그린다.
