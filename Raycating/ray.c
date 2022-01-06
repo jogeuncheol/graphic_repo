@@ -1,35 +1,89 @@
 #include "SDL_Project.h"
 
+void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
+{
+	int map_x, map_y;
+
+	p->ray_hx = p->next_hx;
+	p->ray_hy = p->next_hy;
+	while ((p->ray_hy > 0 && p->ray_hy < SCREEN_HEIGHT) && (p->ray_hx > 0 && p->ray_hx < SCREEN_WIDTH))
+	{
+		map_x = floor(p->ray_hx / TILE_SIZE);
+		map_y = floor(p->ray_hy / TILE_SIZE);
+		if (map[map_y][map_x] == 1)
+		{
+			break;
+		}
+		else
+		{
+			p->ray_hx += offset_x;
+			p->ray_hy += offset_y;
+		}
+	}
+}
+
+void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
+{
+	int map_x, map_y;
+
+	p->ray_vx = p->next_vx;
+	p->ray_vy = p->next_vy;
+	while ((p->ray_vy > 0 && p->ray_vy < SCREEN_HEIGHT) && (p->ray_vx > 0 && p->ray_vx < SCREEN_WIDTH))
+	{
+		map_x = floor(p->ray_vx / TILE_SIZE);
+		map_y = floor(p->ray_vy / TILE_SIZE);
+		if (map[map_y][map_x] == 1)
+		{
+			break;
+		}
+		else
+		{
+			p->ray_vx += offset_x;
+			p->ray_vy += offset_y;
+		}
+	}
+}
+
 void	horizon_ray(t_data *g_data)
 {
 	float rad = M_PI / 180 * g_data->player->angle;
 	float angle = g_data->player->angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
-	float px;
-	float py;
+	float point_x, offset_x = 0.0f;
+	float point_y, offset_y = 0.0f;
 
 	// 3, 4 분면 :: 아래 바라봄
 	if ((rad < M_PI && rad > 0) || (rad > M_PI * -2 && rad < M_PI * -1))
 	{
-		px = ceil(x1 / TILE_SIZE) * TILE_SIZE;
-		py = ceil(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->next_hx = (py - y1) / (float)tan(rad) + x1;
-		g_data->player->next_hy = py;
+		g_data->player->cardinal_point = 4;
+		point_x = ceil(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = ceil(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->ray_hx = g_data->player->next_hx = (point_y - y1) / (float)tan(rad) + x1;
+		g_data->player->ray_hy = g_data->player->next_hy = point_y;
+		offset_y = TILE_SIZE;
+		offset_x = (offset_y / (float)tan(rad));
 	}
 	// 1, 2 분면 :: 위 바라봄
 	if ((rad < M_PI * 2 && rad > M_PI) || (rad > M_PI * -1 && rad < 0))
 	{
-		px = floor(x1 / TILE_SIZE) * TILE_SIZE;
-		py = floor(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->next_hx = (py - y1) / (float)tan(rad) + x1;
-		g_data->player->next_hy = py;
+		g_data->player->cardinal_point = 3;
+		point_x = floor(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = floor(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->ray_hx = g_data->player->next_hx = (point_y - y1) / (float)tan(rad) + x1;
+		g_data->player->ray_hy = g_data->player->next_hy = point_y -0.1;
+		offset_y = -TILE_SIZE;
+		offset_x = (offset_y / (float)tan(rad));
 	}
-	if (abs(angle) == 0 || abs(angle) == 180)
+	// 정방향으로 왼쪽, 오른쪽 바라볼 때는 수평 에서 만나는 좌표가 없으므로 자기 자신
+	if (fabs(angle) == 0 || fabs(angle) == 180)
 	{
-		g_data->player->next_hx = x1;
-		g_data->player->next_hy = y1;
+		g_data->player->cardinal_point = 0;
+		g_data->player->ray_hx = g_data->player->next_hx = x1;
+		g_data->player->ray_hy = g_data->player->next_hy = y1;
 	}
+	if (g_data->player->cardinal_point)
+		horizon_find_hit_coord(g_data->player, offset_x, offset_y);
 }
 
 void	vertical_ray(t_data* g_data)
@@ -38,30 +92,40 @@ void	vertical_ray(t_data* g_data)
 	float angle = g_data->player->angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
-	float px;
-	float py;
+	float point_x, offset_x = 0.0f;
+	float point_y, offset_y = 0.0f;
 
 	// 1, 4 분면 :: 오른쪽 바라봄
 	if ((rad < (M_PI / 2) && rad > -(M_PI / 2)) || (rad > (M_PI * 3) / 2 || rad < (M_PI * -3) / 2))
 	{
-		px = ceil(x1 / TILE_SIZE) * TILE_SIZE;
-		py = ceil(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->next_vx = px;
-		g_data->player->next_vy = (float)tan(rad) * (px - x1) + y1;
+		g_data->player->cardinal_point = 1;
+		point_x = ceil(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = ceil(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->ray_vx = g_data->player->next_vx = point_x;
+		g_data->player->ray_vy = g_data->player->next_vy = (float)tan(rad) * (point_x - x1) + y1;
+		offset_x = TILE_SIZE;
+		offset_y = (offset_x * (float)tan(rad));
 	}
 	// 2, 3 분면 :: 왼쪽 바라봄
 	if ((rad > M_PI / 2 && rad < (M_PI * 3) / 2) || (rad < -(M_PI / 2) && rad > (M_PI * -3) / 2))
 	{
-		px = floor(x1 / TILE_SIZE) * TILE_SIZE;
-		py = floor(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->next_vx = px;
-		g_data->player->next_vy = (float)tan(rad) * (px - x1) + y1;
+		g_data->player->cardinal_point = 2;
+		point_x = floor(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = floor(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->ray_vx = g_data->player->next_vx = point_x -0.1;
+		g_data->player->ray_vy = g_data->player->next_vy = (float)tan(rad) * (point_x - x1) + y1;
+		offset_x = -TILE_SIZE;
+		offset_y = (offset_x * (float)tan(rad));
 	}
-	if (abs(angle) == 90 || abs(angle) == 270)
+	// 정방향으로 위, 아래 바라볼 때는 수직 에서 만나는 좌표가 없으므로 자기 자신
+	if (fabs(angle) == 90 || fabs(angle) == 270)
 	{
-		g_data->player->next_vx = x1;
-		g_data->player->next_vy = y1;
+		g_data->player->cardinal_point = 0;
+		g_data->player->ray_vx = g_data->player->next_hx = x1;
+		g_data->player->ray_vy = g_data->player->next_hy = y1;
 	}
+	if (g_data->player->cardinal_point)
+		vertical_find_hit_coord(g_data->player, offset_x, offset_y);
 }
 
 /*
