@@ -22,9 +22,9 @@ static int map[10][15] =
 	{ 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1 },
 	{ 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1 },
 	{ 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 },
-	{ 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 },
+	{ 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 },
 	{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1 },
-	{ 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
+	{ 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
 	{ 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1 },
 	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 };
@@ -38,9 +38,22 @@ typedef struct s_player
 
 	int			move_forword_back;
 	int			move_left_right;
+	int			cardinal_point;
 
-	float		next_x;
-	float		next_y;
+	float		next_hx; // 수평격자의 첫 좌표
+	float		next_hy;
+	float		next_vx; // 수직격자의 첫 좌표
+	float		next_vy;
+	float		ray_hx;
+	float		ray_hy;
+	float		ray_vx;
+	float		ray_vy;
+
+	/* 플레이어에 패딩을 주어서 벽 충돌 감지 + 미끄러지기 */
+	float		p_padding_n;
+	float		p_padding_s;
+	float		p_padding_e;
+	float		p_padding_w;
 }	t_player;
 
 typedef struct s_data
@@ -50,9 +63,19 @@ typedef struct s_data
 	SDL_Renderer*	renderer;
 	SDL_Texture*	texture;
 	t_player*		player;
+
+	float			ray_x;
+	float			ray_y;
 }	t_data;
 
-int	move_player(t_player* game_data);
+int		move_player(t_player* game_data);
+
+void	draw_line(t_data* game_data);
+
 void	horizon_ray(t_data* g_data);
+void	vertical_ray(t_data* g_data);
+
+void	Rendering(t_data* game_data);
+void	draw_short_ray(t_data* g_data);
 
 #endif

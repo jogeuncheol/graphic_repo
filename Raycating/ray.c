@@ -8,8 +8,8 @@ void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	p->ray_hy = p->next_hy;
 	while ((p->ray_hy > 0 && p->ray_hy < SCREEN_HEIGHT) && (p->ray_hx > 0 && p->ray_hx < SCREEN_WIDTH))
 	{
-		map_x = floor(p->ray_hx / TILE_SIZE);
-		map_y = floor(p->ray_hy / TILE_SIZE);
+		map_x = (int)floor(p->ray_hx / TILE_SIZE);
+		map_y = (int)floor(p->ray_hy / TILE_SIZE);
 		if (map[map_y][map_x] == 1)
 		{
 			break;
@@ -30,8 +30,8 @@ void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	p->ray_vy = p->next_vy;
 	while ((p->ray_vy > 0 && p->ray_vy < SCREEN_HEIGHT) && (p->ray_vx > 0 && p->ray_vx < SCREEN_WIDTH))
 	{
-		map_x = floor(p->ray_vx / TILE_SIZE);
-		map_y = floor(p->ray_vy / TILE_SIZE);
+		map_x = (int)floor(p->ray_vx / TILE_SIZE);
+		map_y = (int)floor(p->ray_vy / TILE_SIZE);
 		if (map[map_y][map_x] == 1)
 		{
 			break;
@@ -44,10 +44,10 @@ void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	}
 }
 
-void	horizon_ray(t_data *g_data)
+void	horizon_ray(t_data *g_data, int ray_angle)
 {
-	float rad = M_PI / 180 * g_data->player->angle;
-	float angle = g_data->player->angle;
+	float rad = (float)(M_PI / 180.0f) * (g_data->player->angle + ray_angle);
+	float angle = g_data->player->angle + ray_angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
 	float point_x, offset_x = 0.0f;
@@ -57,8 +57,8 @@ void	horizon_ray(t_data *g_data)
 	if ((rad < M_PI && rad > 0) || (rad > M_PI * -2 && rad < M_PI * -1))
 	{
 		g_data->player->cardinal_point = 4;
-		point_x = ceil(x1 / TILE_SIZE) * TILE_SIZE;
-		point_y = ceil(y1 / TILE_SIZE) * TILE_SIZE;
+		point_x = ceilf(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = ceilf(y1 / TILE_SIZE) * TILE_SIZE;
 		g_data->player->ray_hx = g_data->player->next_hx = (point_y - y1) / (float)tan(rad) + x1;
 		g_data->player->ray_hy = g_data->player->next_hy = point_y;
 		offset_y = TILE_SIZE;
@@ -68,10 +68,10 @@ void	horizon_ray(t_data *g_data)
 	if ((rad < M_PI * 2 && rad > M_PI) || (rad > M_PI * -1 && rad < 0))
 	{
 		g_data->player->cardinal_point = 3;
-		point_x = floor(x1 / TILE_SIZE) * TILE_SIZE;
-		point_y = floor(y1 / TILE_SIZE) * TILE_SIZE;
+		point_x = floorf(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = floorf(y1 / TILE_SIZE) * TILE_SIZE;
 		g_data->player->ray_hx = g_data->player->next_hx = (point_y - y1) / (float)tan(rad) + x1;
-		g_data->player->ray_hy = g_data->player->next_hy = point_y -0.1;
+		g_data->player->ray_hy = g_data->player->next_hy = point_y -0.1f;
 		offset_y = -TILE_SIZE;
 		offset_x = (offset_y / (float)tan(rad));
 	}
@@ -86,10 +86,10 @@ void	horizon_ray(t_data *g_data)
 		horizon_find_hit_coord(g_data->player, offset_x, offset_y);
 }
 
-void	vertical_ray(t_data* g_data)
+void	vertical_ray(t_data* g_data, int ray_angle)
 {
-	float rad = M_PI / 180 * g_data->player->angle;
-	float angle = g_data->player->angle;
+	float rad = (float)(M_PI / 180.0f) * (g_data->player->angle + ray_angle);
+	float angle = g_data->player->angle + ray_angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
 	float point_x, offset_x = 0.0f;
@@ -99,8 +99,8 @@ void	vertical_ray(t_data* g_data)
 	if ((rad < (M_PI / 2) && rad > -(M_PI / 2)) || (rad > (M_PI * 3) / 2 || rad < (M_PI * -3) / 2))
 	{
 		g_data->player->cardinal_point = 1;
-		point_x = ceil(x1 / TILE_SIZE) * TILE_SIZE;
-		point_y = ceil(y1 / TILE_SIZE) * TILE_SIZE;
+		point_x = ceilf(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = ceilf(y1 / TILE_SIZE) * TILE_SIZE;
 		g_data->player->ray_vx = g_data->player->next_vx = point_x;
 		g_data->player->ray_vy = g_data->player->next_vy = (float)tan(rad) * (point_x - x1) + y1;
 		offset_x = TILE_SIZE;
@@ -110,9 +110,9 @@ void	vertical_ray(t_data* g_data)
 	if ((rad > M_PI / 2 && rad < (M_PI * 3) / 2) || (rad < -(M_PI / 2) && rad > (M_PI * -3) / 2))
 	{
 		g_data->player->cardinal_point = 2;
-		point_x = floor(x1 / TILE_SIZE) * TILE_SIZE;
-		point_y = floor(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->ray_vx = g_data->player->next_vx = point_x -0.1;
+		point_x = floorf(x1 / TILE_SIZE) * TILE_SIZE;
+		point_y = floorf(y1 / TILE_SIZE) * TILE_SIZE;
+		g_data->player->ray_vx = g_data->player->next_vx = point_x -0.1f;
 		g_data->player->ray_vy = g_data->player->next_vy = (float)tan(rad) * (point_x - x1) + y1;
 		offset_x = -TILE_SIZE;
 		offset_y = (offset_x * (float)tan(rad));

@@ -48,43 +48,6 @@ void	draw_line(t_data *game_data)
 	//SDL_RenderDrawLine(game_data->renderer, x1, y1, game_data->player->next_vx, game_data->player->next_vy);
 }
 
-void	Rendering(t_data *game_data)
-{
-	SDL_Renderer* renderer = game_data->renderer;
-	SDL_Texture* texture = game_data->texture;
-	t_player* player = game_data->player;
-
-	// SDL_RenderClear(renderer);
-
-	// 렌더러에 텍스쳐 연결 (현재 texture는 배경 격자)
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
-
-	// 플레이어 그리기
-	// 렌더러의 그리기 색상을 빨강색으로 설정
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-	// 렌더러에 플레이어 좌표에 사각형 연결. 색상은 위에서 설정한 빨강색이 됨.
-	SDL_RenderFillRect(renderer, &player->player_cord);
-
-	// 플레이어의 방향
-	draw_line(game_data);
-
-	//// 렌더러의 그리기 색상을 파랑색으로 설정
-	//// 수평 격자
-	//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-	//SDL_RenderDrawLine(game_data->renderer, player->p_rect.x, player->p_rect.y, game_data->player->ray_hx, game_data->player->ray_hy);
-
-	//// 수직 격자
-	//SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-	//SDL_RenderDrawLine(game_data->renderer, player->p_rect.x, player->p_rect.y, game_data->player->ray_vx, game_data->player->ray_vy);
-	//// 렌더러에 플레이어 화살표 좌표에 사각형 연결
-
-	// 수평 광선과 수직 광선 중 더 짧은 광선을 그림.
-	select_short_ray(game_data);
-
-	// 숨겨진 대상을 그린다. <--(?) 모든 것을 가져와 렌더러에 연결된 창에 그린다.
-	SDL_RenderPresent(renderer);
-}
-
 // 플레이어 초기 위치와 크기
 void	init_player(t_player *player)
 {
@@ -97,6 +60,12 @@ void	init_player(t_player *player)
 	player->arrow.w = 1;
 	player->arrow.h = 10;
 	player->angle = 0.0f;
+
+	/* 플레이어 패딩 초기화 */
+	player->p_padding_n = player->p_rect.y - 5;
+	player->p_padding_s = player->p_rect.y + 5;
+	player->p_padding_e = player->p_rect.x + 5;
+	player->p_padding_w = player->p_rect.x - 5;
 }
 
 void	set_player_rect(t_player* p)

@@ -8,6 +8,58 @@ void	update_arrow(t_player *player)
 	player->arrow.h = 10;
 }
 
+void	update_player_padding(t_player* player)
+{
+	/* 플레이어 패딩 업데이트 */
+	player->p_padding_n = player->p_rect.y - 5;
+	player->p_padding_s = player->p_rect.y + 5;
+	player->p_padding_e = player->p_rect.x + 5;
+	player->p_padding_w = player->p_rect.x - 5;
+}
+
+int	check_padding_wall(t_player* p, int keycode)
+{
+	float c_x, c_y; // collision_x_, collision_y_
+	int ret = 1;
+	int north_lock = 0;
+	int south_lock = 0;
+	int east_lock = 0;
+	int west_lock = 0;
+
+	if (keycode == SDLK_w)
+	{
+		// 남쪽
+		if (map[(int)floor(p->p_padding_s / TILE_SIZE)][(int)floor(p->p_rect.x / TILE_SIZE)] == 1)
+		{
+			south_lock = 1;
+		}
+		// 북쪽
+		if (map[(int)floor(p->p_padding_n / TILE_SIZE)][(int)floor(p->p_rect.x / TILE_SIZE)] == 1)
+		{
+			north_lock = 1;
+		}
+		// 동쪽
+		if (map[(int)floor(p->p_rect.y / TILE_SIZE)][(int)floor(p->p_padding_e / TILE_SIZE)] == 1)
+		{
+			east_lock = 1;
+		}
+		// 서쪽
+		if (map[(int)floor(p->p_rect.y / TILE_SIZE)][(int)floor(p->p_padding_w / TILE_SIZE)] == 1)
+		{
+			west_lock = 1;
+		}
+	}
+	if (north_lock)
+	{
+
+	}
+	else
+	{
+
+	}
+	return (ret);
+}
+
 int	check_wall(t_player* player, int keycode)
 {
 	float next_x, next_y;
@@ -23,8 +75,8 @@ int	check_wall(t_player* player, int keycode)
 	}
 	else if (keycode == SDLK_a)
 	{
-		next_x += (5 * (float)cos(M_PI / 180 * player->angle - M_PI / 2));
-		next_y += (5 * (float)sin(M_PI / 180 * player->angle - M_PI / 2));
+		next_x -= (5 * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
+		next_y -= (5 * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
 	}
 	else if (keycode == SDLK_w)
 	{
@@ -36,7 +88,7 @@ int	check_wall(t_player* player, int keycode)
 		next_x -= (5 * (float)cos(M_PI / 180 * player->angle));
 		next_y -= (5 * (float)sin(M_PI / 180 * player->angle));
 	}
-	if (map[(int)(next_y / TILE_SIZE)][(int)(next_x / TILE_SIZE)] == 1)
+	if (map[(int)floor(next_y) / TILE_SIZE][(int)floor(next_x) / TILE_SIZE] == 1)
 		ret = 0;
 	return (ret);
 }
@@ -48,6 +100,8 @@ int	move_player(t_player *player)
 
 	if (SDL_PollEvent(&event))
 	{
+		// 플레이어 패딩 업데이트
+		update_player_padding(player);
 		if (event.type == SDL_QUIT)
 		{
 			return (0);
@@ -57,27 +111,27 @@ int	move_player(t_player *player)
 			keycode = event.key.keysym.sym;
 			if (keycode == SDLK_ESCAPE)
 				return (0);
-			if (!check_wall(player, keycode))
+			if (!check_padding_wall(player, keycode))
 				return (1);
 			else if (keycode == SDLK_d)
 			{
-				player->p_rect.x += (5 * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
-				player->p_rect.y += (5 * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
+				player->p_rect.x += (2 * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
+				player->p_rect.y += (2 * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
 			}
 			else if (keycode == SDLK_a)
 			{
-				player->p_rect.x += (5 * (float)cos(M_PI / 180 * player->angle - M_PI / 2));
-				player->p_rect.y += (5 * (float)sin(M_PI / 180 * player->angle - M_PI / 2));
+				player->p_rect.x -= (2 * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
+				player->p_rect.y -= (2 * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
 			}
 			else if (keycode == SDLK_w)
 			{
-				player->p_rect.x += (5 * (float)cos(M_PI / 180 * player->angle));
-				player->p_rect.y += (5 * (float)sin(M_PI / 180 * player->angle));
+				player->p_rect.x += (2 * (float)cos(M_PI / 180 * player->angle));
+				player->p_rect.y += (2 * (float)sin(M_PI / 180 * player->angle));
 			}
 			else if (keycode == SDLK_s)
 			{
-				player->p_rect.x -= (5 * (float)cos(M_PI / 180 * player->angle));
-				player->p_rect.y -= (5 * (float)sin(M_PI / 180 * player->angle));
+				player->p_rect.x -= (2 * (float)cos(M_PI / 180 * player->angle));
+				player->p_rect.y -= (2 * (float)sin(M_PI / 180 * player->angle));
 			}
 			if (keycode == SDLK_q)
 				player->angle -= 5.0f;
