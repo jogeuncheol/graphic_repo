@@ -10,7 +10,7 @@ void	update_arrow(t_player *player)
 
 int	check_wall(t_player* player, int keycode)
 {
-	int next_x, next_y;
+	float next_x, next_y;
 	int ret = 1;
 
 	next_x = player->p_rect.x;
@@ -18,25 +18,25 @@ int	check_wall(t_player* player, int keycode)
 
 	if (keycode == SDLK_d)
 	{
-		next_x += (5 * cos(M_PI / 180 * player->angle - M_PI / 2));
-		next_y += (5 * sin(M_PI / 180 * player->angle - M_PI / 2));
+		next_x += (5 * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
+		next_y += (5 * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
 	}
 	else if (keycode == SDLK_a)
 	{
-		next_x += (5 * cos(M_PI / 180 * player->angle + M_PI / 2));
-		next_y += (5 * sin(M_PI / 180 * player->angle + M_PI / 2));
+		next_x += (5 * (float)cos(M_PI / 180 * player->angle - M_PI / 2));
+		next_y += (5 * (float)sin(M_PI / 180 * player->angle - M_PI / 2));
 	}
 	else if (keycode == SDLK_w)
 	{
-		next_x += (5 * cos(M_PI / 180 * player->angle));
-		next_y += (5 * sin(M_PI / 180 * player->angle));
+		next_x += (5 * (float)cos(M_PI / 180 * player->angle));
+		next_y += (5 * (float)sin(M_PI / 180 * player->angle));
 	}
 	else if (keycode == SDLK_s)
 	{
-		next_x -= (5 * cos(M_PI / 180 * player->angle));
-		next_y -= (5 * sin(M_PI / 180 * player->angle));
+		next_x -= (5 * (float)cos(M_PI / 180 * player->angle));
+		next_y -= (5 * (float)sin(M_PI / 180 * player->angle));
 	}
-	if (map[next_y / TILE_SIZE][next_x / TILE_SIZE] == 1)
+	if (map[(int)(next_y / TILE_SIZE)][(int)(next_x / TILE_SIZE)] == 1)
 		ret = 0;
 	return (ret);
 }
@@ -55,37 +55,37 @@ int	move_player(t_player *player)
 		else if (event.type == SDL_KEYDOWN)
 		{
 			keycode = event.key.keysym.sym;
-			if (!check_wall(player, keycode))
-				return (1);
 			if (keycode == SDLK_ESCAPE)
 				return (0);
+			if (!check_wall(player, keycode))
+				return (1);
 			else if (keycode == SDLK_d)
 			{
-				player->p_rect.x += (5 * cos(M_PI / 180 * player->angle + M_PI / 2));
-				player->p_rect.y += (5 * sin(M_PI / 180 * player->angle + M_PI / 2));
+				player->p_rect.x += (5 * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
+				player->p_rect.y += (5 * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
 			}
 			else if (keycode == SDLK_a)
 			{
-				player->p_rect.x += (5 * cos(M_PI / 180 * player->angle - M_PI / 2));
-				player->p_rect.y += (5 * sin(M_PI / 180 * player->angle - M_PI / 2));
+				player->p_rect.x += (5 * (float)cos(M_PI / 180 * player->angle - M_PI / 2));
+				player->p_rect.y += (5 * (float)sin(M_PI / 180 * player->angle - M_PI / 2));
 			}
 			else if (keycode == SDLK_w)
 			{
-				player->p_rect.x += (5 * cos(M_PI / 180 * player->angle));
-				player->p_rect.y += (5 * sin(M_PI / 180 * player->angle));
+				player->p_rect.x += (5 * (float)cos(M_PI / 180 * player->angle));
+				player->p_rect.y += (5 * (float)sin(M_PI / 180 * player->angle));
 			}
 			else if (keycode == SDLK_s)
 			{
-				player->p_rect.x -= (5 * cos(M_PI / 180 * player->angle));
-				player->p_rect.y -= (5 * sin(M_PI / 180 * player->angle));
+				player->p_rect.x -= (5 * (float)cos(M_PI / 180 * player->angle));
+				player->p_rect.y -= (5 * (float)sin(M_PI / 180 * player->angle));
 			}
 			if (keycode == SDLK_q)
 				player->angle -= 5.0f;
 			if (keycode == SDLK_e)
 				player->angle += 5.0f;
-			if (player->angle > 360.0f)
+			if (player->angle >= 360.0f)
 				player->angle = 0.0f;
-			else if (player->angle < -360.0f)
+			else if (player->angle <= -360.0f)
 				player->angle = 0.0f;
 		}
 		if (event.type == SDL_KEYUP)
@@ -95,8 +95,6 @@ int	move_player(t_player *player)
 			if (player->move_forword_back)
 				player->move_forword_back = 0;
 		}
-		printf("angle : %f\n", player->angle);
-		printf("radian : %f\n", player->angle * M_PI / 180);
 		// update_arrow(player);
 	}
 	return (1);
