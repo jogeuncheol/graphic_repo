@@ -1,5 +1,6 @@
 #include "SDL_Project.h"
 
+/*
 void	update_arrow(t_player *player)
 {
 	player->arrow.x = player->p_rect.x + player->p_rect.w / 2;
@@ -7,6 +8,7 @@ void	update_arrow(t_player *player)
 	player->arrow.w = 1;
 	player->arrow.h = 10;
 }
+*/
 
 void	update_player_padding(t_player* player)
 {
@@ -19,7 +21,7 @@ void	update_player_padding(t_player* player)
 
 int	check_padding_wall(t_player* p, int keycode)
 {
-	float c_x, c_y; // collision_x_, collision_y_
+	// float c_x, c_y; // collision_x_, collision_y_
 	int ret = 1;
 	int north_lock = 0;
 	int south_lock = 0;
@@ -150,6 +152,7 @@ int	move_player(t_player *player)
 				player->move_forword_back = 0;
 		}
 		// update_arrow(player);
+		// printf("angle : %f\n", player->angle);
 	}
 	return (1);
 }

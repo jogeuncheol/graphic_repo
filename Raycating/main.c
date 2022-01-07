@@ -41,8 +41,8 @@ void	draw_line(t_data *game_data)
 	float x2 = x1 + (100 * (float)cos(M_PI / 180 * game_data->player->angle));
 	float y2 = y1 + (100 * (float)sin(M_PI / 180 * game_data->player->angle));
 
-	horizon_ray(game_data);
-	vertical_ray(game_data);
+	// horizon_ray(game_data);
+	// vertical_ray(game_data);
 	// SDL_RenderDrawLine(game_data->renderer, x1, y1, x2, y2);
 	//SDL_RenderDrawLine(game_data->renderer, x1, y1, game_data->player->next_hx, game_data->player->next_hy);
 	//SDL_RenderDrawLine(game_data->renderer, x1, y1, game_data->player->next_vx, game_data->player->next_vy);
@@ -87,6 +87,7 @@ void	game(t_data* game_data)
 		set_player_rect(game_data->player);
 		// ·»´õ¸µ
 		Rendering(game_data);
+		SDL_Delay(1000 / 60);
 	}
 }
 
