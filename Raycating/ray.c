@@ -44,10 +44,10 @@ void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	}
 }
 
-void	horizon_ray(t_data *g_data, int ray_angle)
+void	horizon_ray(t_data *g_data, float fov_angle)
 {
-	float rad = (float)(M_PI / 180.0f) * (g_data->player->angle + ray_angle);
-	float angle = g_data->player->angle + ray_angle;
+	float rad = (float)(M_PI / 180.0f) * (fov_angle);
+	float angle = fov_angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
 	float point_x, offset_x = 0.0f;
@@ -76,7 +76,7 @@ void	horizon_ray(t_data *g_data, int ray_angle)
 		offset_x = (offset_y / (float)tan(rad));
 	}
 	// 정방향으로 왼쪽, 오른쪽 바라볼 때는 수평 에서 만나는 좌표가 없으므로 자기 자신
-	if (fabs(angle) == 0 || fabs(angle) == 180)
+	if (fabs(angle) == 0 || fabs(angle) == 180 || fabs(angle) >= 360)
 	{
 		g_data->player->cardinal_point = 0;
 		g_data->player->ray_hx = g_data->player->next_hx = x1;
@@ -86,10 +86,10 @@ void	horizon_ray(t_data *g_data, int ray_angle)
 		horizon_find_hit_coord(g_data->player, offset_x, offset_y);
 }
 
-void	vertical_ray(t_data* g_data, int ray_angle)
+void	vertical_ray(t_data* g_data, float fov_angle)
 {
-	float rad = (float)(M_PI / 180.0f) * (g_data->player->angle + ray_angle);
-	float angle = g_data->player->angle + ray_angle;
+	float rad = (float)(M_PI / 180.0f) * (fov_angle);
+	float angle = fov_angle;
 	float x1 = g_data->player->p_rect.x;
 	float y1 = g_data->player->p_rect.y;
 	float point_x, offset_x = 0.0f;
