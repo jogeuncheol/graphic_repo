@@ -54,6 +54,8 @@ typedef struct s_player
 	float		p_padding_s;
 	float		p_padding_e;
 	float		p_padding_w;
+
+	float		velocity;
 }	t_player;
 
 typedef struct s_data
@@ -69,11 +71,13 @@ typedef struct s_data
 }	t_data;
 
 int		move_player(t_player* game_data);
+void	key_up(t_player* p);
+void	key_down(t_player* p);
 
 void	draw_line(t_data* game_data);
 
-void	horizon_ray(t_data* g_data);
-void	vertical_ray(t_data* g_data);
+void	horizon_ray(t_data* g_data, float ray_angle);
+void	vertical_ray(t_data* g_data, float ray_angle);
 
 void	Rendering(t_data* game_data);
 void	draw_short_ray(t_data* g_data);

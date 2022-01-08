@@ -66,6 +66,8 @@ void	init_player(t_player *player)
 	player->p_padding_s = player->p_rect.y + 5;
 	player->p_padding_e = player->p_rect.x + 5;
 	player->p_padding_w = player->p_rect.x - 5;
+
+	player->velocity = 0.8f;
 }
 
 void	set_player_rect(t_player* p)
@@ -76,6 +78,29 @@ void	set_player_rect(t_player* p)
 	p->player_cord.h = 10;
 }
 
+void	ft_test()
+{
+	SDL_Event event;
+	Uint8* keystatus = SDL_GetKeyboardState(NULL);
+	
+	if (keystatus[SDL_SCANCODE_W])
+	{
+		printf("press up ");
+	}
+	if (keystatus[SDL_SCANCODE_S])
+	{
+		printf("press down ");
+	}
+	if (keystatus[SDL_SCANCODE_A])
+	{
+		printf("press left ");
+	}
+	if (keystatus[SDL_SCANCODE_D])
+	{
+		printf("press right ");
+	}
+}
+
 void	game(t_data* game_data)
 {
 	int loop = 1;
@@ -83,11 +108,14 @@ void	game(t_data* game_data)
 	{
 		// 플레이어 이동
 		loop = move_player(game_data->player);
+		// key_down(game_data->player);
+		// key_up(game_data->player);
+
 		// 플레이어 위치 표시용 사각형
 		set_player_rect(game_data->player);
 		// 렌더링
 		Rendering(game_data);
-		SDL_Delay(1000 / 60);
+		SDL_Delay(1000 / 144);
 	}
 }
 
