@@ -68,6 +68,7 @@ void	init_player(t_player *player)
 	player->p_padding_w = player->p_rect.x - 5;
 
 	player->velocity = 0.8f;
+	player->is_map_visible = 0;
 }
 
 void	set_player_rect(t_player* p)
@@ -110,6 +111,9 @@ void	game(t_data* game_data)
 		loop = move_player(game_data->player);
 		// key_down(game_data->player);
 		// key_up(game_data->player);
+
+		// 맵 보기
+		// map_over_screen(game_data);
 
 		// 플레이어 위치 표시용 사각형
 		set_player_rect(game_data->player);
@@ -190,6 +194,11 @@ int main(int argc, char* args[])
 			// 하나의 텍스쳐로 만드는 작업 하드웨어 렌더링(gpu)을 사용함
 			SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, screenSurface);
 			SDL_FreeSurface(screenSurface);
+			
+			// 뒷 배경 생성
+			SDL_Surface* bg_surface = init_background(window);
+			SDL_Texture* bg_texture = SDL_CreateTextureFromSurface(renderer, bg_surface);
+			SDL_FreeSurface(bg_surface);
 
 			// Update the surface
 			// 화면 업데이트
@@ -198,6 +207,7 @@ int main(int argc, char* args[])
 			// 데이터 저장
 			game_data->window = window;
 			game_data->texture = texture;
+			game_data->bg_texture = bg_texture;
 			game_data->renderer = renderer;
 			game_data->player = player;
 

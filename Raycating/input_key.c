@@ -35,6 +35,8 @@ void	key_up(t_player* p)
 				p->move_forword_back = 0;
 			if (keycode == SDLK_LSHIFT)
 				p->velocity = 1.0f;
+			if (keycode == SDLK_m)
+				p->is_map_visible = 0;
 			printf("key up : %d %d\n", p->move_forword_back, p->move_left_right);
 		}
 	}
@@ -80,7 +82,7 @@ void	key_down(t_player* p)
 
 int	check_padding_wall(t_player* p, int keycode)
 {
-	// float c_x, c_y; // collision_x_, collision_y_
+	// float c_x, c_y; // collision_fb_x, collision_y_
 	int ret = 1;
 	int north_lock = 0;
 	int south_lock = 0;
@@ -155,27 +157,42 @@ int	move_player(t_player *player)
 {
 	SDL_Event event;
 	int keycode;
+	float fb_x, fb_y, lr_x, lr_y;
+	float rad = M_PI / 180 * player->angle;
+	float rad_2 = M_PI / 180 * player->angle + M_PI / 2;
+	fb_x = (10 * (float)cos(rad));
+	fb_y = (10 * (float)sin(rad));
+	lr_x = (10 * (float)cos(rad_2));
+	lr_y = (10 * (float)sin(rad_2));
 
 	Uint8* keystatus = SDL_GetKeyboardState(NULL);
 	if (keystatus[SDL_SCANCODE_W])
 	{
-		player->p_rect.x += (player->velocity * (float)cos(M_PI / 180 * player->angle));
-		player->p_rect.y += (player->velocity * (float)sin(M_PI / 180 * player->angle));
+		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x + fb_x) / TILE_SIZE)] == 0)
+			player->p_rect.x += (player->velocity * (float)cos(rad));
+		if (map[(int)floor((player->p_rect.y + fb_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+			player->p_rect.y += (player->velocity * (float)sin(rad));
 	}
 	if (keystatus[SDL_SCANCODE_S])
 	{
-		player->p_rect.x -= (player->velocity * (float)cos(M_PI / 180 * player->angle));
-		player->p_rect.y -= (player->velocity * (float)sin(M_PI / 180 * player->angle));
+		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x - fb_x) / TILE_SIZE)] == 0)
+			player->p_rect.x -= (player->velocity * (float)cos(rad));
+		if (map[(int)floor((player->p_rect.y - fb_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+			player->p_rect.y -= (player->velocity * (float)sin(rad));
 	}
 	if (keystatus[SDL_SCANCODE_A])
 	{
-		player->p_rect.x -= (player->velocity * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
-		player->p_rect.y -= (player->velocity * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
+		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x - lr_x) / TILE_SIZE)] == 0)
+			player->p_rect.x -= (player->velocity * (float)cos(rad_2));
+		if (map[(int)floor((player->p_rect.y - lr_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+			player->p_rect.y -= (player->velocity * (float)sin(rad_2));
 	}
 	if (keystatus[SDL_SCANCODE_D])
 	{
-		player->p_rect.x += (player->velocity * (float)cos(M_PI / 180 * player->angle + M_PI / 2));
-		player->p_rect.y += (player->velocity * (float)sin(M_PI / 180 * player->angle + M_PI / 2));
+		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x + lr_x) / TILE_SIZE)] == 0)
+			player->p_rect.x += (player->velocity * (float)cos(rad_2));
+		if (map[(int)floor((player->p_rect.y + lr_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+			player->p_rect.y += (player->velocity * (float)sin(rad_2));
 	}
 	if (keystatus[SDL_SCANCODE_Q])
 		player->angle -= 1.0f;
@@ -187,6 +204,8 @@ int	move_player(t_player *player)
 		player->angle = 0.0f;
 	else if (player->angle < -360.0f)
 		player->angle = 0.0f;
+	if (keystatus[SDL_SCANCODE_M])
+		player->is_map_visible = 1;
 
 	while (SDL_PollEvent(&event))
 	{
@@ -209,6 +228,8 @@ int	move_player(t_player *player)
 			keycode = event.key.keysym.sym;
 			if (keycode == SDLK_LSHIFT)
 				player->velocity = 0.8f;
+			if (keycode == SDLK_m)
+				player->is_map_visible = 0;
 		}
 		//update_arrow(player);
 		//printf("angle : %f\n", player->angle);

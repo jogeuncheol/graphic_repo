@@ -1,5 +1,13 @@
 #include "SDL_Project.h"
 
+void	map_over_screen(t_data* game_data)
+{
+	Uint8* keystatus = SDL_GetKeyboardState(NULL);
+	if (keystatus[SDL_SCANCODE_M])
+		game_data->player->is_map_visible = 1;
+
+}
+
 void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 {
 	t_player* p = game_data->player;
@@ -105,20 +113,24 @@ void	Rendering(t_data* game_data)
 {
 	SDL_Renderer* renderer = game_data->renderer;
 	SDL_Texture* texture = game_data->texture;
+	SDL_Texture* bg_texture = game_data->bg_texture;
 	t_player* player = game_data->player;
 
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	/* SDL_RenderClear :: SDL_SetRenderDrawColor 로 지정되어 있는 색으로 화면 전체를 렌더링 함. */
-	// SDL_RenderClear(renderer);
+	SDL_RenderClear(renderer);
 
 	// 렌더러에 텍스쳐 연결 (현재 texture는 배경 격자)
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	// SDL_RenderCopy(renderer, texture, NULL, NULL);
+
+	// 뒷 배경 텍스쳐 연결
+	SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
 
 	// 플레이어 그리기
 	// 렌더러의 그리기 색상을 빨강색으로 설정
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+	// SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 	// 렌더러에 플레이어 좌표에 사각형 연결. 색상은 위에서 설정한 빨강색이 됨.
-	SDL_RenderFillRect(renderer, &player->player_cord);
+	// SDL_RenderFillRect(renderer, &player->player_cord);
 
 	// 플레이어의 방향
 	// draw_line(game_data);
@@ -138,6 +150,9 @@ void	Rendering(t_data* game_data)
 
 	// 수평 광선과 수직 광선 중 더 짧은 광선을 그림.
 	// draw_short_ray(game_data);
+
+	// 지도 그리기
+	draw_map(game_data);
 
 	// 숨겨진 대상을 그린다. <--(?) 모든 것을 가져와 렌더러에 연결된 창에 그린다.
 	SDL_RenderPresent(renderer);
