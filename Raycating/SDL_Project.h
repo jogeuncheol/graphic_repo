@@ -10,8 +10,12 @@
 #define TILE_SIZE	64
 
 // 화면 크기 지정
-#define SCREEN_WIDTH	TILE_SIZE * 15
-#define SCREEN_HEIGHT	TILE_SIZE * 10
+#define SCREEN_WIDTH	960// TILE_SIZE * 15
+#define SCREEN_HEIGHT	720// TILE_SIZE * 10
+
+// 월드 크기
+#define WORLD_WIDTH		TILE_SIZE * map_w
+#define WORLD_HEIGHT	TILE_SIZE * map_h
 
 static int map_h = 10;
 static int map_w = 15;
@@ -56,6 +60,7 @@ typedef struct s_player
 	float		p_padding_w;
 
 	float		velocity;
+	int			is_map_visible;
 }	t_player;
 
 typedef struct s_data
@@ -64,6 +69,7 @@ typedef struct s_data
 	SDL_Surface*	surface;
 	SDL_Renderer*	renderer;
 	SDL_Texture*	texture;
+	SDL_Texture*	bg_texture;
 	t_player*		player;
 
 	float			ray_x;
@@ -81,5 +87,9 @@ void	vertical_ray(t_data* g_data, float ray_angle);
 
 void	Rendering(t_data* game_data);
 void	draw_short_ray(t_data* g_data);
+void	draw_map(t_data* game_data);
+
+SDL_Surface* init_background(SDL_Window* window);
+void	map_over_screen(t_data* game_data);
 
 #endif

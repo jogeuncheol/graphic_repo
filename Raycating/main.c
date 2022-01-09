@@ -18,10 +18,10 @@ void	tile_grid(SDL_Surface *screenSurface)
 
 	rectangle.w = TILE_SIZE - 1;
 	rectangle.h = TILE_SIZE - 1;
-	for (int i = 1; i < SCREEN_HEIGHT; i = i + TILE_SIZE)
+	for (int i = 1; i < WORLD_HEIGHT; i = i + TILE_SIZE)
 	{
 		rectangle.y = i;
-		for (int j = 1; j < SCREEN_WIDTH; j = j + TILE_SIZE)
+		for (int j = 1; j < WORLD_WIDTH; j = j + TILE_SIZE)
 		{
 			rectangle.x = j;
 			if (map[(i - 1) / TILE_SIZE][j / TILE_SIZE] == 1) // 지도의 벽

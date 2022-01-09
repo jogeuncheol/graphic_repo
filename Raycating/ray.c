@@ -6,7 +6,7 @@ void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
 
 	p->ray_hx = p->next_hx;
 	p->ray_hy = p->next_hy;
-	while ((p->ray_hy > 0 && p->ray_hy < SCREEN_HEIGHT) && (p->ray_hx > 0 && p->ray_hx < SCREEN_WIDTH))
+	while ((p->ray_hy > 0 && p->ray_hy < WORLD_HEIGHT) && (p->ray_hx > 0 && p->ray_hx < WORLD_WIDTH))
 	{
 		map_x = (int)floor(p->ray_hx / TILE_SIZE);
 		map_y = (int)floor(p->ray_hy / TILE_SIZE);
@@ -28,7 +28,7 @@ void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
 
 	p->ray_vx = p->next_vx;
 	p->ray_vy = p->next_vy;
-	while ((p->ray_vy > 0 && p->ray_vy < SCREEN_HEIGHT) && (p->ray_vx > 0 && p->ray_vx < SCREEN_WIDTH))
+	while ((p->ray_vy > 0 && p->ray_vy < WORLD_HEIGHT) && (p->ray_vx > 0 && p->ray_vx < WORLD_WIDTH))
 	{
 		map_x = (int)floor(p->ray_vx / TILE_SIZE);
 		map_y = (int)floor(p->ray_vy / TILE_SIZE);

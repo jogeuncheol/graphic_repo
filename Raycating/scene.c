@@ -21,12 +21,12 @@ void	draw_map(t_data* game_data)
 
 	src_rect.x = 0;
 	src_rect.y = 0;
-	src_rect.w = SCREEN_WIDTH;
-	src_rect.h = SCREEN_HEIGHT;
+	src_rect.w = WORLD_WIDTH;
+	src_rect.h = WORLD_HEIGHT;
 	dst_rect.x = 0;
 	dst_rect.y = 0;
-	dst_rect.w = SCREEN_WIDTH / 4;
-	dst_rect.h = SCREEN_HEIGHT / 4;
+	dst_rect.w = WORLD_WIDTH / 4;
+	dst_rect.h = WORLD_HEIGHT / 4;
 	if (game_data->player->is_map_visible)
 		SDL_RenderCopy(game_data->renderer, game_data->texture, &src_rect, &dst_rect);
 }

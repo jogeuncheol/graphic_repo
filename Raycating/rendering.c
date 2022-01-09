@@ -27,7 +27,7 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 
 	float ra = fov_angle - p->angle;
 	dst = dst * cos(ra * M_PI / 180);
-	wall_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85) / dst);
+	wall_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / dst);
 	if (wall_h > SCREEN_HEIGHT)
 		wall_h = SCREEN_HEIGHT;
 
@@ -116,9 +116,9 @@ void	Rendering(t_data* game_data)
 	SDL_Texture* bg_texture = game_data->bg_texture;
 	t_player* player = game_data->player;
 
-	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+	//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	/* SDL_RenderClear :: SDL_SetRenderDrawColor 로 지정되어 있는 색으로 화면 전체를 렌더링 함. */
-	SDL_RenderClear(renderer);
+	//SDL_RenderClear(renderer);
 
 	// 렌더러에 텍스쳐 연결 (현재 texture는 배경 격자)
 	// SDL_RenderCopy(renderer, texture, NULL, NULL);
@@ -140,8 +140,8 @@ void	Rendering(t_data* game_data)
 
 	//// 렌더러의 그리기 색상을 파랑색으로 설정
 	//// 수평 격자 ray
-	//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-	//SDL_RenderDrawLine(game_data->renderer, player->p_rect.x, player->p_rect.y, game_data->player->ray_hx, game_data->player->ray_hy);
+	// SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
+	// SDL_RenderDrawLine(game_data->renderer, player->p_rect.x, player->p_rect.y, game_data->player->ray_hx, game_data->player->ray_hy);
 
 	//// 수직 격자 ray
 	//SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
