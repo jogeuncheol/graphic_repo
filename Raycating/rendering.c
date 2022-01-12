@@ -1,4 +1,6 @@
 #include "SDL_Project.h"
+#include "texture/re_wall1.ppm"
+#include "texture/re_texture1.ppm"
 
 void	map_over_screen(t_data* game_data)
 {
@@ -27,9 +29,10 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 
 	float ra = fov_angle - p->angle;
 	dst = dst * cos(ra * M_PI / 180);
+	// wall_h = TILE_SIZE * ((SCREEN_WIDTH / 1) * (tan(30 * M_PI / 180))) / dst;
 	wall_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / dst);
-	if (wall_h > SCREEN_HEIGHT)
-		wall_h = SCREEN_HEIGHT;
+	//if (wall_h > SCREEN_HEIGHT)
+	//	wall_h = SCREEN_HEIGHT;
 
 	int i; // = SCREEN_WIDTH + SCREEN_WIDTH / 2;
 	int j = (SCREEN_HEIGHT) / 2;
@@ -38,7 +41,43 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 	int bottom = wall_h + top;
 	// printf("top : %d\nbottom : %d\n", top, bottom);
 
-	SDL_RenderDrawLine(game_data->renderer, width_idx, top, width_idx, bottom);
+	// SDL_RenderDrawLine(game_data->renderer, width_idx, top, width_idx, bottom);
+
+	/* 테스트 코드 : 텍스쳐 */
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	// int pixel = (i * 512 + j) * 3;
+	int r = 0; //texture1[pixel + 0];
+	int g = 0; //texture1[pixel + 1];
+	int b = 0; //texture1[pixel + 2];
+
+	int h = wall_h / 2;
+	y = (int)floor(fmod(game_data->ray_y, 64));
+
+	while (h > 0)// && width_idx > SCREEN_WIDTH / 3 && width_idx < SCREEN_WIDTH * 2 / 3)
+	{
+		h--;
+		x = (z++) * ((float)64 / wall_h);
+		if (j - h < 0 || j + h >(SCREEN_HEIGHT - 1))
+			continue;
+		//int texel = (y * 512 + x) * 3;
+		//r = texture1[texel + 0];
+		//g = texture1[texel + 1];
+		//b = texture1[texel + 2];
+		test_wall_texel(game_data, x, y, width_idx, h, texture4);
+		//SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
+		//SDL_RenderDrawPoint(game_data->renderer, width_idx, (int)(floor(SCREEN_HEIGHT / 2) - h));
+		//texel = ((y) * 512 + 512 - x) * 3;
+		//r = texture1[texel + 0];
+		//g = texture1[texel + 1];
+		//b = texture1[texel + 2];
+		//SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
+		//SDL_RenderDrawPoint(game_data->renderer, width_idx, (int)(floor(SCREEN_HEIGHT / 2) + h));
+	}
+
+	//SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
+	//SDL_RenderDrawPoint(game_data->renderer, x, y);
 }
 
 void	draw_fov_ray(t_data *game_data)
@@ -133,10 +172,16 @@ void	Rendering(t_data* game_data)
 	// SDL_RenderFillRect(renderer, &player->player_cord);
 
 	// 플레이어의 방향
-	// draw_line(game_data);
+	//draw_line(game_data);
 
 	// 플레이어 시야 표현
+	game_data->wall_surface = init_background(game_data->window);
 	draw_fov_ray(game_data);
+	game_data->wall_texture1 = SDL_CreateTextureFromSurface(game_data->renderer, game_data->wall_surface);
+	SDL_FreeSurface(game_data->wall_surface);
+	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, NULL, NULL);
+	// test_draw_texture(game_data->wall_texture1);
+	SDL_DestroyTexture(game_data->wall_texture1);
 
 	//// 렌더러의 그리기 색상을 파랑색으로 설정
 	//// 수평 격자 ray
@@ -153,6 +198,8 @@ void	Rendering(t_data* game_data)
 
 	// 지도 그리기
 	draw_map(game_data);
+	// test_draw_texture(game_data);
+	// ft_test_pmm(game_data);
 
 	// 숨겨진 대상을 그린다. <--(?) 모든 것을 가져와 렌더러에 연결된 창에 그린다.
 	SDL_RenderPresent(renderer);
