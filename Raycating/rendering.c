@@ -1,6 +1,7 @@
 #include "SDL_Project.h"
 #include "texture/re_wall1.ppm"
 #include "texture/re_texture1.ppm"
+#include "texture/stone_wall3.ppm"
 
 void	map_over_screen(t_data* game_data)
 {
@@ -8,6 +9,19 @@ void	map_over_screen(t_data* game_data)
 	if (keystatus[SDL_SCANCODE_M])
 		game_data->player->is_map_visible = 1;
 
+}
+
+void	test_set_color(t_data* game_data, int texel, int *r, int *g, int *b, int wall_h, int* texture)
+{
+	float shader = 0.0f;
+	shader = (float)wall_h / SCREEN_HEIGHT;
+	if (shader > 1.0f)
+	{
+		shader = 1.0f;
+	}
+	*r = texture[texel + 0] * shader;
+	*g = texture[texel + 1] * shader;
+	*b = texture[texel + 2] * shader;
 }
 
 void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
@@ -53,31 +67,36 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 	int b = 0; //texture1[pixel + 2];
 
 	int h = wall_h / 2;
-	y = (int)floor(fmod(game_data->ray_y, 64));
+	if (game_data->hit_v)
+		y = (int)floor(fmod(game_data->ray_y, 64));
+	else
+		y = (int)floor(fmod(game_data->ray_x, 64));
 
 	while (h > 0)// && width_idx > SCREEN_WIDTH / 3 && width_idx < SCREEN_WIDTH * 2 / 3)
 	{
 		h--;
 		x = (z++) * ((float)64 / wall_h);
-		if (j - h < 0 || j + h >(SCREEN_HEIGHT - 1))
+		if (j - h < 0 || j + h > SCREEN_HEIGHT)
 			continue;
-		//int texel = (y * 512 + x) * 3;
-		//r = texture1[texel + 0];
-		//g = texture1[texel + 1];
-		//b = texture1[texel + 2];
-		test_wall_texel(game_data, x, y, width_idx, h, texture4);
-		//SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
-		//SDL_RenderDrawPoint(game_data->renderer, width_idx, (int)(floor(SCREEN_HEIGHT / 2) - h));
-		//texel = ((y) * 512 + 512 - x) * 3;
-		//r = texture1[texel + 0];
-		//g = texture1[texel + 1];
-		//b = texture1[texel + 2];
-		//SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
-		//SDL_RenderDrawPoint(game_data->renderer, width_idx, (int)(floor(SCREEN_HEIGHT / 2) + h));
-	}
 
-	//SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
-	//SDL_RenderDrawPoint(game_data->renderer, x, y);
+		int texel = (x * 64 + y) * 3;
+		test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
+		SDL_Rect wall_rect;
+		wall_rect.w = 1;
+		wall_rect.h = 1;
+		wall_rect.x = width_idx;
+
+		// 상단 그리기
+		wall_rect.y = (int)(floor(SCREEN_HEIGHT / 2) - h);
+		// test_wall_texel(game_data, x, y, width_idx, h, texture4);
+		SDL_FillRect(game_data->wall_surface, &wall_rect, SDL_MapRGB(game_data->wall_surface->format, r, g, b));
+
+		// 하단 그리기
+		texel = ((64 - x) * 64 + y) * 3;
+		test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
+		wall_rect.y = (int)(floor(SCREEN_HEIGHT / 2) + h);
+		SDL_FillRect(game_data->wall_surface, &wall_rect, SDL_MapRGB(game_data->wall_surface->format, r, g, b));
+	}
 }
 
 void	draw_fov_ray(t_data *game_data)
@@ -120,6 +139,8 @@ void	draw_short_ray(t_data *g_data)
 	ray_distance_v = sqrtf(powf(p->ray_vx - p->p_rect.x, 2) + powf(p->ray_vy - p->p_rect.y, 2));
 	if (ray_distance_h == 0)
 	{
+		g_data->hit_v = 1;
+		g_data->hit_h = 0;
 		g_data->ray_x = p->ray_vx;
 		g_data->ray_y = p->ray_vy;
 		SDL_SetRenderDrawColor(g_data->renderer, 0xFF, 0xC8, 0xC8, 0xFF);
@@ -127,6 +148,8 @@ void	draw_short_ray(t_data *g_data)
 	}
 	else if (ray_distance_v == 0)
 	{
+		g_data->hit_v = 0;
+		g_data->hit_h = 1;
 		g_data->ray_x = p->ray_hx;
 		g_data->ray_y = p->ray_hy;
 		SDL_SetRenderDrawColor(g_data->renderer, 0xd0, 0xe0, 0xFF, 0xFF);
@@ -134,6 +157,8 @@ void	draw_short_ray(t_data *g_data)
 	}
 	else if (ray_distance_h < ray_distance_v)
 	{
+		g_data->hit_v = 0;
+		g_data->hit_h = 1;
 		g_data->ray_x = p->ray_hx;
 		g_data->ray_y = p->ray_hy;
 		SDL_SetRenderDrawColor(g_data->renderer, 0xd0, 0xe0, 0xFF, 0xFF);
@@ -141,6 +166,8 @@ void	draw_short_ray(t_data *g_data)
 	}
 	else
 	{
+		g_data->hit_v = 1;
+		g_data->hit_h = 0;
 		g_data->ray_x = p->ray_vx;
 		g_data->ray_y = p->ray_vy;
 		SDL_SetRenderDrawColor(g_data->renderer, 0xFF, 0xC8, 0xC8, 0xFF);
