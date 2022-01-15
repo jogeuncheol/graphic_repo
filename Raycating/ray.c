@@ -10,7 +10,7 @@ void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	{
 		map_x = (int)floor(p->ray_hx / TILE_SIZE);
 		map_y = (int)floor(p->ray_hy / TILE_SIZE);
-		if (map[map_y][map_x] == 1)
+		if (map[map_y][map_x] != 0)
 		{
 			break;
 		}
@@ -32,7 +32,7 @@ void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	{
 		map_x = (int)floor(p->ray_vx / TILE_SIZE);
 		map_y = (int)floor(p->ray_vy / TILE_SIZE);
-		if (map[map_y][map_x] == 1)
+		if (map[map_y][map_x] != 0)
 		{
 			break;
 		}

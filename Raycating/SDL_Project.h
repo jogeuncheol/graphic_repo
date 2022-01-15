@@ -11,7 +11,7 @@
 
 // 화면 크기 지정
 #define SCREEN_WIDTH	960// TILE_SIZE * 15
-#define SCREEN_HEIGHT	720// TILE_SIZE * 10
+#define SCREEN_HEIGHT	640// TILE_SIZE * 10
 
 // 월드 크기
 #define WORLD_WIDTH		TILE_SIZE * map_w
@@ -21,16 +21,16 @@ static int map_h = 10;
 static int map_w = 15;
 static int map[10][15] =
 {
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-	{ 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1 },
-	{ 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1 },
-	{ 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1 },
-	{ 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1 },
-	{ 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
-	{ 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1 },
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 },
+	{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+	{ 2, 0, 1, 0, 1, 1, 2, 0, 2, 1, 0, 1, 0, 0, 2 },
+	{ 2, 0, 1, 0, 0, 0, 2, 0, 2, 2, 0, 2, 0, 0, 2 },
+	{ 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 1, 0, 2 },
+	{ 1, 0, 0, 2, 2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 0, 0, 2 },
+	{ 2, 0, 0, 2, 1, 1, 1, 0, 1, 0, 1, 0, 2, 0, 2 },
+	{ 2, 0, 2, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2 },
+	{ 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }
 };
 
 typedef struct s_player
@@ -70,11 +70,27 @@ typedef struct s_data
 	SDL_Renderer*	renderer;
 	SDL_Texture*	texture;
 	SDL_Texture*	bg_texture;
+	SDL_Texture*	wall_texture1;
+	SDL_Surface*	wall_surface;
 	t_player*		player;
+
+	/* test code */
+	unsigned char*	image1;
 
 	float			ray_x;
 	float			ray_y;
+	int				hit_v;
+	int				hit_h;
 }	t_data;
+
+typedef struct s_color
+{
+	int		r;
+	int		g;
+	int		b;
+	int		a;
+	float	shader;
+}	t_color;
 
 int		move_player(t_player* game_data);
 void	key_up(t_player* p);
@@ -91,5 +107,16 @@ void	draw_map(t_data* game_data);
 
 SDL_Surface* init_background(SDL_Window* window);
 void	map_over_screen(t_data* game_data);
+
+SDL_Surface* load_texture(SDL_Renderer* renderer, char* file);
+
+/* test code */
+void	test_draw_texture(t_data* game_data);
+void	ft_load_texture(t_data* game_data);
+void	test_wall_texel(t_data* game_data, int x, int y, int width_idx, int h, int* texture1);
+
+Uint32	set_color_from_texture(SDL_Rect* rect, t_data* game_data, int x, int y, int h, float shader, int* texture1);
+float	set_color_shader(int wall_h);
+int	set_texture(t_data* game_data);
 
 #endif

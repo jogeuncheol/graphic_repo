@@ -1,7 +1,11 @@
 #include "SDL_Project.h"
-#include "texture/re_wall1.ppm"
-#include "texture/re_texture1.ppm"
-#include "texture/stone_wall3.ppm"
+//#include "texture/re_wall1.ppm"
+//#include "texture/re_texture1.ppm"
+//#include "texture/stone_wall3.ppm"
+#include "texture/wall_tex3.ppm" // wall_tex1
+#include "texture/wall_tex4.ppm" // wall_tex2
+#include "texture/wall_texture3.ppm" // wall_texture3
+#include "texture/wall_texture4.ppm" // wall_texture4
 
 void	map_over_screen(t_data* game_data)
 {
@@ -71,7 +75,12 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 		y = (int)floor(fmod(game_data->ray_y, 64));
 	else
 		y = (int)floor(fmod(game_data->ray_x, 64));
-
+	int* texture = (set_texture(game_data) == 1) ? wall_texture3 : wall_texture4;
+	float shader = set_color_shader(wall_h);
+	SDL_Rect wall_rect;
+	wall_rect.w = 2;
+	wall_rect.h = 1;
+	wall_rect.x = width_idx;
 	while (h > 0)// && width_idx > SCREEN_WIDTH / 3 && width_idx < SCREEN_WIDTH * 2 / 3)
 	{
 		h--;
@@ -79,23 +88,20 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 		if (j - h < 0 || j + h > SCREEN_HEIGHT)
 			continue;
 
-		int texel = (x * 64 + y) * 3;
-		test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
-		SDL_Rect wall_rect;
-		wall_rect.w = 1;
-		wall_rect.h = 1;
-		wall_rect.x = width_idx;
+		// int texel = (x * 64 + y) * 3;
+		// test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
 
 		// 상단 그리기
-		wall_rect.y = (int)(floor(SCREEN_HEIGHT / 2) - h);
 		// test_wall_texel(game_data, x, y, width_idx, h, texture4);
-		SDL_FillRect(game_data->wall_surface, &wall_rect, SDL_MapRGB(game_data->wall_surface->format, r, g, b));
-
+		
+		Uint32 color = set_color_from_texture(&wall_rect, game_data, x, y, h, shader, texture);
+		SDL_FillRect(game_data->wall_surface, &wall_rect, color);
 		// 하단 그리기
-		texel = ((64 - x) * 64 + y) * 3;
-		test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
-		wall_rect.y = (int)(floor(SCREEN_HEIGHT / 2) + h);
-		SDL_FillRect(game_data->wall_surface, &wall_rect, SDL_MapRGB(game_data->wall_surface->format, r, g, b));
+		//texel = ((64 - x) * 64 + y) * 3;
+		//test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
+		//wall_rect.y = (int)(floor(SCREEN_HEIGHT / 2) + h);
+		color = set_color_from_texture(&wall_rect, game_data, (TILE_SIZE - x), y, -h, shader, texture);
+		SDL_FillRect(game_data->wall_surface, &wall_rect, color);
 	}
 }
 
@@ -119,13 +125,18 @@ void	draw_fov_ray(t_data *game_data)
 			else
 				fov_angle += 360;
 		}
-		horizon_ray(game_data, fov_angle);		// 수평선에 닿는 ray
-		vertical_ray(game_data, fov_angle);		// 수직선에 닿는 ray
-		draw_short_ray(game_data);				// 두 ray 중 짧은 것을 저장 game_data->ray_x, y
+		// 앨리어싱
+		if (wall_idx % 2 == 0)
+		{
+			horizon_ray(game_data, fov_angle);		// 수평선에 닿는 ray
+			vertical_ray(game_data, fov_angle);		// 수직선에 닿는 ray
+			draw_short_ray(game_data);				// 두 ray 중 짧은 것을 저장 game_data->ray_x, y
+		}
 		draw_fov_wall(game_data, fov_angle, wall_idx);	// 수직 벽 표현
 
 		// ray_angle = ray_angle + ray_count;
-		wall_idx++;
+		// 앨리어싱
+		wall_idx += 2;
 	}
 }
 
@@ -184,13 +195,13 @@ void	Rendering(t_data* game_data)
 
 	//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	/* SDL_RenderClear :: SDL_SetRenderDrawColor 로 지정되어 있는 색으로 화면 전체를 렌더링 함. */
-	//SDL_RenderClear(renderer);
+	SDL_RenderClear(renderer);
 
 	// 렌더러에 텍스쳐 연결 (현재 texture는 배경 격자)
 	// SDL_RenderCopy(renderer, texture, NULL, NULL);
 
 	// 뒷 배경 텍스쳐 연결
-	SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
+	// SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
 
 	// 플레이어 그리기
 	// 렌더러의 그리기 색상을 빨강색으로 설정
