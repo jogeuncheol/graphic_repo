@@ -29,11 +29,13 @@ int	set_texture(t_data* game_data)
 float	set_color_shader(int wall_h)
 {
 	float shader = 0.0f;
-	shader = (float)wall_h / SCREEN_HEIGHT;
+	shader = (float)wall_h / SCREEN_HEIGHT - 0.125f;
 	if (shader > 1.0f)
 	{
 		shader = 1.0f;
 	}
+	else if (shader < 0.0f)
+		shader = 0.0f;
 	return (shader);
 }
 
@@ -48,7 +50,26 @@ Uint32	set_color_from_texture(SDL_Rect *rect, t_data* game_data, int x, int y, i
 	r = texture1[texel + 0] * shader;
 	g = texture1[texel + 1] * shader;
 	b = texture1[texel + 2] * shader;
+	SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
 	return (SDL_MapRGB(game_data->wall_surface->format, r, g, b));
+}
+
+SDL_Texture*	test_sprite_texture(t_data* game_data, char *file)
+{
+	SDL_Surface* surface = NULL;
+	SDL_Texture* texture = NULL;
+
+	if (surface = SDL_LoadBMP(file))
+	{
+		texture = SDL_CreateTextureFromSurface(game_data->renderer, surface);
+		SDL_FreeSurface(surface);
+	}
+	else
+	{
+		printf("texture load Fail : %s\n", file);
+		return (NULL);
+	}
+	return (texture);
 }
 
 //#include "texture/wall1.ppm"

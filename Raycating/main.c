@@ -24,7 +24,7 @@ void	tile_grid(SDL_Surface *screenSurface)
 		for (int j = 1; j < WORLD_WIDTH; j = j + TILE_SIZE)
 		{
 			rectangle.x = j;
-			if (map[(i - 1) / TILE_SIZE][j / TILE_SIZE] == 1) // 지도의 벽
+			if (map[(i - 1) / TILE_SIZE][j / TILE_SIZE] != 0) // 지도의 벽
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xa0, 0xa0, 0xa0));
 			else // 지도의 바닥
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
@@ -59,7 +59,7 @@ void	init_player(t_player *player)
 	//player->arrow.y = player->p_rect.y + player->p_rect.h / 2;
 	player->arrow.w = 1;
 	player->arrow.h = 10;
-	player->angle = 0.0f;
+	player->angle = 90.0f;
 
 	/* 플레이어 패딩 초기화 */
 	player->p_padding_n = player->p_rect.y - 5;
@@ -67,7 +67,7 @@ void	init_player(t_player *player)
 	player->p_padding_e = player->p_rect.x + 5;
 	player->p_padding_w = player->p_rect.x - 5;
 
-	player->velocity = 0.8f;
+	player->velocity = 1.0f;
 	player->is_map_visible = 0;
 }
 
@@ -107,6 +107,9 @@ void	game(t_data* game_data)
 	int loop = 1;
 	while (loop)
 	{
+		// reset sprite map
+		reset_visible_sprite_map(game_data);
+
 		// 플레이어 이동
 		loop = move_player(game_data->player);
 		// key_down(game_data->player);
@@ -116,7 +119,8 @@ void	game(t_data* game_data)
 		// map_over_screen(game_data);
 
 		// 플레이어 위치 표시용 사각형
-		set_player_rect(game_data->player);
+		// set_player_rect(game_data->player);
+
 		// 렌더링
 		Rendering(game_data);
 		SDL_Delay(1000 / 144);
@@ -133,6 +137,14 @@ int main(int argc, char* args[])
 		printf("Failed to allocation\n");
 		return (1);
 	}
+	game_data->dist_dept = (float*)calloc(sizeof(float), SCREEN_WIDTH);
+	if (game_data->dist_dept == NULL)
+	{
+		printf("Failed to allocation\n");
+		free(game_data);
+		return (1);
+	}
+	init_sprite(game_data);
 
 	// The window we'll be rendering to
 	// 윈도우 포인터
@@ -199,6 +211,10 @@ int main(int argc, char* args[])
 			SDL_Surface* bg_surface = init_background(window);
 			SDL_Texture* bg_texture = SDL_CreateTextureFromSurface(renderer, bg_surface);
 			SDL_FreeSurface(bg_surface);
+			// game_data->wall_texture1 = load_texture(renderer, "texture/wall1.bmp");
+			// printf("벽 이미지 정보 출력 %d %d\n", game_data->wall_texture1->w, game_data->wall_texture1->h);
+			// 이미지 열기 함수
+			// ft_load_texture(game_data);
 
 			// Update the surface
 			// 화면 업데이트
@@ -219,8 +235,10 @@ int main(int argc, char* args[])
 		}
 	}
 
-	// 플레이어 데이터 해제
-	free(player);
+	// 배경 텍스쳐 해제
+	SDL_DestroyTexture(game_data->bg_texture);
+	// 스프라이트 텍스쳐 해제
+	// SDL_DestroyTexture(game_data->sp1_texture);
 
 	// Destroy window
 	// 윈도우 해제
@@ -230,6 +248,9 @@ int main(int argc, char* args[])
 	// SDL 끝내기
 	SDL_Quit();
 
+	// 데이터 해제
+	free(player);
+	free(game_data->dist_dept);
 	free(game_data);
 	return 0;
 }

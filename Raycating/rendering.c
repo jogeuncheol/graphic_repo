@@ -46,9 +46,15 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 	// param->zbuf[width_idx] = dst_test; // 05_05 save
 
 	float ra = fov_angle - p->angle;
-	dst = dst * cos(ra * M_PI / 180);
+	dst = dst * cos(ra * M_PI / 180); // 카메라 평면의 거리로 변환
 	// wall_h = TILE_SIZE * ((SCREEN_WIDTH / 1) * (tan(30 * M_PI / 180))) / dst;
 	wall_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / dst);
+
+	/* test code :: sprite */
+	// 벽까지 거리 값
+	game_data->dist_dept[width_idx] = dst;
+	/* test code :: sprite */
+
 	//if (wall_h > SCREEN_HEIGHT)
 	//	wall_h = SCREEN_HEIGHT;
 
@@ -100,7 +106,7 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 		//texel = ((64 - x) * 64 + y) * 3;
 		//test_set_color(game_data, texel, &r, &g, &b, wall_h, stone_wall3);
 		//wall_rect.y = (int)(floor(SCREEN_HEIGHT / 2) + h);
-		color = set_color_from_texture(&wall_rect, game_data, (TILE_SIZE - x), y, -h, shader, texture);
+		color = set_color_from_texture(&wall_rect, game_data, ((TILE_SIZE - 1) - x), y, -h, shader, texture);
 		SDL_FillRect(game_data->wall_surface, &wall_rect, color);
 	}
 }
@@ -215,10 +221,12 @@ void	Rendering(t_data* game_data)
 	// 플레이어 시야 표현
 	game_data->wall_surface = init_background(game_data->window);
 	draw_fov_ray(game_data);
+	//ft_sprite_calculate(game_data);
+	//if (game_data->sprite_count)
+	//	test_sprite_(game_data);
 	game_data->wall_texture1 = SDL_CreateTextureFromSurface(game_data->renderer, game_data->wall_surface);
 	SDL_FreeSurface(game_data->wall_surface);
 	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, NULL, NULL);
-	// test_draw_texture(game_data->wall_texture1);
 	SDL_DestroyTexture(game_data->wall_texture1);
 
 	//// 렌더러의 그리기 색상을 파랑색으로 설정
@@ -233,6 +241,16 @@ void	Rendering(t_data* game_data)
 
 	// 수평 광선과 수직 광선 중 더 짧은 광선을 그림.
 	// draw_short_ray(game_data);
+
+	/* sprite code */
+	// game_data->sp1_surface = SDL_GetWindowSurface(game_data->window);
+	ft_sprite_calculate(game_data);
+	if (game_data->sprite_count)
+		test_sprite_(game_data);
+	//game_data->sp1_texture = SDL_CreateTextureFromSurface(game_data->renderer, game_data->sp1_surface);
+	//SDL_FreeSurface(game_data->sp1_surface);
+	////SDL_RenderCopy(game_data->renderer, game_data->sp1_texture, NULL, NULL);
+	//SDL_DestroyTexture(game_data->sp1_texture);
 
 	// 지도 그리기
 	draw_map(game_data);

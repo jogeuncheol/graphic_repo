@@ -1,7 +1,8 @@
 #include "SDL_Project.h"
 
-void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
+void	horizon_find_hit_coord(t_data *g_data, float offset_x, float offset_y)
 {
+	t_player* p = g_data->player;
 	int map_x, map_y;
 
 	p->ray_hx = p->next_hx;
@@ -10,6 +11,7 @@ void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	{
 		map_x = (int)floor(p->ray_hx / TILE_SIZE);
 		map_y = (int)floor(p->ray_hy / TILE_SIZE);
+		test_sprite_checker(g_data, map_x, map_y, 'h');
 		if (map[map_y][map_x] != 0)
 		{
 			break;
@@ -22,8 +24,9 @@ void	horizon_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	}
 }
 
-void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
+void	vertical_find_hit_coord(t_data* g_data, float offset_x, float offset_y)
 {
+	t_player* p = g_data->player;
 	int map_x, map_y;
 
 	p->ray_vx = p->next_vx;
@@ -32,6 +35,7 @@ void	vertical_find_hit_coord(t_player* p, float offset_x, float offset_y)
 	{
 		map_x = (int)floor(p->ray_vx / TILE_SIZE);
 		map_y = (int)floor(p->ray_vy / TILE_SIZE);
+		test_sprite_checker(g_data, map_x, map_y, 'v');
 		if (map[map_y][map_x] != 0)
 		{
 			break;
@@ -71,7 +75,7 @@ void	horizon_ray(t_data *g_data, float fov_angle)
 		point_x = floorf(x1 / TILE_SIZE) * TILE_SIZE;
 		point_y = floorf(y1 / TILE_SIZE) * TILE_SIZE;
 		g_data->player->ray_hx = g_data->player->next_hx = (point_y - y1) / (float)tan(rad) + x1;
-		g_data->player->ray_hy = g_data->player->next_hy = point_y -0.1f;
+		g_data->player->ray_hy = g_data->player->next_hy = point_y -0.001f;
 		offset_y = -TILE_SIZE;
 		offset_x = (offset_y / (float)tan(rad));
 	}
@@ -83,7 +87,7 @@ void	horizon_ray(t_data *g_data, float fov_angle)
 		g_data->player->ray_hy = g_data->player->next_hy = y1;
 	}
 	if (g_data->player->cardinal_point)
-		horizon_find_hit_coord(g_data->player, offset_x, offset_y);
+		horizon_find_hit_coord(g_data, offset_x, offset_y);
 }
 
 void	vertical_ray(t_data* g_data, float fov_angle)
@@ -112,7 +116,7 @@ void	vertical_ray(t_data* g_data, float fov_angle)
 		g_data->player->cardinal_point = 2;
 		point_x = floorf(x1 / TILE_SIZE) * TILE_SIZE;
 		point_y = floorf(y1 / TILE_SIZE) * TILE_SIZE;
-		g_data->player->ray_vx = g_data->player->next_vx = point_x -0.1f;
+		g_data->player->ray_vx = g_data->player->next_vx = point_x -0.001f;
 		g_data->player->ray_vy = g_data->player->next_vy = (float)tan(rad) * (point_x - x1) + y1;
 		offset_x = -TILE_SIZE;
 		offset_y = (offset_x * (float)tan(rad));
@@ -125,7 +129,7 @@ void	vertical_ray(t_data* g_data, float fov_angle)
 		g_data->player->ray_vy = g_data->player->next_hy = y1;
 	}
 	if (g_data->player->cardinal_point)
-		vertical_find_hit_coord(g_data->player, offset_x, offset_y);
+		vertical_find_hit_coord(g_data, offset_x, offset_y);
 }
 
 /*

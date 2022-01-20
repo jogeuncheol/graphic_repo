@@ -199,7 +199,7 @@ int	move_player(t_player *player)
 	if (keystatus[SDL_SCANCODE_E])
 		player->angle += 1.0f;
 	if (keystatus[SDL_SCANCODE_LSHIFT])	// ´Þ¸®±â
-		player->velocity = 2.0f;
+		player->velocity = 2.5f;
 	if (player->angle > 360.0f)
 		player->angle = 0.0f;
 	else if (player->angle < -360.0f)
@@ -227,7 +227,7 @@ int	move_player(t_player *player)
 		{
 			keycode = event.key.keysym.sym;
 			if (keycode == SDLK_LSHIFT)
-				player->velocity = 0.8f;
+				player->velocity = 1.0f;
 			if (keycode == SDLK_m)
 				player->is_map_visible = 0;
 		}

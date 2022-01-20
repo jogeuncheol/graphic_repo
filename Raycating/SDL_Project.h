@@ -17,21 +17,35 @@
 #define WORLD_WIDTH		TILE_SIZE * map_w
 #define WORLD_HEIGHT	TILE_SIZE * map_h
 
-static int map_h = 10;
-static int map_w = 15;
+#define map_h 10
+#define map_w 15
+
+//static int map_h = 10;
+//static int map_w = 15;
 static int map[10][15] =
 {
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 },
-	{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
+	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 2, 2, 0 },
+	{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	{ 2, 0, 1, 0, 1, 1, 2, 0, 2, 1, 0, 1, 0, 0, 2 },
 	{ 2, 0, 1, 0, 0, 0, 2, 0, 2, 2, 0, 2, 0, 0, 2 },
 	{ 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 1, 0, 2 },
 	{ 1, 0, 0, 2, 2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 2 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 0, 0, 2 },
-	{ 2, 0, 0, 2, 1, 1, 1, 0, 1, 0, 1, 0, 2, 0, 2 },
+	{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 2, 0, 0, 0 },
+	{ 2, 0, 0, 2, 1, 1, 1, 0, 1, 0, 1, 0, 2, 0, 0 },
 	{ 2, 0, 2, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2 },
-	{ 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }
+	{ 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 0 }
 };
+
+typedef struct s_sprite
+{
+	/* collection, enemy, item ... */
+	int type;
+	/* position */
+	float x;
+	float y;
+	/* texture */
+	SDL_Texture* texture;
+}	t_sprite;
 
 typedef struct s_player
 {
@@ -72,6 +86,8 @@ typedef struct s_data
 	SDL_Texture*	bg_texture;
 	SDL_Texture*	wall_texture1;
 	SDL_Surface*	wall_surface;
+	SDL_Texture*	sp1_texture;
+	SDL_Surface*	sp1_surface;
 	t_player*		player;
 
 	/* test code */
@@ -81,6 +97,16 @@ typedef struct s_data
 	float			ray_y;
 	int				hit_v;
 	int				hit_h;
+
+	/* sprite test code */
+	t_sprite		sprite[2];
+	int visible_hit_v[map_h][map_w];
+	int visible_hit_h[map_h][map_w];
+	int visible_map[map_h][map_w];
+	int visible_sprite[map_h][map_w];
+	float* sprite_array; // [dst, angle] * sprite_count
+	int sprite_count;
+	float* dist_dept;
 }	t_data;
 
 typedef struct s_color
@@ -109,6 +135,17 @@ SDL_Surface* init_background(SDL_Window* window);
 void	map_over_screen(t_data* game_data);
 
 SDL_Surface* load_texture(SDL_Renderer* renderer, char* file);
+
+/* sprite code */
+void	test_spirte(t_data* game_data);
+void	init_sprite(t_data* game_data);
+// void	draw_sprite(t_data* game_data);
+void	reset_visible_sprite_map(t_data* game_data);
+void	test_sprite_checker(t_data* game_data, int x, int y, char c);
+void	set_sprite_map(t_data* game_data);
+void	test_sprite_(t_data* game_data);
+void	ft_sprite_calculate(t_data* game_data);
+SDL_Texture* test_sprite_texture(t_data* game_data, char* file);
 
 /* test code */
 void	test_draw_texture(t_data* game_data);

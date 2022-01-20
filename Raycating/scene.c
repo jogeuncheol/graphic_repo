@@ -12,12 +12,21 @@ SDL_Surface* init_background(SDL_Window *window)
 	bg_rect.w = SCREEN_WIDTH;
 	bg_rect.h = 1;
 	background_surface = SDL_GetWindowSurface(window);
-	while (bg_rect.y < SCREEN_HEIGHT)
+	while (bg_rect.y < (SCREEN_HEIGHT / 2))
 	{
-		shader = 0x60 / (SCREEN_HEIGHT / 2);
+		int y = bg_rect.y;
+		shader = (((float)SCREEN_HEIGHT / 2) - bg_rect.y) / ((float)SCREEN_HEIGHT / 2) - 0.125f;
 		if (shader > 1.0f)
 			shader = 1.0f;
-		SDL_FillRect(background_surface, &bg_rect, SDL_MapRGB(background_surface->format, 0x60, 0x60, 0x60));
+		else if (shader < 0.0f)
+			shader = 0.0f;
+		r = 0x60 * shader;
+		g = 0x60 * shader;
+		b = 0x60 * shader;
+		SDL_FillRect(background_surface, &bg_rect, SDL_MapRGB(background_surface->format, r, g, b));
+		bg_rect.y = SCREEN_HEIGHT - y;
+		SDL_FillRect(background_surface, &bg_rect, SDL_MapRGB(background_surface->format, r, g, b));
+		bg_rect.y = y;
 		bg_rect.y++;
 	}
 	return (background_surface);
