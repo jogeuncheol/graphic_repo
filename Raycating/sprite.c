@@ -1,14 +1,22 @@
 #include "SDL_Project.h"
 #include "texture/sprite_dbd.ppm" // sprite test
+#include "texture/light2.ppm" // sprite test
+#include "texture/light5.ppm" // sprite test
 
 void	init_sprite(t_data* game_data)
 {
-	game_data->sprite[0].type = 1;
-	game_data->sprite[0].x = 3.5f * TILE_SIZE;
-	game_data->sprite[0].y = 6.5f * TILE_SIZE;
-	game_data->sprite[1].type = 1;
-	game_data->sprite[1].x = 5.5f * TILE_SIZE;
-	game_data->sprite[1].y = 6.5f * TILE_SIZE;
+	game_data->sprite[0].type = 0; // 0 == sprite_dbd
+	game_data->sprite[0].x = 1.5f * (float)TILE_SIZE;
+	game_data->sprite[0].y = 6.5f * (float)TILE_SIZE;
+	game_data->sprite[1].type = 1; // 1 == light2
+	game_data->sprite[1].x = 1.0f * (float)TILE_SIZE;
+	game_data->sprite[1].y = 4.0f * (float)TILE_SIZE;
+	game_data->sprite[2].type = 1;
+	game_data->sprite[2].x = 1.0f * (float)TILE_SIZE;
+	game_data->sprite[2].y = 5.0f * (float)TILE_SIZE;
+	game_data->sprite[3].type = 1;
+	game_data->sprite[3].x = 1.0f * (float)TILE_SIZE;
+	game_data->sprite[3].y = 6.0f * (float)TILE_SIZE;
 }
 
 void init_visible_map(t_data *game_data)
@@ -75,13 +83,17 @@ void ft_sprite_swap(t_data* game_data, int i, int max)
 {
 	float tmp_dst;
 	float tmp_angle;
+	float type;
 
-	tmp_dst = game_data->sprite_array[i * 2];
-	tmp_angle = game_data->sprite_array[i * 2 + 1];
-	game_data->sprite_array[i * 2] = game_data->sprite_array[max];
-	game_data->sprite_array[i * 2 + 1] = game_data->sprite_array[max + 1];
+	tmp_dst = game_data->sprite_array[i * 3];
+	tmp_angle = game_data->sprite_array[i * 3 + 1];
+	type = game_data->sprite_array[i * 3 + 2];
+	game_data->sprite_array[i * 3] = game_data->sprite_array[max];
+	game_data->sprite_array[i * 3 + 1] = game_data->sprite_array[max + 1];
+	game_data->sprite_array[i * 3 + 2] = game_data->sprite_array[max + 2];
 	game_data->sprite_array[max] = tmp_dst;
 	game_data->sprite_array[max + 1] = tmp_angle;
+	game_data->sprite_array[max + 2] = type;
 }
 
 void ft_sprite_sort(t_data* game_data)
@@ -94,16 +106,38 @@ void ft_sprite_sort(t_data* game_data)
 	while (i < game_data->sprite_count - 1)
 	{
 		j = i + 1;
-		max = i * 2;
+		max = i * 3;
 		while (j < game_data->sprite_count)
 		{
-			if (game_data->sprite_array[max] < game_data->sprite_array[j * 2])
+			if (game_data->sprite_array[max] < game_data->sprite_array[j * 3])
 			{
-				max = j * 2;
+				max = j * 3;
 			}
 			j++;
 		}
 		ft_sprite_swap(game_data, i, max);
+		i++;
+	}
+}
+
+void test_sprite_array(t_data* game_data)
+{
+	int x;
+	int y;
+	float dx;
+	float dy;
+	int i, idx;
+	float rad = game_data->player->angle * M_PI / 180.0f;
+
+	i = 0;
+	while (i < game_data->sprite_count)
+	{
+		idx = game_data->s_idx_arr[i];
+		dx = game_data->sprite[idx].x - game_data->player->p_rect.x;
+		dy = game_data->sprite[idx].y - game_data->player->p_rect.y;
+		game_data->sprite_array[i * 3] = dx * cos(rad) + dy * sin(rad);
+		game_data->sprite_array[i * 3 + 1] = atan2(dy, dx) - rad;
+		game_data->sprite_array[i * 3 + 2] = game_data->sprite[idx].type;
 		i++;
 	}
 }
@@ -114,28 +148,46 @@ void ft_sprite_array(t_data* game_data)
 	int y;
 	float dx;
 	float dy;
-	int i;
-	float seta = game_data->player->angle * M_PI / 180.0f;
+	int i, j;
+	float rad = game_data->player->angle * M_PI / 180.0f;
 
 	i = 0;
-	y = 0;
-	while (y < map_h)
+	j = 0;
+	while (i < game_data->sprite_count)
 	{
-		x = 0;
-		while (x < map_w)
+		x = (int)floor(game_data->sprite[j].x / TILE_SIZE);
+		y = (int)floor(game_data->sprite[j].y / TILE_SIZE);
+		if (game_data->visible_sprite[y][x] == 1)
 		{
-			if (game_data->visible_sprite[y][x] == 1)
-			{
-				dx = fabs(x * TILE_SIZE + (TILE_SIZE / 2)) - game_data->player->p_rect.x;
-				dy = fabs(y * TILE_SIZE + (TILE_SIZE / 2)) - game_data->player->p_rect.y;
-				game_data->sprite_array[i] = dx * cos(seta) + dy * sin(seta);
-				game_data->sprite_array[i + 1] = atan2(dy, dx) - seta;
-				i = i + 2;
-			}
-			x++;
+			dx = game_data->sprite[j].x - game_data->player->p_rect.x;
+			dy = game_data->sprite[j].y - game_data->player->p_rect.y;
+			game_data->sprite_array[i * 3] = dx * cos(rad) + dy * sin(rad);
+			game_data->sprite_array[i * 3 + 1] = atan2(dy, dx) - rad;
+			game_data->sprite_array[i * 3 + 2] = game_data->sprite[j].type;
+			i++;
 		}
-		y++;
+		j++;
 	}
+
+	//y = 0;
+	//while (y < map_h)
+	//{
+	//	x = 0;
+	//	while (x < map_w)
+	//	{
+	//		if (game_data->visible_sprite[y][x] == 1)
+	//		{
+	//			dx = (x * TILE_SIZE) - game_data->player->p_rect.x;
+	//			dy = (y * TILE_SIZE + (TILE_SIZE / 2)) - game_data->player->p_rect.y;
+	//			game_data->sprite_array[i] = dx * cos(rad) + dy * sin(rad);
+	//			game_data->sprite_array[i + 1] = atan2(dy, dx) - rad;
+	//			game_data->sprite_array[i + 2] = 0;
+	//			i = i + 3;
+	//		}
+	//		x++;
+	//	}
+	//	y++;
+	//}
 }
 
 void ft_check_sprite(t_data* game_data)
@@ -156,15 +208,20 @@ void ft_check_sprite(t_data* game_data)
 		}
 		y++;
 	}
-	game_data->sprite_array = (float*)malloc(sizeof(float) * game_data->sprite_count * 2);
+	game_data->sprite_array = (float*)malloc(sizeof(float) * game_data->sprite_count * 3);
 }
 
 void ft_sprite_calculate(t_data* game_data)
 {
-	ft_check_sprite(game_data);
+	//ft_check_sprite(game_data);
+	//if (game_data->sprite_count)
+	//{
+	//	ft_sprite_array(game_data);
+	//	ft_sprite_sort(game_data);
+	//}
 	if (game_data->sprite_count)
 	{
-		ft_sprite_array(game_data);
+		test_sprite_array(game_data);
 		ft_sprite_sort(game_data);
 	}
 }
@@ -271,6 +328,35 @@ void	set_sprite_map(t_data *game_data)
 	}
 }
 
+void	inner_product(t_data* game_data)
+{
+	const int count = sizeof(game_data->sprite) / sizeof(t_sprite);
+	float px, py, sx, sy, dx, dy;
+	float rad = game_data->player->angle * M_PI / 180.0f;
+	float inner_product;
+	// int* s_idx;
+	
+	// s_idx = (int*)calloc(count, sizeof(int));
+	game_data->sprite_count = 0;
+	px = game_data->player->p_rect.x;
+	py = game_data->player->p_rect.y;
+	for (int i = 0; i < count; i++)
+	{
+		sx = game_data->sprite[i].x;
+		sy = game_data->sprite[i].y;
+		dx = sx - px;
+		dy = sy - py;
+		inner_product = dx * cos(rad) + dy * sin(rad);
+		if (inner_product >= 0)
+		{
+			game_data->s_idx_arr[game_data->sprite_count] = i;
+			game_data->sprite_count++;
+		}
+	}
+	// free(s_idx);
+	game_data->sprite_array = (float*)malloc(sizeof(float) * game_data->sprite_count * 3);
+}
+
 void	test_sprite_checker(t_data *game_data, int x, int y, char c)
 {
 	int count = sizeof(game_data->sprite) / sizeof(t_sprite);
@@ -295,7 +381,7 @@ void	test_sprite_(t_data* game_data)
 
 	for (int count = 0; count < game_data->sprite_count; count++)
 	{
-		int* texture = sprite_dbd;
+		int* texture = light2;
 		p_s_dist = game_data->sprite_array[count * 2];
 		rad = game_data->sprite_array[count * 2 + 1];
 		s_width_idx = ((SCREEN_WIDTH / 2) / tan(30 * M_PI / 180.0f)) * tan(rad);
@@ -306,6 +392,7 @@ void	test_sprite_(t_data* game_data)
 		s_rect.y = (SCREEN_HEIGHT - sprite_h) / 2;
 		s_rect.w = 2;
 		s_rect.h = 1; // sprite_h;
+		float shader = set_color_shader(sprite_h);
 		for (int i = 0; i < sprite_h; i += 1)
 		{
 			s_rect.x = s_width_idx + i;
@@ -322,7 +409,6 @@ void	test_sprite_(t_data* game_data)
 
 			int h = sprite_h / 2;
 			y = i * (float)TILE_SIZE / sprite_h;
-			float shader = set_color_shader(sprite_h);
 			while (h > 0)
 			{
 				h--;
@@ -346,6 +432,117 @@ void	test_sprite_(t_data* game_data)
 					SDL_RenderDrawPoints(game_data->renderer, point, 2);
 //				if (color != 0)
 //					SDL_FillRect(game_data->wall_surface, &s_rect, SDL_MapRGB(game_data->wall_surface->format, 0xFF, 0xFF, 0x00));
+			}
+		}
+	}
+}
+
+void	test_draw_sprite_(t_data *game_data)
+{
+	float p_s_dist;
+	int sprite_h;
+	float rad;
+	int s_width_idx;
+	SDL_Rect s_rect = {0, 0, 2, 2};
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	int h = 0;
+	float shader;
+	Uint32 color;
+
+	for (int count = 0; count < game_data->sprite_count; count++)
+	{
+		int* texture = NULL;
+		if (game_data->sprite_array[count * 3 + 2] == 0)
+			texture = sprite_dbd;
+		else if (game_data->sprite_array[count * 3 + 2] == 1)
+			texture = light2;
+
+		p_s_dist = game_data->sprite_array[count * 3];
+		rad = game_data->sprite_array[count * 3 + 1];
+		s_width_idx = ((SCREEN_WIDTH / 2) / tan(30 * M_PI / 180.0f)) * tan(rad);
+		sprite_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / p_s_dist);
+		s_width_idx = SCREEN_WIDTH / 2 + s_width_idx - (sprite_h / 2);
+
+		if (s_width_idx > SCREEN_WIDTH || s_width_idx + sprite_h < 0)
+			continue;
+
+		shader = set_color_shader(sprite_h);
+		z = 0;
+		for (h = (sprite_h / 2) - 1; h > 0; h -= 2)
+		{
+			x = (z) * ((float)TILE_SIZE / sprite_h);
+			z += 2;
+			if (h > SCREEN_HEIGHT / 2 - 1) continue;
+
+			for (int i = 0; i < sprite_h; i += 2)
+			{
+				s_rect.x = s_width_idx + i;
+				if (s_rect.x < 0 || s_rect.x > SCREEN_WIDTH) continue;
+				if (p_s_dist > game_data->dist_dept[s_width_idx + i]) continue;
+				y = i * (float)TILE_SIZE / sprite_h;
+				color = set_color_from_texture(&s_rect, game_data, x, y, h, shader, texture);
+				if (color != 0)
+					SDL_FillRect(game_data->sp1_surface, &s_rect, color);
+				color = set_color_from_texture(&s_rect, game_data, ((TILE_SIZE - 1) - x), y, -h, shader, texture);
+				if (color != 0)
+					SDL_FillRect(game_data->sp1_surface, &s_rect, color);
+			}
+		}
+	}
+	free(game_data->sprite_array);
+	game_data->sprite_array = NULL;
+}
+
+
+void	test_draw_sprite_2(t_data* game_data)
+{
+	float p_s_dist;
+	int sprite_h;
+	float rad;
+	int s_width_idx;
+	SDL_Rect s_rect = { 0, 0, 2, 2 };
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	int h = 0;
+	float shader;
+	Uint32 color;
+
+	for (int count = 0; count < game_data->sprite_count; count++)
+	{
+		int* texture = light2;
+
+		p_s_dist = game_data->sprite_array[count * 2];
+		rad = game_data->sprite_array[count * 2 + 1];
+		s_width_idx = ((SCREEN_WIDTH / 2) / tan(30 * M_PI / 180.0f)) * tan(rad);
+		sprite_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / p_s_dist);
+		s_width_idx = SCREEN_WIDTH / 2 + s_width_idx - (sprite_h / 2);
+
+		//if (s_width_idx > SCREEN_WIDTH || s_width_idx + sprite_h < 0)
+		//	continue;
+
+		shader = set_color_shader(sprite_h);
+		h = (sprite_h / 2) - 1;
+		for (int i = 0; i < sprite_h; i += 2)
+		{
+			s_rect.x = s_width_idx + i;
+			if (s_rect.x < 0 || s_rect.x > SCREEN_WIDTH) continue;
+			if (p_s_dist > game_data->dist_dept[s_rect.x]) continue;
+			z = 0;
+			y = i * (float)TILE_SIZE / sprite_h;
+			for (h = (sprite_h / 2) - 1; h > 0; h -= 2)
+			{
+				x = (z) * ((float)TILE_SIZE / sprite_h);
+				z += 2;
+				if (h > SCREEN_HEIGHT / 2 - 1) continue;
+				color = set_color_from_texture(&s_rect, game_data, x, y, h, shader, texture);
+				if (color != 0)
+					SDL_FillRect(game_data->sp1_surface, &s_rect, color);
+				color = set_color_from_texture(&s_rect, game_data, ((TILE_SIZE - 1) - x), y, -h, shader, texture);
+				if (color != 0)
+					SDL_FillRect(game_data->sp1_surface, &s_rect, color);
 			}
 		}
 	}

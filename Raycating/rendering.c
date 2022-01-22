@@ -53,6 +53,7 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 	/* test code :: sprite */
 	// 벽까지 거리 값
 	game_data->dist_dept[width_idx] = dst;
+	game_data->dist_dept[width_idx + 1] = dst; // <-- 스프라이트 깜빡임에 영향주는 부분
 	/* test code :: sprite */
 
 	//if (wall_h > SCREEN_HEIGHT)
@@ -229,6 +230,27 @@ void	Rendering(t_data* game_data)
 	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, NULL, NULL);
 	SDL_DestroyTexture(game_data->wall_texture1);
 
+	/* sprite code */
+	game_data->sp1_surface = SDL_GetWindowSurface(game_data->window);
+	//ft_sprite_calculate(game_data);
+	//if (game_data->sprite_count)
+	//	test_draw_sprite_(game_data);
+	inner_product(game_data);
+	ft_sprite_calculate(game_data);
+	if (game_data->sprite_count)
+		test_draw_sprite_(game_data);
+
+	/* test :: 중앙 점 표시 */
+	SDL_Rect rect = { SCREEN_WIDTH / 2 - 3, SCREEN_HEIGHT / 2 - 3, 6, 6 };
+	SDL_FillRect(game_data->sp1_surface, &rect, SDL_MapRGB(game_data->sp1_surface->format, 0xFF, 0xFF, 0xFF));
+	/* test :: 중앙 점 표시 */
+
+	game_data->sp1_texture = SDL_CreateTextureFromSurface(game_data->renderer, game_data->sp1_surface);
+	SDL_FreeSurface(game_data->sp1_surface);
+	SDL_RenderCopy(game_data->renderer, game_data->sp1_texture, NULL, NULL);
+	SDL_DestroyTexture(game_data->sp1_texture);
+	/* sprite code */
+
 	//// 렌더러의 그리기 색상을 파랑색으로 설정
 	//// 수평 격자 ray
 	// SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
@@ -244,9 +266,9 @@ void	Rendering(t_data* game_data)
 
 	/* sprite code */
 	// game_data->sp1_surface = SDL_GetWindowSurface(game_data->window);
-	ft_sprite_calculate(game_data);
-	if (game_data->sprite_count)
-		test_sprite_(game_data);
+	//ft_sprite_calculate(game_data);
+	//if (game_data->sprite_count)
+	//	test_sprite_(game_data);
 	//game_data->sp1_texture = SDL_CreateTextureFromSurface(game_data->renderer, game_data->sp1_surface);
 	//SDL_FreeSurface(game_data->sp1_surface);
 	////SDL_RenderCopy(game_data->renderer, game_data->sp1_texture, NULL, NULL);

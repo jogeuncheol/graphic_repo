@@ -43,15 +43,24 @@ Uint32	set_color_from_texture(SDL_Rect *rect, t_data* game_data, int x, int y, i
 {
 	rect->y = (int)(floor(SCREEN_HEIGHT / 2) - h);
 
+	Uint32 color;
 	int r = 0;
 	int g = 0;
 	int b = 0;
 	int texel = (x * 64 + y) * 3;
-	r = texture1[texel + 0] * shader;
-	g = texture1[texel + 1] * shader;
-	b = texture1[texel + 2] * shader;
+
+	r = texture1[texel + 0];
+	g = texture1[texel + 1];
+	b = texture1[texel + 2];
+	if (r < 0xFa || g < 0xF1 || b < 0xbf)
+	{
+		r = r * shader;
+		g = g * shader;
+		b = b * shader;
+	}
 	SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
-	return (SDL_MapRGB(game_data->wall_surface->format, r, g, b));
+	color = SDL_MapRGB(game_data->wall_surface->format, r, g, b);
+	return (color);
 }
 
 SDL_Texture*	test_sprite_texture(t_data* game_data, char *file)

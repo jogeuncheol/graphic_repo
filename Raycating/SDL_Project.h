@@ -13,16 +13,16 @@
 #define SCREEN_WIDTH	960// TILE_SIZE * 15
 #define SCREEN_HEIGHT	640// TILE_SIZE * 10
 
+#define map_h 20
+#define map_w 20
+
 // 월드 크기
 #define WORLD_WIDTH		TILE_SIZE * map_w
 #define WORLD_HEIGHT	TILE_SIZE * map_h
 
-#define map_h 10
-#define map_w 15
-
 //static int map_h = 10;
 //static int map_w = 15;
-static int map[10][15] =
+static int map2[10][15] =
 {
 	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 2, 2, 0 },
 	{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -35,11 +35,36 @@ static int map[10][15] =
 	{ 2, 0, 2, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2 },
 	{ 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 0 }
 };
+static int map[20][20] =
+{
+	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+	{ 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+	{ 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1 },
+	{ 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1 },
+	{ 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1 },
+	{ 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+	{ 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1 },
+	{ 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
+	{ 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1 },
+	{ 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
+	{ 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1 },
+	{ 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1 },
+	{ 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1 },
+	{ 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1 },
+	{ 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1 },
+	{ 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1 },
+	{ 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1 },
+	{ 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1 },
+	{ 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
+	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+};
 
 typedef struct s_sprite
 {
 	/* collection, enemy, item ... */
 	int type;
+	/* sprite visible */
+	int visible;
 	/* position */
 	float x;
 	float y;
@@ -75,6 +100,8 @@ typedef struct s_player
 
 	float		velocity;
 	int			is_map_visible;
+
+	int			inventory;
 }	t_player;
 
 typedef struct s_data
@@ -99,14 +126,17 @@ typedef struct s_data
 	int				hit_h;
 
 	/* sprite test code */
-	t_sprite		sprite[2];
+	t_sprite		sprite[4];
 	int visible_hit_v[map_h][map_w];
 	int visible_hit_h[map_h][map_w];
 	int visible_map[map_h][map_w];
 	int visible_sprite[map_h][map_w];
-	float* sprite_array; // [dst, angle] * sprite_count
+	float* sprite_array; // [dst, angle, type] * sprite_count
 	int sprite_count;
 	float* dist_dept;
+	int* sprite_idx;
+	int s_idx_arr[4];
+
 }	t_data;
 
 typedef struct s_color
@@ -146,6 +176,9 @@ void	set_sprite_map(t_data* game_data);
 void	test_sprite_(t_data* game_data);
 void	ft_sprite_calculate(t_data* game_data);
 SDL_Texture* test_sprite_texture(t_data* game_data, char* file);
+void	test_draw_sprite_(t_data* game_data);
+void	test_draw_sprite_2(t_data* game_data);
+void	inner_product(t_data* game_data);
 
 /* test code */
 void	test_draw_texture(t_data* game_data);
