@@ -1,5 +1,20 @@
 #include "SDL_Project.h"
 
+SDL_Texture	*title_screen(SDL_Renderer *renderer, const char *file)
+{
+	SDL_Surface* surface = NULL;
+	SDL_Texture* texture = NULL;
+
+	if (surface = SDL_LoadBMP(file))
+	{
+		texture = SDL_CreateTextureFromSurface(renderer, surface);
+		SDL_FreeSurface(surface);
+	}
+	else
+		printf("texture load Fail : %s\n", file);
+	return (texture);
+}
+
 SDL_Surface* init_background(SDL_Window *window)
 {
 	SDL_Surface* background_surface = NULL;
@@ -20,9 +35,9 @@ SDL_Surface* init_background(SDL_Window *window)
 			shader = 1.0f;
 		else if (shader < 0.0f)
 			shader = 0.0f;
-		r = 0x60 * shader;
-		g = 0x60 * shader;
-		b = 0x60 * shader;
+		r = 0x6f * shader;
+		g = 0x66 * shader;
+		b = 0x5e * shader;
 		SDL_FillRect(background_surface, &bg_rect, SDL_MapRGB(background_surface->format, r, g, b));
 		bg_rect.y = SCREEN_HEIGHT - y;
 		SDL_FillRect(background_surface, &bg_rect, SDL_MapRGB(background_surface->format, r, g, b));
@@ -65,14 +80,20 @@ void	draw_map(t_data* game_data)
 
 	src_rect.x = 0;
 	src_rect.y = 0;
-	src_rect.w = WORLD_WIDTH;
-	src_rect.h = WORLD_HEIGHT;
+	src_rect.w = map_w * 10;
+	src_rect.h = map_h * 10;
 	dst_rect.x = 0;
 	dst_rect.y = 0;
-	dst_rect.w = WORLD_WIDTH / 4;
-	dst_rect.h = WORLD_HEIGHT / 4;
+	dst_rect.w = map_w * 10;
+	dst_rect.h = map_h * 10;
 	if (game_data->player->is_map_visible)
 		SDL_RenderCopy(game_data->renderer, game_data->texture, &src_rect, &dst_rect);
+}
+
+void	draw_key_map(t_data* game_data)
+{
+	if (game_data->player->is_key_map_visible)
+		SDL_RenderCopy(game_data->renderer, game_data->key_map_texture, NULL, NULL);
 }
 
 void	test_draw_texture(t_data* game_data)

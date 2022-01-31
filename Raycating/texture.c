@@ -17,7 +17,7 @@ SDL_Surface*	load_texture(SDL_Renderer* renderer, char *file)
 
 int	set_texture(t_data* game_data)
 {
-	int map_texture = map[(int)floor(game_data->ray_y / TILE_SIZE)][(int)floor(game_data->ray_x / TILE_SIZE)];
+	int map_texture = game_data->map[(int)floor(game_data->ray_y / TILE_SIZE)][(int)floor(game_data->ray_x / TILE_SIZE)];
 	if (map_texture == 1)
 		return (1);
 	else if (map_texture == 2)

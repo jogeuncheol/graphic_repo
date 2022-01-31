@@ -1,22 +1,118 @@
 #include "SDL_Project.h"
-#include "texture/sprite_dbd.ppm" // sprite test
-#include "texture/light2.ppm" // sprite test
-#include "texture/light5.ppm" // sprite test
+#include "sprite.h"
 
+void	zeromem_sprite(t_data* game_data)
+{
+	const int count = sizeof(game_data->sprite) / sizeof(t_sprite);
+
+	for (int i = 0; i < count; i++)
+	{
+		game_data->sprite[i].interaction = 0;
+		game_data->sprite[i].is_item = 0;
+		game_data->sprite[i].item_idx = 0;
+		game_data->sprite[i].name = NULL;
+		game_data->sprite[i].texture = NULL;
+		game_data->sprite[i].type = -1;
+		game_data->sprite[i].visible = 0;
+		game_data->sprite[i].x = -1;
+		game_data->sprite[i].y = -1;
+	}
+}
+
+void	init_sprite_light(t_data* game_data);
 void	init_sprite(t_data* game_data)
 {
-	game_data->sprite[0].type = 0; // 0 == sprite_dbd
-	game_data->sprite[0].x = 1.5f * (float)TILE_SIZE;
-	game_data->sprite[0].y = 6.5f * (float)TILE_SIZE;
-	game_data->sprite[1].type = 1; // 1 == light2
+	game_data->sprite[0].type = env_object; // 0 == sprite_dbd
+	game_data->sprite[0].visible = 1;
+	game_data->sprite[0].x = 11.5f * (float)TILE_SIZE;
+	game_data->sprite[0].y = 11.5f * (float)TILE_SIZE;
+
+	game_data->sprite[3].type = env_object2; // 2 == skull
+	game_data->sprite[3].visible = 1;
+	game_data->sprite[3].x = 1.2f * (float)TILE_SIZE;
+	game_data->sprite[3].y = 6.8f * (float)TILE_SIZE;
+
+	game_data->sprite[4].type = item_obj_thread;
+	game_data->sprite[4].visible = 1;
+	game_data->sprite[4].item_idx = 1;
+	game_data->sprite[4].is_item = 1;
+	game_data->sprite[4].interaction = 1;
+	// game_data->sprite[4].name = strdup("item_thread");
+	game_data->sprite[4].x = 8.5f * (float)TILE_SIZE;
+	game_data->sprite[4].y = 8.5f * (float)TILE_SIZE;
+
+	game_data->sprite[7].type = env_obj_column;
+	game_data->sprite[7].visible = 1;
+	game_data->sprite[7].x = 18.5f * (float)TILE_SIZE;
+	game_data->sprite[7].y = 18.5f * (float)TILE_SIZE;
+
+	game_data->sprite[9].type = env_obj_table;
+	game_data->sprite[9].visible = 1;
+	game_data->sprite[9].item_idx = 1;
+	game_data->sprite[9].interaction = 1;
+	game_data->sprite[9].x = 2.5f * (float)TILE_SIZE;
+	game_data->sprite[9].y = 13.5f * (float)TILE_SIZE;
+
+	game_data->sprite[10].type = env_obj_horn;
+	game_data->sprite[10].visible = 1;
+	game_data->sprite[10].item_idx = 2;
+	game_data->sprite[10].interaction = 1;
+	game_data->sprite[10].x = 1.5f * (float)TILE_SIZE;
+	game_data->sprite[10].y = 14.5f * (float)TILE_SIZE;
+
+	game_data->sprite[11].type = item_obj_horn;
+	game_data->sprite[11].visible = 1;
+	game_data->sprite[11].item_idx = 2;
+	game_data->sprite[11].is_item = 1;
+	game_data->sprite[11].interaction = 1;
+	// game_data->sprite[11].name = strdup("item_horn");
+	game_data->sprite[11].x = 13.5f * (float)TILE_SIZE;
+	game_data->sprite[11].y = 10.5f * (float)TILE_SIZE;
+	init_sprite_light(game_data);
+}
+
+void	init_sprite_light(t_data *game_data)
+{
+	game_data->sprite[1].type = env_light; // 1 == light2
+	game_data->sprite[1].visible = 1;
 	game_data->sprite[1].x = 1.0f * (float)TILE_SIZE;
-	game_data->sprite[1].y = 4.0f * (float)TILE_SIZE;
-	game_data->sprite[2].type = 1;
-	game_data->sprite[2].x = 1.0f * (float)TILE_SIZE;
-	game_data->sprite[2].y = 5.0f * (float)TILE_SIZE;
-	game_data->sprite[3].type = 1;
-	game_data->sprite[3].x = 1.0f * (float)TILE_SIZE;
-	game_data->sprite[3].y = 6.0f * (float)TILE_SIZE;
+	game_data->sprite[1].y = 4.5f * (float)TILE_SIZE;
+	game_data->sprite[2].type = env_light;
+	game_data->sprite[2].visible = 1;
+	game_data->sprite[2].x = 2.0f * (float)TILE_SIZE;
+	game_data->sprite[2].y = 5.5f * (float)TILE_SIZE;
+	game_data->sprite[5].type = env_light;
+	game_data->sprite[5].visible = 1;
+	game_data->sprite[5].x = 4.0f * (float)TILE_SIZE;
+	game_data->sprite[5].y = 11.5f * (float)TILE_SIZE;
+	game_data->sprite[6].type = env_light;
+	game_data->sprite[6].visible = 1;
+	game_data->sprite[6].x = 3.0f * (float)TILE_SIZE;
+	game_data->sprite[6].y = 11.5f * (float)TILE_SIZE;
+	game_data->sprite[8].type = env_light;
+	game_data->sprite[8].visible = 1;
+	game_data->sprite[8].x = 3.0f * (float)TILE_SIZE;
+	game_data->sprite[8].y = 9.5f * (float)TILE_SIZE;
+}
+
+void	select_texture(t_data* game_data, int **texture, int count)
+{
+	if (game_data->sprite_array[count * 3 + 2] == env_object)
+		*texture = sprite_dbd;
+	else if (game_data->sprite_array[count * 3 + 2] == env_light)
+		*texture = light2;
+	else if (game_data->sprite_array[count * 3 + 2] == env_object2)
+		*texture = sprite_skull_1;
+	else if (game_data->sprite_array[count * 3 + 2] == item_obj_thread)
+		*texture = item_thread;
+	else if (game_data->sprite_array[count * 3 + 2] == env_obj_column)
+		*texture = env_column;
+	else if (game_data->sprite_array[count * 3 + 2] == env_obj_table)
+		*texture = env_table;
+	else if (game_data->sprite_array[count * 3 + 2] == env_obj_horn)
+		*texture = env_horn1;
+	else if (game_data->sprite_array[count * 3 + 2] == item_obj_horn)
+		*texture = item_horn1;
 }
 
 void init_visible_map(t_data *game_data)
@@ -67,7 +163,7 @@ void check_visible_map(t_data* game_data)
 		x = 0;
 		while (x < map_w)
 		{
-			game_data->visible_sprite[y][x] = game_data->visible_map[y][x] && map[y][x];
+			game_data->visible_sprite[y][x] = game_data->visible_map[y][x] && game_data->map[y][x];
 			//			printf("%d ", param->visible_sprite[y][x]);
 			//			printf("%d ", param->map[y][x]);
 			x++;
@@ -342,6 +438,8 @@ void	inner_product(t_data* game_data)
 	py = game_data->player->p_rect.y;
 	for (int i = 0; i < count; i++)
 	{
+		if (game_data->sprite[i].visible == 0) // <-- À§Ä¡ ¸¾¿¡ ¾Èµë
+			continue;
 		sx = game_data->sprite[i].x;
 		sy = game_data->sprite[i].y;
 		dx = sx - px;
@@ -354,7 +452,8 @@ void	inner_product(t_data* game_data)
 		}
 	}
 	// free(s_idx);
-	game_data->sprite_array = (float*)malloc(sizeof(float) * game_data->sprite_count * 3);
+	if (game_data->sprite_count)
+		game_data->sprite_array = (float*)malloc(sizeof(float) * game_data->sprite_count * 3);
 }
 
 void	test_sprite_checker(t_data *game_data, int x, int y, char c)
@@ -454,10 +553,7 @@ void	test_draw_sprite_(t_data *game_data)
 	for (int count = 0; count < game_data->sprite_count; count++)
 	{
 		int* texture = NULL;
-		if (game_data->sprite_array[count * 3 + 2] == 0)
-			texture = sprite_dbd;
-		else if (game_data->sprite_array[count * 3 + 2] == 1)
-			texture = light2;
+		select_texture(game_data, &texture, count);
 
 		p_s_dist = game_data->sprite_array[count * 3];
 		rad = game_data->sprite_array[count * 3 + 1];
@@ -467,13 +563,14 @@ void	test_draw_sprite_(t_data *game_data)
 
 		if (s_width_idx > SCREEN_WIDTH || s_width_idx + sprite_h < 0)
 			continue;
+		if (sprite_h > _CRT_INT_MAX || sprite_h > 100000000) continue;
 
 		shader = set_color_shader(sprite_h);
 		z = 0;
-		for (h = (sprite_h / 2) - 1; h > 0; h -= 2)
+		for (h = (sprite_h / 2) - 1; h > 0; h -= 1)
 		{
 			x = (z) * ((float)TILE_SIZE / sprite_h);
-			z += 2;
+			z += 1;
 			if (h > SCREEN_HEIGHT / 2 - 1) continue;
 
 			for (int i = 0; i < sprite_h; i += 2)

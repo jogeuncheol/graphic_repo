@@ -12,7 +12,7 @@ void	horizon_find_hit_coord(t_data *g_data, float offset_x, float offset_y)
 		map_x = (int)floor(p->ray_hx / TILE_SIZE);
 		map_y = (int)floor(p->ray_hy / TILE_SIZE);
 		test_sprite_checker(g_data, map_x, map_y, 'h');
-		if (map[map_y][map_x] != 0)
+		if (g_data->map[map_y][map_x] != 0 && g_data->map[map_y][map_x] < 3)
 		{
 			break;
 		}
@@ -36,7 +36,7 @@ void	vertical_find_hit_coord(t_data* g_data, float offset_x, float offset_y)
 		map_x = (int)floor(p->ray_vx / TILE_SIZE);
 		map_y = (int)floor(p->ray_vy / TILE_SIZE);
 		test_sprite_checker(g_data, map_x, map_y, 'v');
-		if (map[map_y][map_x] != 0)
+		if (g_data->map[map_y][map_x] != 0 && g_data->map[map_y][map_x] < 3)
 		{
 			break;
 		}

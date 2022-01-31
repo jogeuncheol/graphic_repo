@@ -6,6 +6,8 @@
 #include "texture/wall_tex4.ppm" // wall_tex2
 #include "texture/wall_texture3.ppm" // wall_texture3
 #include "texture/wall_texture4.ppm" // wall_texture4
+#include "texture/stone_wall_texture.ppm"
+#include "texture/stone_wall_texture2.ppm"
 
 void	map_over_screen(t_data* game_data)
 {
@@ -53,7 +55,7 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 	/* test code :: sprite */
 	// 벽까지 거리 값
 	game_data->dist_dept[width_idx] = dst;
-	game_data->dist_dept[width_idx + 1] = dst; // <-- 스프라이트 깜빡임에 영향주는 부분
+	// game_data->dist_dept[width_idx + 1] = dst; // <-- 스프라이트 깜빡임에 영향주는 부분
 	/* test code :: sprite */
 
 	//if (wall_h > SCREEN_HEIGHT)
@@ -82,10 +84,10 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 		y = (int)floor(fmod(game_data->ray_y, 64));
 	else
 		y = (int)floor(fmod(game_data->ray_x, 64));
-	int* texture = (set_texture(game_data) == 1) ? wall_texture3 : wall_texture4;
+	int* texture = stone_wall_texture2; // (set_texture(game_data) == 1) ? stone_wall_texture2 : stone_wall_texture;// (set_texture(game_data) == 1) ? wall_texture3 : wall_texture4;
 	float shader = set_color_shader(wall_h);
 	SDL_Rect wall_rect;
-	wall_rect.w = 2;
+	wall_rect.w = 1;
 	wall_rect.h = 1;
 	wall_rect.x = width_idx;
 	while (h > 0)// && width_idx > SCREEN_WIDTH / 3 && width_idx < SCREEN_WIDTH * 2 / 3)
@@ -133,7 +135,7 @@ void	draw_fov_ray(t_data *game_data)
 				fov_angle += 360;
 		}
 		// 앨리어싱
-		if (wall_idx % 2 == 0)
+		if (wall_idx % 1 == 0)
 		{
 			horizon_ray(game_data, fov_angle);		// 수평선에 닿는 ray
 			vertical_ray(game_data, fov_angle);		// 수직선에 닿는 ray
@@ -143,7 +145,7 @@ void	draw_fov_ray(t_data *game_data)
 
 		// ray_angle = ray_angle + ray_count;
 		// 앨리어싱
-		wall_idx += 2;
+		wall_idx += 1;
 	}
 }
 
@@ -227,7 +229,10 @@ void	Rendering(t_data* game_data)
 	//	test_sprite_(game_data);
 	game_data->wall_texture1 = SDL_CreateTextureFromSurface(game_data->renderer, game_data->wall_surface);
 	SDL_FreeSurface(game_data->wall_surface);
-	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, NULL, NULL);
+	// 해상도에 맞게 변환하여 출력
+	SDL_Rect s_rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_Rect d_rect = { -10 + cosf(game_data->r_radian * 4.0f) * 10, -10 + sinf(game_data->r_radian * 8.0f) * 10, RESOLUTION_WIDTH + 20, RESOLUTION_HEIGHT + 20 };
+	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, &s_rect, &d_rect);
 	SDL_DestroyTexture(game_data->wall_texture1);
 
 	/* sprite code */
@@ -241,13 +246,15 @@ void	Rendering(t_data* game_data)
 		test_draw_sprite_(game_data);
 
 	/* test :: 중앙 점 표시 */
-	SDL_Rect rect = { SCREEN_WIDTH / 2 - 3, SCREEN_HEIGHT / 2 - 3, 6, 6 };
-	SDL_FillRect(game_data->sp1_surface, &rect, SDL_MapRGB(game_data->sp1_surface->format, 0xFF, 0xFF, 0xFF));
+	//SDL_Rect rect = { SCREEN_WIDTH / 2 - 3, SCREEN_HEIGHT / 2 - 3, 6, 6 };
+	//SDL_FillRect(game_data->sp1_surface, &rect, SDL_MapRGB(game_data->sp1_surface->format, 0xFF, 0xFF, 0xFF));
 	/* test :: 중앙 점 표시 */
+
+	
 
 	game_data->sp1_texture = SDL_CreateTextureFromSurface(game_data->renderer, game_data->sp1_surface);
 	SDL_FreeSurface(game_data->sp1_surface);
-	SDL_RenderCopy(game_data->renderer, game_data->sp1_texture, NULL, NULL);
+	SDL_RenderCopy(game_data->renderer, game_data->sp1_texture, &s_rect, &d_rect);
 	SDL_DestroyTexture(game_data->sp1_texture);
 	/* sprite code */
 
@@ -264,20 +271,12 @@ void	Rendering(t_data* game_data)
 	// 수평 광선과 수직 광선 중 더 짧은 광선을 그림.
 	// draw_short_ray(game_data);
 
-	/* sprite code */
-	// game_data->sp1_surface = SDL_GetWindowSurface(game_data->window);
-	//ft_sprite_calculate(game_data);
-	//if (game_data->sprite_count)
-	//	test_sprite_(game_data);
-	//game_data->sp1_texture = SDL_CreateTextureFromSurface(game_data->renderer, game_data->sp1_surface);
-	//SDL_FreeSurface(game_data->sp1_surface);
-	////SDL_RenderCopy(game_data->renderer, game_data->sp1_texture, NULL, NULL);
-	//SDL_DestroyTexture(game_data->sp1_texture);
+	draw_pickup_item(game_data);
+	draw_cursor(game_data);
 
 	// 지도 그리기
 	draw_map(game_data);
-	// test_draw_texture(game_data);
-	// ft_test_pmm(game_data);
+	draw_key_map(game_data);
 
 	// 숨겨진 대상을 그린다. <--(?) 모든 것을 가져와 렌더러에 연결된 창에 그린다.
 	SDL_RenderPresent(renderer);

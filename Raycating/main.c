@@ -12,20 +12,61 @@ const static int SCREEN_WIDTH = TILE_SIZE * 15;
 const static int SCREEN_HEIGHT = TILE_SIZE * 10;
 */
 
-void	tile_grid(SDL_Surface *screenSurface)
+int	break_init_map(t_data *game_data, int i)
+{
+	for (int j = 0; j < i; j++)
+	{
+		free(game_data->map[j]);
+		game_data->map[j] = NULL;
+	}
+	free(game_data->map);
+	game_data->map = NULL;
+	return (1);
+}
+
+int	init_main_map(t_data *game_data)
+{
+	game_data->map = (int**)malloc(sizeof(int *) * map_h);
+	if (game_data->map != NULL)
+	{
+		for (int i = 0; i < map_h; i++)
+		{
+			game_data->map[i] = (int*)malloc(sizeof(int) * map_w);
+			if (game_data->map[i] == NULL)
+				return (break_init_map(game_data, i));
+		}
+	}
+	printf("map init pass\n");
+	return (0);
+}
+
+int copy_main_map(t_data* game_data, int (*map)[map_w])
+{
+	for (int i = 0; i < map_h; i++)
+	{
+		for (int j = 0; j < map_w; j++)
+		{
+			game_data->map[i][j] = map[i][j];
+		}
+	}
+}
+
+void	tile_grid(SDL_Surface *screenSurface, t_data *game_data)
 {
 	SDL_Rect rectangle;
 
-	rectangle.w = TILE_SIZE - 1;
-	rectangle.h = TILE_SIZE - 1;
-	for (int i = 1; i < WORLD_HEIGHT; i = i + TILE_SIZE)
+	rectangle.w = 10 - 1;
+	rectangle.h = 10 - 1;
+	for (int i = 1; i < map_h * 10; i = i + 10)
 	{
 		rectangle.y = i;
-		for (int j = 1; j < WORLD_WIDTH; j = j + TILE_SIZE)
+		for (int j = 1; j < map_w * 10; j = j + 10)
 		{
 			rectangle.x = j;
-			if (map[(i - 1) / TILE_SIZE][j / TILE_SIZE] != 0) // 지도의 벽
+			if (game_data->map[(i - 1) / 10][j / 10] != 0) // 지도의 벽
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xa0, 0xa0, 0xa0));
+			else if (i / 10 == 8 && j / 10 == 8)
+				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xFF, 0x00, 0x00));
 			else // 지도의 바닥
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 		}
@@ -69,6 +110,9 @@ void	init_player(t_player *player)
 
 	player->velocity = 1.0f;
 	player->is_map_visible = 0;
+	player->is_key_map_visible = 0;
+
+	player->inventory = 0;
 }
 
 void	set_player_rect(t_player* p)
@@ -104,32 +148,111 @@ void	ft_test()
 
 void	game(t_data* game_data)
 {
+	SDL_Rect sRect = { 0, 0, 1920, 1080 };
+	SDL_Rect dRect = { 0, 0, RESOLUTION_WIDTH, RESOLUTION_HEIGHT };
 	int loop = 1;
+
+	game_data->title = 0;
+	// Mix_PlayMusic(game_data->sound->bgm, -1);	// -1 :: infinite
+	if (Mix_PlayMusic(game_data->sound->title, -1) == -1) {
+		printf("Mix_PlayMusic: %s\n", Mix_GetError());
+		// well, there's no music, but most games don't break without music...
+	}
+	Mix_VolumeMusic(50);
 	while (loop)
 	{
-		// reset sprite map
-		reset_visible_sprite_map(game_data);
+		if (game_data->title == 0)
+		{
+			if (game_data->round == 1)
+			{
+				init_player(game_data->player);
+				zeromem_sprite(game_data);
+				init_sprite(game_data);
+			}
+			else if (game_data->round == 2)
+			{
+				init_level2_player(game_data);
+				zeromem_sprite(game_data);
+				init_level2_sprite(game_data);
+			}
+			/* 게임이 끝난 후 리셋 */
+			if (game_data->round == 1)
+			{
+				game_data->clear_req = 0;
+				copy_main_map(game_data, map1);
+			}
+			SDL_Event event;
+			Uint8* keystatus = SDL_GetKeyboardState(NULL);
+			while (SDL_PollEvent(&event))
+			{
+				if (keystatus[SDL_SCANCODE_RETURN])
+				{
+					printf("press return key \n");
+					game_data->title = 1;
+					Mix_FadeOutMusic(2000);
+					Mix_FadeInMusic(game_data->sound->bgm, -1, 2000);
+					Mix_VolumeMusic(20);
+					// Mix_PauseMusic();
+				}
+				else if (keystatus[SDL_SCANCODE_ESCAPE] || event.type == SDL_QUIT)
+					loop = 0;
+			}
+			SDL_RenderClear(game_data->renderer);
+			SDL_RenderCopy(game_data->renderer, game_data->title_texture, &sRect, &dRect);
+			SDL_RenderPresent(game_data->renderer);
+		}
+		else if (game_data->title == 1)
+		{
+			// reset sprite map
+			reset_visible_sprite_map(game_data);
 
-		// 플레이어 이동
-		loop = move_player(game_data->player);
-		// key_down(game_data->player);
-		// key_up(game_data->player);
+			// 플레이어 이동
+			game_data->title = move_player(game_data);
+			if (game_data->title == 0)
+			{
+				Mix_FadeInMusic(game_data->sound->title, -1, 2000);
+				continue;
+				// game_data->title = 1;
+				// Mix_ResumeMusic();
+			}
+			else if (game_data->title == 2 || game_data->round == 4)
+			{
+				game_data->title = 2;
+				Mix_VolumeMusic(100);
+				Mix_FadeInMusic(game_data->sound->ending, -1, 2000);
+				continue;
+			}
 
-		// 맵 보기
-		// map_over_screen(game_data);
-
-		// 플레이어 위치 표시용 사각형
-		// set_player_rect(game_data->player);
-
-		// 렌더링
-		Rendering(game_data);
+			// 렌더링
+			Rendering(game_data);
+			check_level(game_data);
+		}
+		else if (game_data->title == 2)
+		{
+			SDL_Event event;
+			SDL_RenderClear(game_data->renderer);
+			SDL_RenderCopy(game_data->renderer, game_data->end_texture, &sRect, &dRect);
+			SDL_RenderPresent(game_data->renderer);
+			while (SDL_PollEvent(&event))
+			{
+				if (event.type == SDL_KEYDOWN)
+				{
+					Mix_FadeOutMusic(2000);
+					Mix_FadeInMusic(game_data->sound->title, -1, 2000);
+					Mix_VolumeMusic(50);
+					game_data->title = 0;
+					game_data->clear_req == 0;
+					game_data->round = 1;
+				}
+			}
+		}
 		SDL_Delay(1000 / 144);
 	}
 }
 
 int main(int argc, char* args[])
 {
-	// 게임 종합 정보 구조체
+	// 게임 종합 정보 구조체 && init
 	t_data* game_data = NULL;
 	game_data = (t_data*)malloc(sizeof(t_data));
 	if (game_data == NULL)
@@ -137,6 +260,10 @@ int main(int argc, char* args[])
 		printf("Failed to allocation\n");
 		return (1);
 	}
+	game_data->clear_req = 0;
+	if (!init_main_map(game_data));
+		copy_main_map(game_data, map1);
+	game_data->round = 1;
 	game_data->dist_dept = (float*)calloc(sizeof(float), SCREEN_WIDTH);
 	if (game_data->dist_dept == NULL)
 	{
@@ -166,17 +293,28 @@ int main(int argc, char* args[])
 	}
 	init_player(player);
 
+	game_data->sound = (t_sound*)malloc(sizeof(t_sound));
+	if (game_data->sound == NULL)
+	{
+		printf("sound init error\n");
+		return (1);
+	}
+
 	// Initialize SDL
 	// SDL 초기화
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		return (1);
 	}
 	else
 	{
+		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+		test_init_sound(game_data);
+
 		// Create window
 		// 윈도우 생성
-		window = SDL_CreateWindow("SDL INIT", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("crete labyrinth", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, RESOLUTION_WIDTH, RESOLUTION_HEIGHT, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -194,13 +332,18 @@ int main(int argc, char* args[])
 				printf("Failed to create renderer %s\n", SDL_GetError());
 				return (1);
 			}
+			// 타이틀 화면
+			game_data->title_texture = title_screen(renderer, "texture/title2.bmp");
+			game_data->end_texture = title_screen(renderer, "texture/thx.bmp");
+			game_data->pick_item = title_screen(renderer, "texture/item_thread.bmp");
+			game_data->key_map_texture = title_screen(renderer, "texture/key_map.bmp");
 
 			// Fill the surface white
 			// 화면을 흰색으로 채우기 NULL or SDL_RECT* << 크기지정 가능
 			// SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 
 			// 격자 화면 생성
-			tile_grid(screenSurface);
+			tile_grid(screenSurface, game_data);
 
 			// surface to texture
 			// 하나의 텍스쳐로 만드는 작업 하드웨어 렌더링(gpu)을 사용함
@@ -239,11 +382,15 @@ int main(int argc, char* args[])
 	SDL_DestroyTexture(game_data->bg_texture);
 	// 스프라이트 텍스쳐 해제
 	// SDL_DestroyTexture(game_data->sp1_texture);
+	SDL_DestroyTexture(game_data->title_texture);
+	SDL_DestroyTexture(game_data->end_texture);
 
 	// Destroy window
 	// 윈도우 해제
 	SDL_DestroyWindow(window);
 
+	// SDL_Mixer bgm 해제
+	Mix_FreeMusic(game_data->sound->bgm);
 	// Quit SDL subsystems
 	// SDL 끝내기
 	SDL_Quit();

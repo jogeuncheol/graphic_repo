@@ -1,14 +1,14 @@
 #include "SDL_Project.h"
 
-/*
 void	update_arrow(t_player *player)
 {
-	player->arrow.x = player->p_rect.x + player->p_rect.w / 2;
-	player->arrow.y = player->p_rect.y + player->p_rect.h / 2;
+	/* 바라보는 좌표 :: 나중에 마우스 포인터 좌표로 받아서 사용할듯 */
+	player->arrow.x = player->p_rect.x + cos(player->angle * M_PI / 180.0f) * 10;
+	player->arrow.y = player->p_rect.y + sin(player->angle * M_PI / 180.0f) * 10;
+	/* w, h 상관없음. */
 	player->arrow.w = 1;
 	player->arrow.h = 10;
 }
-*/
 
 void	update_player_padding(t_player* player)
 {
@@ -80,8 +80,9 @@ void	key_down(t_player* p)
 	}
 }
 
-int	check_padding_wall(t_player* p, int keycode)
+int	check_padding_wall(t_data *game_data, int keycode)
 {
+	t_player* p = game_data->player;
 	// float c_x, c_y; // collision_fb_x, collision_y_
 	int ret = 1;
 	int north_lock = 0;
@@ -90,22 +91,22 @@ int	check_padding_wall(t_player* p, int keycode)
 	int west_lock = 0;
 
 	// 남쪽
-	if (map[(int)floor(p->p_padding_s / TILE_SIZE)][(int)floor(p->p_rect.x / TILE_SIZE)] == 1)
+	if (game_data->map[(int)floor(p->p_padding_s / TILE_SIZE)][(int)floor(p->p_rect.x / TILE_SIZE)] == 1)
 	{
 		south_lock = 1;
 	}
 	// 북쪽
-	if (map[(int)floor(p->p_padding_n / TILE_SIZE)][(int)floor(p->p_rect.x / TILE_SIZE)] == 1)
+	if (game_data->map[(int)floor(p->p_padding_n / TILE_SIZE)][(int)floor(p->p_rect.x / TILE_SIZE)] == 1)
 	{
 		north_lock = 1;
 	}
 	// 동쪽
-	if (map[(int)floor(p->p_rect.y / TILE_SIZE)][(int)floor(p->p_padding_e / TILE_SIZE)] == 1)
+	if (game_data->map[(int)floor(p->p_rect.y / TILE_SIZE)][(int)floor(p->p_padding_e / TILE_SIZE)] == 1)
 	{
 		east_lock = 1;
 	}
 	// 서쪽
-	if (map[(int)floor(p->p_rect.y / TILE_SIZE)][(int)floor(p->p_padding_w / TILE_SIZE)] == 1)
+	if (game_data->map[(int)floor(p->p_rect.y / TILE_SIZE)][(int)floor(p->p_padding_w / TILE_SIZE)] == 1)
 	{
 		west_lock = 1;
 	}
@@ -120,8 +121,9 @@ int	check_padding_wall(t_player* p, int keycode)
 	return (ret);
 }
 
-int	check_wall(t_player* player, int keycode)
+int	check_wall(t_data *game_data, int keycode)
 {
+	t_player* player = game_data->player;
 	float next_x, next_y;
 	int ret = 1;
 
@@ -148,13 +150,14 @@ int	check_wall(t_player* player, int keycode)
 		next_x -= (5 * (float)cos(M_PI / 180 * player->angle));
 		next_y -= (5 * (float)sin(M_PI / 180 * player->angle));
 	}
-	if (map[(int)floor(next_y) / TILE_SIZE][(int)floor(next_x) / TILE_SIZE] == 1)
+	if (game_data->map[(int)floor(next_y) / TILE_SIZE][(int)floor(next_x) / TILE_SIZE] == 1)
 		ret = 0;
 	return (ret);
 }
 
-int	move_player(t_player *player)
+int	move_player(t_data *game_data)
 {
+	t_player* player = game_data->player;
 	SDL_Event event;
 	int keycode;
 	float fb_x, fb_y, lr_x, lr_y;
@@ -165,47 +168,59 @@ int	move_player(t_player *player)
 	lr_x = (10 * (float)cos(rad_2));
 	lr_y = (10 * (float)sin(rad_2));
 
+	update_arrow(player);
 	Uint8* keystatus = SDL_GetKeyboardState(NULL);
-	if (keystatus[SDL_SCANCODE_W])
+	if (keystatus[SDL_SCANCODE_W] || keystatus[SDL_SCANCODE_S]
+		|| keystatus[SDL_SCANCODE_A] || keystatus[SDL_SCANCODE_D]
+		|| keystatus[SDL_SCANCODE_UP] || keystatus[SDL_SCANCODE_DOWN])
 	{
-		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x + fb_x) / TILE_SIZE)] == 0)
-			player->p_rect.x += (player->velocity * (float)cos(rad));
-		if (map[(int)floor((player->p_rect.y + fb_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
-			player->p_rect.y += (player->velocity * (float)sin(rad));
+		moving_pick_item(game_data);
+		if (keystatus[SDL_SCANCODE_W] || keystatus[SDL_SCANCODE_UP])
+		{
+			if (game_data->map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x + fb_x) / TILE_SIZE)] == 0)
+				player->p_rect.x += (player->velocity * (float)cos(rad));
+			if (game_data->map[(int)floor((player->p_rect.y + fb_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+				player->p_rect.y += (player->velocity * (float)sin(rad));
+		}
+		if (keystatus[SDL_SCANCODE_S] || keystatus[SDL_SCANCODE_DOWN])
+		{
+			if (game_data->map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x - fb_x) / TILE_SIZE)] == 0)
+				player->p_rect.x -= (player->velocity * (float)cos(rad));
+			if (game_data->map[(int)floor((player->p_rect.y - fb_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+				player->p_rect.y -= (player->velocity * (float)sin(rad));
+		}
+		if (keystatus[SDL_SCANCODE_A])
+		{
+			if (game_data->map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x - lr_x) / TILE_SIZE)] == 0)
+				player->p_rect.x -= (player->velocity * (float)cos(rad_2));
+			if (game_data->map[(int)floor((player->p_rect.y - lr_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+				player->p_rect.y -= (player->velocity * (float)sin(rad_2));
+		}
+		if (keystatus[SDL_SCANCODE_D])
+		{
+			if (game_data->map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x + lr_x) / TILE_SIZE)] == 0)
+				player->p_rect.x += (player->velocity * (float)cos(rad_2));
+			if (game_data->map[(int)floor((player->p_rect.y + lr_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
+				player->p_rect.y += (player->velocity * (float)sin(rad_2));
+		}
 	}
-	if (keystatus[SDL_SCANCODE_S])
-	{
-		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x - fb_x) / TILE_SIZE)] == 0)
-			player->p_rect.x -= (player->velocity * (float)cos(rad));
-		if (map[(int)floor((player->p_rect.y - fb_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
-			player->p_rect.y -= (player->velocity * (float)sin(rad));
-	}
-	if (keystatus[SDL_SCANCODE_A])
-	{
-		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x - lr_x) / TILE_SIZE)] == 0)
-			player->p_rect.x -= (player->velocity * (float)cos(rad_2));
-		if (map[(int)floor((player->p_rect.y - lr_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
-			player->p_rect.y -= (player->velocity * (float)sin(rad_2));
-	}
-	if (keystatus[SDL_SCANCODE_D])
-	{
-		if (map[(int)floor(player->p_rect.y / TILE_SIZE)][(int)floor((player->p_rect.x + lr_x) / TILE_SIZE)] == 0)
-			player->p_rect.x += (player->velocity * (float)cos(rad_2));
-		if (map[(int)floor((player->p_rect.y + lr_y) / TILE_SIZE)][(int)floor(player->p_rect.x / TILE_SIZE)] == 0)
-			player->p_rect.y += (player->velocity * (float)sin(rad_2));
-	}
-	if (keystatus[SDL_SCANCODE_Q])
-		player->angle -= 1.0f;
-	if (keystatus[SDL_SCANCODE_E])
-		player->angle += 1.0f;
+	if (keystatus[SDL_SCANCODE_Q] || keystatus[SDL_SCANCODE_LEFT])
+		player->angle -= 1.5f;
+	if (keystatus[SDL_SCANCODE_E] || keystatus[SDL_SCANCODE_RIGHT])
+		player->angle += 1.5f;
 	if (keystatus[SDL_SCANCODE_LSHIFT])	// 달리기
+	{
+		moving_pick_item(game_data);
 		player->velocity = 2.5f;
+	}
 	if (player->angle > 360.0f)
 		player->angle = 0.0f;
 	else if (player->angle < -360.0f)
 		player->angle = 0.0f;
 	if (keystatus[SDL_SCANCODE_M])
-		player->is_map_visible = 1;
+		;// player->is_map_visible = 1;
+	if (keystatus[SDL_SCANCODE_P])
+		player->is_key_map_visible = 1;
 
 	while (SDL_PollEvent(&event))
 	{
@@ -218,9 +233,28 @@ int	move_player(t_player *player)
 		else if (event.type == SDL_KEYDOWN)
 		{
 			keycode = event.key.keysym.sym;
+			if (keycode == SDLK_f)
+			{
+				/* 상호작용 키 [f] */
+				printf("f 키 누름\n");
+				if (game_data->is_cursor == 1)
+				{
+					interaction_obj(game_data);
+					get_item(game_data);
+				}
+				//if ((int)floor(player->arrow.x / TILE_SIZE) == 8 && (int)floor(player->arrow.y / TILE_SIZE) == 8)
+				//	return (2);
+				// debug only
+				// return (2);
+			}
+			if (keycode == SDLK_DELETE)
+			{
+				printf("press :: del\n");
+				drop_item(game_data);
+			}
 			if (keycode == SDLK_ESCAPE)
 				return (0);
-			if (!check_padding_wall(player, keycode))
+			if (!check_padding_wall(game_data, keycode))
 				return (1);
 		}
 		else if (event.type == SDL_KEYUP)
@@ -230,6 +264,8 @@ int	move_player(t_player *player)
 				player->velocity = 1.0f;
 			if (keycode == SDLK_m)
 				player->is_map_visible = 0;
+			if (keycode == SDLK_p)
+				player->is_key_map_visible = 0;
 		}
 		//update_arrow(player);
 		//printf("angle : %f\n", player->angle);
