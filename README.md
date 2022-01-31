@@ -11,3 +11,4 @@
 - 레이캐스팅을 사용한 2.5D 게임 작업
 - SDL2
 - SDL2 wiki
+- SDL_Mixer
