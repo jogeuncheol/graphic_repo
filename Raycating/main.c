@@ -65,7 +65,7 @@ void	tile_grid(SDL_Surface *screenSurface, t_data *game_data)
 			rectangle.x = j;
 			if (game_data->map[(i - 1) / 10][j / 10] != 0) // 지도의 벽
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xa0, 0xa0, 0xa0));
-			else if (i / 10 == 8 && j / 10 == 8)
+			else if ((i / 10 == 8 && j / 10 == 8) || (i / 10 == 10 && j / 10 == 13))
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xFF, 0x00, 0x00));
 			else // 지도의 바닥
 				SDL_FillRect(screenSurface, &rectangle, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
@@ -92,8 +92,8 @@ void	draw_line(t_data *game_data)
 // 플레이어 초기 위치와 크기
 void	init_player(t_player *player)
 {
-	player->p_rect.x = TILE_SIZE + (TILE_SIZE / 2);
-	player->p_rect.y = TILE_SIZE + (TILE_SIZE / 2);
+	player->p_rect.x = 7 * TILE_SIZE + (TILE_SIZE / 2);
+	player->p_rect.y = 5 * TILE_SIZE + (TILE_SIZE / 2);
 	player->p_rect.w = 10;
 	player->p_rect.h = 10;
 	//player->arrow.x = player->p_rect.x + player->p_rect.w / 2;
@@ -146,15 +146,23 @@ void	ft_test()
 	}
 }
 
+void	init_config(t_data* game_data)
+{
+	game_data->config.h_fov = 40;
+	game_data->config.v_fov = 0.6f;
+	game_data->config.texture = 1;
+}
+
 void	game(t_data* game_data)
 {
+	init_config(game_data);
 	SDL_Rect sRect = { 0, 0, 1920, 1080 };
 	SDL_Rect dRect = { 0, 0, RESOLUTION_WIDTH, RESOLUTION_HEIGHT };
 	int loop = 1;
 
 	game_data->title = 0;
 	// Mix_PlayMusic(game_data->sound->bgm, -1);	// -1 :: infinite
-	if (Mix_PlayMusic(game_data->sound->title, -1) == -1) {
+	if (Mix_FadeInMusic(game_data->sound->title, -1, 3000) == -1) {
 		printf("Mix_PlayMusic: %s\n", Mix_GetError());
 		// well, there's no music, but most games don't break without music...
 	}
@@ -326,14 +334,14 @@ int main(int argc, char* args[])
 			screenSurface = SDL_GetWindowSurface(window);
 			
 			// 렌더러 생성
-			renderer = SDL_CreateRenderer(window, -1, 0);
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 			if (renderer == NULL)
 			{
 				printf("Failed to create renderer %s\n", SDL_GetError());
 				return (1);
 			}
 			// 타이틀 화면
-			game_data->title_texture = title_screen(renderer, "texture/title2.bmp");
+			game_data->title_texture = title_screen(renderer, "texture/minos_labyrinth_title2.bmp");
 			game_data->end_texture = title_screen(renderer, "texture/thx.bmp");
 			game_data->pick_item = title_screen(renderer, "texture/item_thread.bmp");
 			game_data->key_map_texture = title_screen(renderer, "texture/key_map.bmp");

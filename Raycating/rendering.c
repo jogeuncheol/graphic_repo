@@ -50,7 +50,8 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 	float ra = fov_angle - p->angle;
 	dst = dst * cos(ra * M_PI / 180); // 카메라 평면의 거리로 변환
 	// wall_h = TILE_SIZE * ((SCREEN_WIDTH / 1) * (tan(30 * M_PI / 180))) / dst;
-	wall_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / dst);
+	wall_h = TILE_SIZE * ((SCREEN_WIDTH * game_data->config.v_fov) / dst);
+	// wall_h = TILE_SIZE / dst * 255;
 
 	/* test code :: sprite */
 	// 벽까지 거리 값
@@ -84,7 +85,8 @@ void	draw_fov_wall(t_data* game_data, float fov_angle, int width_idx)
 		y = (int)floor(fmod(game_data->ray_y, 64));
 	else
 		y = (int)floor(fmod(game_data->ray_x, 64));
-	int* texture = stone_wall_texture2; // (set_texture(game_data) == 1) ? stone_wall_texture2 : stone_wall_texture;// (set_texture(game_data) == 1) ? wall_texture3 : wall_texture4;
+	int* texture = wall_texture3; //stone_wall_texture2; // (set_texture(game_data) == 1) ? stone_wall_texture2 : stone_wall_texture;// (set_texture(game_data) == 1) ? wall_texture3 : wall_texture4;
+	if (game_data->config.texture == 1) texture = wall_texture3; else texture = stone_wall_texture2;
 	float shader = set_color_shader(wall_h);
 	SDL_Rect wall_rect;
 	wall_rect.w = 1;
@@ -125,7 +127,7 @@ void	draw_fov_ray(t_data *game_data)
 	while (wall_idx < SCREEN_WIDTH)
 	{
 		// fov_angle = p->angle + ray_angle;
-		ray_angle = atan2((double)(SCREEN_WIDTH / 2) - wall_idx, ((SCREEN_WIDTH / 2) / tan(30 * M_PI / 180)));
+		ray_angle = atan2((double)(SCREEN_WIDTH / 2) - wall_idx, ((SCREEN_WIDTH / 2) / tan(game_data->config.h_fov * M_PI / 180)));
 		fov_angle = p->angle - (ray_angle * (180 / M_PI));
 		if (fabs(fov_angle) > 360)
 		{
@@ -231,7 +233,7 @@ void	Rendering(t_data* game_data)
 	SDL_FreeSurface(game_data->wall_surface);
 	// 해상도에 맞게 변환하여 출력
 	SDL_Rect s_rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-	SDL_Rect d_rect = { -10 + cosf(game_data->r_radian * 4.0f) * 10, -10 + sinf(game_data->r_radian * 8.0f) * 10, RESOLUTION_WIDTH + 20, RESOLUTION_HEIGHT + 20 };
+	SDL_Rect d_rect = { -10 + cosf(game_data->r_radian * 4.0f) * 6, -10 + sinf(game_data->r_radian * 8.0f) * 6, RESOLUTION_WIDTH + 20, RESOLUTION_HEIGHT + 20 };
 	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, &s_rect, &d_rect);
 	SDL_DestroyTexture(game_data->wall_texture1);
 
@@ -247,6 +249,8 @@ void	Rendering(t_data* game_data)
 
 	/* test :: 중앙 점 표시 */
 	//SDL_Rect rect = { SCREEN_WIDTH / 2 - 3, SCREEN_HEIGHT / 2 - 3, 6, 6 };
+	//SDL_SetRenderDrawColor(game_data->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	//SDL_RenderFillRect(game_data->renderer, &rect);
 	//SDL_FillRect(game_data->sp1_surface, &rect, SDL_MapRGB(game_data->sp1_surface->format, 0xFF, 0xFF, 0xFF));
 	/* test :: 중앙 점 표시 */
 
@@ -270,7 +274,9 @@ void	Rendering(t_data* game_data)
 
 	// 수평 광선과 수직 광선 중 더 짧은 광선을 그림.
 	// draw_short_ray(game_data);
-
+	SDL_Rect rect = { RESOLUTION_WIDTH / 2 - 3, RESOLUTION_HEIGHT / 2 - 3, 6, 6 };
+	SDL_SetRenderDrawColor(game_data->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderFillRect(game_data->renderer, &rect);
 	draw_pickup_item(game_data);
 	draw_cursor(game_data);
 

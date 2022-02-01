@@ -205,9 +205,9 @@ int	move_player(t_data *game_data)
 		}
 	}
 	if (keystatus[SDL_SCANCODE_Q] || keystatus[SDL_SCANCODE_LEFT])
-		player->angle -= 1.5f;
+		player->angle -= 1.8f;
 	if (keystatus[SDL_SCANCODE_E] || keystatus[SDL_SCANCODE_RIGHT])
-		player->angle += 1.5f;
+		player->angle += 1.8f;
 	if (keystatus[SDL_SCANCODE_LSHIFT])	// ´Þ¸®±â
 	{
 		moving_pick_item(game_data);
@@ -218,7 +218,7 @@ int	move_player(t_data *game_data)
 	else if (player->angle < -360.0f)
 		player->angle = 0.0f;
 	if (keystatus[SDL_SCANCODE_M])
-		;// player->is_map_visible = 1;
+		player->is_map_visible = 1;
 	if (keystatus[SDL_SCANCODE_P])
 		player->is_key_map_visible = 1;
 
@@ -247,6 +247,27 @@ int	move_player(t_data *game_data)
 				// debug only
 				// return (2);
 			}
+			if (keycode == SDLK_PAGEUP)
+			{
+				game_data->config.h_fov += 0.5f;
+				game_data->config.v_fov -= 0.01f;
+				if (game_data->config.h_fov > 50)
+					game_data->config.h_fov = 50;
+				if (game_data->config.v_fov < 0.4f)
+					game_data->config.v_fov = 0.4f;
+				printf("FOV :: %.0f\n", (double)game_data->config.h_fov * 2.0f);
+			}
+			else if (keycode == SDLK_PAGEDOWN)
+			{
+				game_data->config.h_fov -= 0.5f;
+				game_data->config.v_fov += 0.01f;
+				if (game_data->config.h_fov < 30)
+					game_data->config.h_fov = 30;
+				if (game_data->config.v_fov > 0.8f)
+					game_data->config.v_fov = 0.8f;
+				printf("FOV :: %.0f\n", (double)game_data->config.h_fov * 2.0f);
+			}
+			if (keycode == SDLK_HOME) game_data->config.texture = 1; else if (keycode == SDLK_END) game_data->config.texture = 2;
 			if (keycode == SDLK_DELETE)
 			{
 				printf("press :: del\n");
