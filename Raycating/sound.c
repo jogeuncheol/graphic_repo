@@ -2,19 +2,6 @@
 
 #define MUS_PATH "sound/bgm.wav"
 
-int test_play_sound1()
-{
-	initAudio();
-
-	// playSound(MUS_PATH, SDL_MIX_MAXVOLUME);
-
-	Audio* audio = createAudio(MUS_PATH, 1, SDL_MIX_MAXVOLUME);
-	playSoundFromMemory(audio, SDL_MIX_MAXVOLUME);
-
-	SDL_Delay(1000);
-
-}
-
 int test_init_sound(t_data *game_data)
 {
 	game_data->sound->title = Mix_LoadMUS("sound/TitleScreen.wav");

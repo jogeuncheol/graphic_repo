@@ -150,7 +150,15 @@ void	init_config(t_data* game_data)
 {
 	game_data->config.h_fov = 40;
 	game_data->config.v_fov = 0.6f;
+	game_data->config.rotate = 1.5f;
 	game_data->config.texture = 1;
+	game_data->config.cross_dot = 1;
+	game_data->config.head_bob = 1;
+
+	printf("FOV\t\t:: %.0f\n", (double)game_data->config.h_fov * 2.0f);
+	printf("회전 속도\t:: %.1f\n", (double)game_data->config.rotate);
+	printf("중앙점\t\t:: on\n");
+	printf("화면 흔들림\t:: on\n");
 }
 
 void	game(t_data* game_data)
@@ -249,7 +257,7 @@ void	game(t_data* game_data)
 					Mix_FadeInMusic(game_data->sound->title, -1, 2000);
 					Mix_VolumeMusic(50);
 					game_data->title = 0;
-					game_data->clear_req == 0;
+					game_data->clear_req = 0;
 					game_data->round = 1;
 				}
 			}
@@ -322,7 +330,7 @@ int main(int argc, char* args[])
 
 		// Create window
 		// 윈도우 생성
-		window = SDL_CreateWindow("crete labyrinth", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, RESOLUTION_WIDTH, RESOLUTION_HEIGHT, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("minos labyrinth", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, RESOLUTION_WIDTH, RESOLUTION_HEIGHT, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -345,6 +353,7 @@ int main(int argc, char* args[])
 			game_data->end_texture = title_screen(renderer, "texture/thx.bmp");
 			game_data->pick_item = title_screen(renderer, "texture/item_thread.bmp");
 			game_data->key_map_texture = title_screen(renderer, "texture/key_map.bmp");
+			game_data->fg_texture = title_screen(renderer, "texture/foreground2.bmp");
 
 			// Fill the surface white
 			// 화면을 흰색으로 채우기 NULL or SDL_RECT* << 크기지정 가능
@@ -392,6 +401,7 @@ int main(int argc, char* args[])
 	// SDL_DestroyTexture(game_data->sp1_texture);
 	SDL_DestroyTexture(game_data->title_texture);
 	SDL_DestroyTexture(game_data->end_texture);
+	SDL_DestroyTexture(game_data->fg_texture);
 
 	// Destroy window
 	// 윈도우 해제

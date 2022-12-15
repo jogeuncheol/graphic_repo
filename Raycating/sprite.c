@@ -557,13 +557,13 @@ void	test_draw_sprite_(t_data *game_data)
 
 		p_s_dist = game_data->sprite_array[count * 3];
 		rad = game_data->sprite_array[count * 3 + 1];
-		s_width_idx = ((SCREEN_WIDTH / 2) / tan(30 * M_PI / 180.0f)) * tan(rad);
-		sprite_h = TILE_SIZE * ((SCREEN_WIDTH * 0.85f) / p_s_dist);
+		s_width_idx = ((SCREEN_WIDTH / 2) / tan(game_data->config.h_fov * M_PI / 180.0f)) * tan(rad);
+		sprite_h = TILE_SIZE * ((SCREEN_WIDTH * game_data->config.v_fov) / p_s_dist);
 		s_width_idx = SCREEN_WIDTH / 2 + s_width_idx - (sprite_h / 2);
 
 		if (s_width_idx > SCREEN_WIDTH || s_width_idx + sprite_h < 0)
 			continue;
-		if (sprite_h > _CRT_INT_MAX || sprite_h > 100000000) continue;
+		if (sprite_h > 100000000) continue;
 
 		shader = set_color_shader(sprite_h);
 		z = 0;

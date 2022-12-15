@@ -162,11 +162,11 @@ int	move_player(t_data *game_data)
 	int keycode;
 	float fb_x, fb_y, lr_x, lr_y;
 	float rad = M_PI / 180 * player->angle;
-	float rad_2 = M_PI / 180 * player->angle + M_PI / 2;
-	fb_x = (10 * (float)cos(rad));
-	fb_y = (10 * (float)sin(rad));
-	lr_x = (10 * (float)cos(rad_2));
-	lr_y = (10 * (float)sin(rad_2));
+	float rad_2 = M_PI / 180 * player->angle + (M_PI / 2);
+	fb_x = (20 * (float)cos(rad));
+	fb_y = (20 * (float)sin(rad));
+	lr_x = (20 * (float)cos(rad_2));
+	lr_y = (20 * (float)sin(rad_2));
 
 	update_arrow(player);
 	Uint8* keystatus = SDL_GetKeyboardState(NULL);
@@ -205,9 +205,9 @@ int	move_player(t_data *game_data)
 		}
 	}
 	if (keystatus[SDL_SCANCODE_Q] || keystatus[SDL_SCANCODE_LEFT])
-		player->angle -= 1.8f;
+		player->angle -= game_data->config.rotate;
 	if (keystatus[SDL_SCANCODE_E] || keystatus[SDL_SCANCODE_RIGHT])
-		player->angle += 1.8f;
+		player->angle += game_data->config.rotate;
 	if (keystatus[SDL_SCANCODE_LSHIFT])	// 달리기
 	{
 		moving_pick_item(game_data);
@@ -251,10 +251,10 @@ int	move_player(t_data *game_data)
 			{
 				game_data->config.h_fov += 0.5f;
 				game_data->config.v_fov -= 0.01f;
-				if (game_data->config.h_fov > 50)
-					game_data->config.h_fov = 50;
-				if (game_data->config.v_fov < 0.4f)
-					game_data->config.v_fov = 0.4f;
+				if (game_data->config.h_fov > 55)
+					game_data->config.h_fov = 55;
+				if (game_data->config.v_fov < 0.3f)
+					game_data->config.v_fov = 0.3f;
 				printf("FOV :: %.0f\n", (double)game_data->config.h_fov * 2.0f);
 			}
 			else if (keycode == SDLK_PAGEDOWN)
@@ -266,6 +266,28 @@ int	move_player(t_data *game_data)
 				if (game_data->config.v_fov > 0.8f)
 					game_data->config.v_fov = 0.8f;
 				printf("FOV :: %.0f\n", (double)game_data->config.h_fov * 2.0f);
+			}
+			if (keycode == SDLK_LEFTBRACKET)
+			{
+				game_data->config.rotate -= 0.1f;
+				if (game_data->config.rotate < 0.5f) game_data->config.rotate = 0.5f;
+				printf("회전 속도 :: %.1f\n", (double)game_data->config.rotate);
+			}
+			else if (keycode == SDLK_RIGHTBRACKET)
+			{
+				game_data->config.rotate += 0.1f;
+				if (game_data->config.rotate > 2.5f) game_data->config.rotate = 2.5f;
+				printf("회전 속도 :: %.1f\n", (double)game_data->config.rotate);
+			}
+			if (keycode == SDLK_PERIOD)
+			{
+				if (game_data->config.cross_dot == 1) game_data->config.cross_dot = 0;
+				else game_data->config.cross_dot = 1;
+			}
+			if (keycode == SDLK_SLASH)
+			{
+				if (game_data->config.head_bob == 1) game_data->config.head_bob = 0;
+				else game_data->config.head_bob = 1;
 			}
 			if (keycode == SDLK_HOME) game_data->config.texture = 1; else if (keycode == SDLK_END) game_data->config.texture = 2;
 			if (keycode == SDLK_DELETE)

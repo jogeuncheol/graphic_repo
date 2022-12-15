@@ -6,7 +6,6 @@
 #include <SDL_mixer.h>
 #include <stdio.h>
 #include <math.h>
-#include "audio.h"
 #include "maps.h"
 
 #define SDL_AUDIO_ALLOW_CHANGES SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE
@@ -98,16 +97,20 @@ enum object_type
 	item_obj_thread,
 	item_obj_horn,
 	enemy,
+	env_obj_scroll,
 	env_obj_column,
 	env_obj_table,
-	env_obj_horn
+	env_obj_horn,
 };
 
 typedef struct s_config
 {
 	float	h_fov;
 	float	v_fov;
+	float	rotate;
 	int	texture;
+	int cross_dot;
+	int head_bob;
 }	t_config;
 
 typedef struct s_sprite
@@ -119,6 +122,9 @@ typedef struct s_sprite
 	/* item */
 	int is_item;
 	int item_idx;
+	/* scroll */
+	int is_scroll;
+	int scroll_idx;
 	/* sprite visible */
 	int visible;
 	/* interaction */
@@ -184,6 +190,7 @@ typedef struct s_data
 	SDL_Texture*	end_texture;
 	SDL_Texture*	pick_item;
 	SDL_Texture*	bg_texture;
+	SDL_Texture*	fg_texture;
 	SDL_Texture*	wall_texture1;
 	SDL_Surface*	wall_surface;
 	SDL_Texture*	sp1_texture;

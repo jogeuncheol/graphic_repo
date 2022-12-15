@@ -86,7 +86,7 @@ void	draw_map(t_data* game_data)
 	dst_rect.y = 0;
 	dst_rect.w = map_w * 10;
 	dst_rect.h = map_h * 10;
-	if (game_data->player->is_map_visible)
+	if (game_data->player->is_map_visible && game_data->round == 1)
 		SDL_RenderCopy(game_data->renderer, game_data->texture, &src_rect, &dst_rect);
 }
 

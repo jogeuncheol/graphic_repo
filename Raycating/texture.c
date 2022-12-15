@@ -58,7 +58,7 @@ Uint32	set_color_from_texture(SDL_Rect *rect, t_data* game_data, int x, int y, i
 		g = g * shader;
 		b = b * shader;
 	}
-	SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
+	// SDL_SetRenderDrawColor(game_data->renderer, r, g, b, 0xFF);
 	color = SDL_MapRGB(game_data->wall_surface->format, r, g, b);
 	return (color);
 }

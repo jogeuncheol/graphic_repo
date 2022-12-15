@@ -1,5 +1,10 @@
 #include "SDL_Project.h"
 
+void	idle_head_moving(t_data *game_data)
+{
+
+}
+
 void	draw_pickup_item(t_data *game_data)
 {
 	int x = RESOLUTION_WIDTH / 3 * 2;

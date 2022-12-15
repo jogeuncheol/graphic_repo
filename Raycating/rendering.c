@@ -234,6 +234,13 @@ void	Rendering(t_data* game_data)
 	// 해상도에 맞게 변환하여 출력
 	SDL_Rect s_rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	SDL_Rect d_rect = { -10 + cosf(game_data->r_radian * 4.0f) * 6, -10 + sinf(game_data->r_radian * 8.0f) * 6, RESOLUTION_WIDTH + 20, RESOLUTION_HEIGHT + 20 };
+	if (game_data->config.head_bob == 0)
+	{
+		d_rect.x = 0;
+		d_rect.y = 0;
+		d_rect.w = RESOLUTION_WIDTH;
+		d_rect.h = RESOLUTION_HEIGHT;
+	}
 	SDL_RenderCopy(game_data->renderer, game_data->wall_texture1, &s_rect, &d_rect);
 	SDL_DestroyTexture(game_data->wall_texture1);
 
@@ -274,9 +281,13 @@ void	Rendering(t_data* game_data)
 
 	// 수평 광선과 수직 광선 중 더 짧은 광선을 그림.
 	// draw_short_ray(game_data);
-	SDL_Rect rect = { RESOLUTION_WIDTH / 2 - 3, RESOLUTION_HEIGHT / 2 - 3, 6, 6 };
-	SDL_SetRenderDrawColor(game_data->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderFillRect(game_data->renderer, &rect);
+	if (game_data->config.cross_dot == 1)
+	{
+		SDL_Rect rect = { RESOLUTION_WIDTH / 2 - 3, RESOLUTION_HEIGHT / 2 - 3, 6, 6 };
+		SDL_SetRenderDrawColor(game_data->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderFillRect(game_data->renderer, &rect);
+	}
+	SDL_RenderCopy(game_data->renderer, game_data->fg_texture, NULL, NULL);
 	draw_pickup_item(game_data);
 	draw_cursor(game_data);
 
