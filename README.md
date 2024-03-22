@@ -12,3 +12,4 @@
 - SDL2
 - SDL2 wiki
 - SDL_Mixer
+- [youtube](https://youtu.be/GF67kB7y1wI?si=s7pGjqNFGmwYAusG)
